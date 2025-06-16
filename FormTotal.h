@@ -437,6 +437,7 @@ private:	// User declarations
 	void __fastcall ProcessOcv(AnsiString param);
 	void __fastcall InsertOcvValue(int pos, float value);
 	int __fastcall GetReslut(AnsiString result);
+    int __fastcall GetTrayPos();
 
     TColor clAverageOver;
 	TColor clNoCell;
@@ -456,6 +457,7 @@ private:	// User declarations
 
     TPanel *pProcess[8];
     int NgCount;
+    int nTrayPos;
 public:		// User declarations
 
 	void __fastcall InitMeasureForm();
@@ -476,6 +478,8 @@ public:		// User declarations
 	void __fastcall CmdReset();
 	void __fastcall CmdIRCell(AnsiString pos);
 	void __fastcall CmdOCVCell(AnsiString pos);
+    void __fastcall CmdIRCell2(AnsiString pos);
+	void __fastcall CmdOCVCell2(AnsiString pos);
 	void __fastcall CmdAutoTest();
 	void __fastcall CmdBattHeight(int height = 1);
 	void __fastcall CmdGetSensorInfo();
@@ -538,6 +542,7 @@ public:		// User declarations
 
 	REMEASURE retest;
 	void __fastcall RemeasureExcute();
+    void __fastcall RemeasureExcute2();
 	void __fastcall ReadRemeasureInfo();
 	void __fastcall WriteRemeasureInfo();
 	int senCnt;

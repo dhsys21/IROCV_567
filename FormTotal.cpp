@@ -1067,7 +1067,42 @@ void __fastcall TTotalForm::CmdTestMode()
 }
 //---------------------------------------------------------------------------
 // 개별 재측정
+//* 트레이 위치에 따라 맵핑 다르게 적용
 void __fastcall TTotalForm::RemeasureExcute()
+{
+	int i = retest.re_index;
+	int ch = 0, boardch = 0;
+	for(;i < MAXCHANNEL;++i){
+		ch = i + 1;
+		boardch = chReverseMap[ch] - (nTrayPos * 288);
+		switch(retest.cell[i]){
+			case '2':	// IR 불량
+				this->MakeData(3, "IR*", FormatFloat("000", boardch));
+				if(tray.ocv_value[i] < config.ocv_min || tray.ocv_value[i] > config.ocv_max){
+					retest.cell[i] = '3';
+				}else{
+					retest.re_index = ++i;
+				}
+				return;
+			case '3':	// OCV 불량
+				this->MakeData(3, "OCV", FormatFloat("000", boardch));
+				if(tray.after_value[i] < config.ir_min || tray.after_value[i] > config.ir_max){
+					retest.cell[i] = '2';
+				}
+				retest.re_index = ++i;
+				return;
+			default:
+				break;
+		}
+	}
+	retest.re_excute = false;
+	SetRemeasureList();
+	CmdForceStop();
+	WriteCommLog("IR/OCV STOP", "RemeasureExcute()");
+}
+//---------------------------------------------------------------------------
+//* 예전 버전
+void __fastcall TTotalForm::RemeasureExcute2()
 {
 	int i = retest.re_index;
 	int value = 0;
@@ -1100,34 +1135,6 @@ void __fastcall TTotalForm::RemeasureExcute()
 	WriteCommLog("IR/OCV STOP", "RemeasureExcute()");
 }
 //---------------------------------------------------------------------------
-// 개별 재측정    original
-//void __fastcall TTotalForm::RemeasureExcute()
-//{
-//	int i = retest.re_index;
-//
-//	for(;i<256;++i){
-//
-//		switch(retest.cell[i]){
-//			case '2':	// IR 불량
-//				this->MakeData(3, "IR*", FormatFloat("000", i+1));
-//				if(tray.ocv_value[i] < config.ocv_min || tray.ocv_value[i] > config.ocv_max){
-//					retest.cell[i] = '3';
-//				}else{
-//					retest.re_index = ++i;
-//				}
-//				return;
-//			case '3':	// OCV 불량
-//				this->MakeData(3, "OCV", FormatFloat("000", i+1));
-//				retest.re_index = ++i;
-//				return;
-//			default:
-//				break;
-//		}
-//	}
-//	retest.re_excute = false;
-//	CmdForceStop();
-//}
-//---------------------------------------------------------------------------
 void __fastcall TTotalForm::ModChange()
 {
 	if(stage.arl != stage.arl_reserve){
@@ -1155,17 +1162,13 @@ void __fastcall TTotalForm::SensorInputProcess(AnsiString param)
 	param.Delete(1,3);
 
 	unsigned char *ptrInput;
-
-
 	ptrInput = (unsigned char *)&sensor;
-
 
 	while(param.IsEmpty() == false){
 		*ptrInput = (unsigned char)StrToInt("0x" + param.SubString(1,2));
 		ptrInput++;
 		param.Delete(1,2).Trim();
 	}
-
 
 	//DisplaySensorInfo();
 
@@ -1440,7 +1443,7 @@ void __fastcall TTotalForm::SetRemeasureList()
 		ocvMin = tray.ocv_avg - config.ocv_range * tray.ocv_sigma;
 		ocvMax = tray.ocv_avg + config.ocv_range * tray.ocv_sigma;
 		 //* 색상도 바꿔야 함....
-		for(int index=0;index<MAXCHANNEL;++index){
+		for(int index = 0;index < MAXCHANNEL;++index){
 			if(tray.cell[index] == 1){
 
 				if(tray.after_value[index] < config.ir_min || tray.after_value[index] > config.ir_max)
@@ -1965,6 +1968,7 @@ void __fastcall TTotalForm::AutoInspection_Measure()
 			PLCStatus = " IR/OCV Remeasure ... ";
 			Panel_State->Caption = PLCStatus;
 
+            nTrayPos = GetTrayPos();
 			plc_probe_close = Mod_PLC->GetDouble(Mod_PLC->plc_Interface_Data, PLC_D_IROCV_PROB_CLOSE);
 			plc_tray_in = Mod_PLC->GetDouble(Mod_PLC->plc_Interface_Data, PLC_D_IROCV_TRAY_IN);
 

@@ -121,13 +121,33 @@ void __fastcall TTotalForm::CmdReset()
 //---------------------------------------------------------------------------
 void __fastcall TTotalForm::CmdIRCell(AnsiString pos)
 {
+    int ch = pos.ToInt();
+    int boardch = 0;
+
+    boardch = chReverseMap[ch] - (nTrayPos * 288);
+	pos = FormatFloat("000", boardch);
+	MakeData(2, "IR*", pos);
+}
+//---------------------------------------------------------------------------
+void __fastcall TTotalForm::CmdOCVCell(AnsiString pos)
+{
+    int ch = pos.ToInt();
+    int boardch = 0;
+
+	boardch = chReverseMap[ch] - (nTrayPos * 288);
+	pos = FormatFloat("000", boardch);
+	MakeData(2, "OCV", pos);
+}
+//---------------------------------------------------------------------------
+void __fastcall TTotalForm::CmdIRCell2(AnsiString pos)
+{
     int value = pos.ToInt();
 	value = chReverseMap[value];
 	pos = FormatFloat("000", value);
 	MakeData(2, "IR*", pos);
 }
 //---------------------------------------------------------------------------
-void __fastcall TTotalForm::CmdOCVCell(AnsiString pos)
+void __fastcall TTotalForm::CmdOCVCell2(AnsiString pos)
 {
     int value = pos.ToInt();
 	value = chReverseMap[value];
@@ -244,7 +264,10 @@ void __fastcall TTotalForm::ProcessIr(AnsiString param)
 {
 	AnsiString msg_ir, msg_ocv, result;
 	int channel = 0;
-	channel = chMap[param.SubString(1, 3).ToInt()];
+    //* 트레이 위치에 따라 맵핑 다르게 적용
+    int boardchannel = BaseForm->StringToInt(param.SubString(1, 3), 0);
+    if(boardchannel < 1) return;
+	channel = chMap[boardchannel + nTrayPos * 288];
 
 	param.Delete(1,3);
 	int pos = param.Pos("E");
@@ -293,15 +316,13 @@ void __fastcall TTotalForm::ProcessIr(AnsiString param)
         CaliForm->InsertValue(channel, value, clr);
 	}
 
+    //* RemeasureExecute는 Tray position 고려해서 맵핑값 적용필요
 	if(tray.rem_mode == 1){
 		send.tx_mode = 200;
 		this->RemeasureExcute();
 	}
-
-}
-
-//---------------------------------------------------------------------------
-void __fastcall TTotalForm::InsertIrValue(int pos, float value, AnsiString result)
+}
+//---------------------------------------------------------------------------void __fastcall TTotalForm::InsertIrValue(int pos, float value, AnsiString result)
 {
 	int index = pos-1;
 
@@ -368,7 +389,11 @@ int __fastcall TTotalForm::GetReslut(AnsiString result)
 void __fastcall TTotalForm::ProcessOcv(AnsiString param)
 {
 	int channel = 0;
-	channel = chMap[param.SubString(1, 3).ToInt()];
+	//channel = chMap[param.SubString(1, 3).ToInt()];
+    //* 트레이 위치에 따라 맵핑 다르게 적용
+    int boardchannel = BaseForm->StringToInt(param.SubString(1, 3), 0);
+    if(boardchannel < 1) return;
+	channel = chMap[boardchannel + nTrayPos * 288];
 
 	param.Delete(1,3);
 	int pos = param.Pos("E");
@@ -577,6 +602,11 @@ void __fastcall TTotalForm::MakeData(int tx_mode, AnsiString cmd, AnsiString par
 //---------------------------------------------------------------------------
 // PLC 명령어
 //---------------------------------------------------------------------------
+int __fastcall TTotalForm::GetTrayPos()
+{
+    int value = GetPlcValue(PLC_D_IROCV_TRAY_POS);
+    return value;
+}
 double __fastcall TTotalForm::GetPlcValue(int plc_address)
 {
     double value = Mod_PLC->GetDouble(Mod_PLC->plc_Interface_Data, plc_address);

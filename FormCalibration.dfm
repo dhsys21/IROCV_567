@@ -106,8 +106,6 @@ object CaliForm: TCaliForm
       TabOrder = 2
       OnDrawCell = StringGrid1DrawCell
       OnSelectCell = StringGrid1SelectCell
-      ExplicitLeft = 4
-      ExplicitTop = 2
       ColWidths = (
         64
         64
