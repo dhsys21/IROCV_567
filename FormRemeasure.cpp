@@ -78,6 +78,8 @@ void __fastcall TRemeasureForm::MakePanel(AnsiString type)
 
 		TColor clr;
 		for(int index = 0; index < MAXCHANNEL;){
+            if(pch[index] != NULL && pre[index] != NULL) return;
+
 			pch[index] = new TPanel(this);
 			pre[index] = new TPanel(this);
 
@@ -110,6 +112,8 @@ void __fastcall TRemeasureForm::MakePanel(AnsiString type)
 
 		TColor clr;
 		for(int index = 0; index < MAXCHANNEL;){
+            if(pch[index] != NULL && pre[index] != NULL) return;
+
 			pch[index] = new TPanel(this);
 			pre[index] = new TPanel(this);
 
@@ -142,6 +146,8 @@ void __fastcall TRemeasureForm::MakePanel(AnsiString type)
 
 		TColor clr;
 		for(int index = 0; index < MAXCHANNEL;){
+            if(pch[index] != NULL && pre[index] != NULL) return;
+
 			pch[index] = new TPanel(this);
 			pre[index] = new TPanel(this);
 			pch[index]->ParentBackground = false;
@@ -172,11 +178,12 @@ void __fastcall TRemeasureForm::MakePanel(AnsiString type)
     else if(type == "2")
 	{
 		nx = pUIx[0]->Left;
-		//ny = Panel2->Height - nh*2 - 5;
 		ny = pUIy[0]->Top;
 
 		TColor clr;
 		for(int index = 0; index < MAXCHANNEL;){
+            if(pch[index] != NULL && pre[index] != NULL) return;
+
 			pch[index] = new TPanel(this);
 			pre[index] = new TPanel(this);
 			pch[index]->ParentBackground = false;
@@ -218,6 +225,8 @@ void __fastcall TRemeasureForm::MakeUIPanel(AnsiString type)
         nx = nw + 4;
 
         for(int index = 0; index < LINECOUNT;){
+            if(pUIy[index] != NULL && pUIy[index] != NULL) return;
+
             pUIx[index] = new TPanel(this);
             pUIy[index] = new TPanel(this);
 
@@ -239,6 +248,8 @@ void __fastcall TRemeasureForm::MakeUIPanel(AnsiString type)
         nx = Panel2->Width - (nw + 2);
 
         for(int index = 0; index < LINECOUNT;){
+            if(pUIy[index] != NULL && pUIy[index] != NULL) return;
+
             pUIx[index] = new TPanel(this);
             pUIy[index] = new TPanel(this);
 
@@ -259,6 +270,8 @@ void __fastcall TRemeasureForm::MakeUIPanel(AnsiString type)
         ny = nh + 4;
         nx = nw + 4;
         for(int index = 0; index < LINECOUNT;){
+            if(pUIy[index] != NULL && pUIy[index] != NULL) return;
+
             pUIx[index] = new TPanel(this);
             pUIy[index] = new TPanel(this);
 
@@ -279,6 +292,8 @@ void __fastcall TRemeasureForm::MakeUIPanel(AnsiString type)
         ny = nh + 4;
         nx = Panel2->Width - (nw + 2);;
         for(int index = 0; index < LINECOUNT;){
+            if(pUIy[index] != NULL && pUIy[index] != NULL) return;
+
             pUIx[index] = new TPanel(this);
             pUIy[index] = new TPanel(this);
 
