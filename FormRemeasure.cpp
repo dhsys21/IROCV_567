@@ -46,8 +46,23 @@ void __fastcall TRemeasureForm::RefreshForm()
 
 void __fastcall TRemeasureForm::FormCreate(TObject *Sender)
 {
-	MakeUIPanel(BaseForm->lblLineNo->Caption);
+    Panel2->Caption = BaseForm->lblLineNo->Caption;
+}
+//---------------------------------------------------------------------------
+void __fastcall TRemeasureForm::FormShow(TObject *Sender)
+{
+	this->Left = 650;
+	this->Top = 120;
+	this->BringToFront();
+
+    MakeUIPanel(BaseForm->lblLineNo->Caption);
 	MakePanel(BaseForm->lblLineNo->Caption);
+	this->RefreshForm();
+}
+//---------------------------------------------------------------------------
+void __fastcall TRemeasureForm::FormHide(TObject *Sender)
+{
+	stage = -1;
 }
 //---------------------------------------------------------------------------
 void __fastcall TRemeasureForm::MakePanel(AnsiString type)
@@ -298,7 +313,7 @@ void __fastcall TRemeasureForm::SetOption(TPanel *pnl, int nx, int ny, int nw, i
 	pnl->BevelKind = bkNone;
 	pnl->BevelOuter = bvNone;
 	pnl->Tag = index; // index + 16
-	pnl->Hint = "POS : " + IntToStr((index/20)+1) + "-" + IntToStr((index%20)+1);
+	pnl->Hint = "POS : " + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1);
 
 	pnl->ShowHint = true;
 	pnl->OnDblClick = chInitdblClick;
@@ -329,23 +344,6 @@ void __fastcall TRemeasureForm::SetUIOption(TPanel *pnl, int nx, int ny, int nw,
 	pnl->BorderWidth = 0;
 }
 //---------------------------------------------------------------------------
-void __fastcall TRemeasureForm::FormShow(TObject *Sender)
-{
-	this->Left = 650;
-	this->Top = 120;
-	this->BringToFront();
-	this->RefreshForm();
-}
-//---------------------------------------------------------------------------
-
-
-void __fastcall TRemeasureForm::FormHide(TObject *Sender)
-{
-	stage = -1;	
-}
-//---------------------------------------------------------------------------
-
-
 void __fastcall TRemeasureForm::chInitdblClick(TObject *Sender)
 {
 	TPanel *pnl;

@@ -20,7 +20,7 @@ object MeasureInfoForm: TMeasureInfoForm
   PixelsPerInch = 96
   TextHeight = 13
   object Panel2: TPanel
-    Left = 0
+    Left = 1
     Top = 0
     Width = 1044
     Height = 912
@@ -95,10 +95,10 @@ object MeasureInfoForm: TMeasureInfoForm
       Visible = False
     end
     object OcvChart: TChart
-      Left = 3
-      Top = 441
-      Width = 909
-      Height = 384
+      Left = 44
+      Top = 476
+      Width = 998
+      Height = 433
       BackWall.Brush.Style = bsClear
       Legend.Visible = False
       Title.Alignment = taLeftJustify
@@ -177,10 +177,10 @@ object MeasureInfoForm: TMeasureInfoForm
       Visible = False
     end
     object IrChart: TChart
-      Left = 3
-      Top = 53
-      Width = 909
-      Height = 384
+      Left = 44
+      Top = 40
+      Width = 998
+      Height = 433
       BackWall.Brush.Style = bsClear
       Legend.Visible = False
       Title.Alignment = taLeftJustify

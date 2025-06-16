@@ -31,6 +31,16 @@ void __fastcall TMeasureInfoForm::FormShow(TObject *Sender)
 //	this->btnInitClick(this);
 	this->BringToFront();
 	pLocal->Visible = false;
+
+    IrChart->Width = 998;
+    IrChart->Height = 433;
+    IrChart->Left = pnl_nw + 4;
+    IrChart->Top = pnl_nh + 6;
+
+    OcvChart->Width = 998;
+    OcvChart->Height = 433;
+    OcvChart->Left = pnl_nw + 4;
+    OcvChart->Top = IrChart->Height + pnl_nh + 8;
 }
 //---------------------------------------------------------------------------
 
