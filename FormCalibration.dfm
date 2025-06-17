@@ -122,9 +122,9 @@ object CaliForm: TCaliForm
   end
   object btnApply: TAdvSmoothButton
     Left = 1475
-    Top = 3
-    Width = 78
-    Height = 25
+    Top = 28
+    Width = 72
+    Height = 28
     Appearance.GlowPercentage = 50
     Appearance.PictureAlignment = taCenter
     Appearance.Font.Charset = DEFAULT_CHARSET
@@ -161,9 +161,9 @@ object CaliForm: TCaliForm
   end
   object btnSave: TAdvSmoothButton
     Left = 1319
-    Top = 3
-    Width = 78
-    Height = 25
+    Top = 28
+    Width = 72
+    Height = 28
     Appearance.GlowPercentage = 50
     Appearance.PictureAlignment = taCenter
     Appearance.Font.Charset = DEFAULT_CHARSET
@@ -200,9 +200,9 @@ object CaliForm: TCaliForm
   end
   object btnLoad: TAdvSmoothButton
     Left = 1397
-    Top = 3
-    Width = 78
-    Height = 25
+    Top = 28
+    Width = 72
+    Height = 28
     Appearance.GlowPercentage = 50
     Appearance.PictureAlignment = taCenter
     Appearance.Font.Charset = DEFAULT_CHARSET
@@ -239,7 +239,7 @@ object CaliForm: TCaliForm
   end
   object btnInit: TAdvSmoothButton
     Left = 1319
-    Top = 34
+    Top = 62
     Width = 104
     Height = 28
     Appearance.GlowPercentage = 50
@@ -402,8 +402,8 @@ object CaliForm: TCaliForm
       TMSStyle = 8
     end
     object btnStop: TAdvSmoothButton
-      Left = 156
-      Top = 45
+      Left = 157
+      Top = 48
       Width = 68
       Height = 25
       Appearance.GlowPercentage = 50
@@ -493,7 +493,7 @@ object CaliForm: TCaliForm
       TabOrder = 1
     end
     object btnIr: TAdvSmoothButton
-      Left = 154
+      Left = 153
       Top = 24
       Width = 68
       Height = 30
@@ -966,11 +966,11 @@ object CaliForm: TCaliForm
   object SaveDialog: TSaveDialog
     DefaultExt = '*.csv'
     Filter = 'Save(*.csv)|*.csv'
-    Left = 1445
-    Top = 50
+    Left = 1461
+    Top = 82
   end
   object OpenDialog1: TOpenDialog
-    Left = 1501
-    Top = 50
+    Left = 1517
+    Top = 82
   end
 end

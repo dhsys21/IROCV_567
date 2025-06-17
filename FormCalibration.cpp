@@ -169,7 +169,7 @@ void __fastcall TCaliForm::InsertValue(int channel, double value, TColor clr)
     //* Offset
     StringGrid1->Cells[pos + 3][ch] = BaseForm->StringToDouble(StringGrid1->Cells[pos + 1][ch], 0) - value;
     //* Color
-    clrMeasureArr[channel] = clr;
+    clrMeasureArr[channel - 1] = clr;
 
     //* StringGrid Refresh
     StringGrid1->Invalidate();
@@ -186,11 +186,12 @@ void __fastcall TCaliForm::InsertValue(int channel, double value, TColor clr)
 void __fastcall TCaliForm::btnInitClick(TObject *Sender)
 {
 	for(int pos = 0; pos <MAXCHANNEL; ++pos){
-//		CaliForm->pmeasure[pos]->Color = pnormal2->Color;
-//		CaliForm->pmeasure[pos]->ParentBackground=false;
-//		CaliForm->poffset[pos]->ParentBackground=false;
-//		CaliForm->poffset[pos]->Color = pnormal1->Color;
+        clrMeasureArr[pos] = pnormal2->Color;
+        clrOffsetArr[pos] = pnormal1->Color;
 	}
+
+    //* StringGrid Refresh
+    StringGrid1->Invalidate();
 }
 //---------------------------------------------------------------------------
 void __fastcall TCaliForm::btnStopClick(TObject *Sender)
@@ -218,7 +219,7 @@ void __fastcall TCaliForm::btnIrClick(TObject *Sender)
 {
 	int ch;
 	ch = chEdit->Text.ToInt();
-	//pmeasure[ch-1]->Color = pnormal1->Color;
+    clrMeasureArr[ch-1] = pnormal2->Color;
 
 	BaseForm->nForm[stage]->CmdIRCell(FormatFloat("000", ch));
 }
@@ -395,13 +396,13 @@ void __fastcall TCaliForm::StringGrid1DrawCell(TObject *Sender, int ACol, int AR
     else if(ACol == 2 || ACol == 6)
     {
         double value = BaseForm->StringToDouble(text, 0.0);
-        if(value == 0) clrMeasureArr[channel] = BaseForm->nForm[stage]->cl_ce->Color;
+        if(value == 0) clrMeasureArr[channel - 1] = BaseForm->nForm[stage]->cl_ce->Color;
 
-        canvas->Brush->Color = clrMeasureArr[channel];
+        canvas->Brush->Color = clrMeasureArr[channel - 1];
     }
     else if(ACol == 3 || ACol == 7)
     {
-        canvas->Brush->Color = clrOffsetArr[channel];
+        canvas->Brush->Color = clrOffsetArr[channel - 1];
     }
     else{
         double value = 0.0;
