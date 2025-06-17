@@ -86,7 +86,6 @@ void __fastcall TBaseForm::MakePanel()
 		i += 1;
 		nx += (nForm[i-1]->Width + 1);
 	}
-
 }
 
 void __fastcall TBaseForm::FormClose(TObject *Sender, TCloseAction &Action)

@@ -384,7 +384,7 @@ object TotalForm: TTotalForm
       object pPos: TPanel
         Left = 83
         Top = 30
-        Width = 75
+        Width = 95
         Height = 25
         BevelKind = bkFlat
         BevelOuter = bvNone
@@ -398,9 +398,9 @@ object TotalForm: TTotalForm
         TabOrder = 3
       end
       object Panel31: TPanel
-        Left = 160
+        Left = 180
         Top = 30
-        Width = 50
+        Width = 40
         Height = 25
         BevelKind = bkFlat
         BevelOuter = bvNone
@@ -416,7 +416,7 @@ object TotalForm: TTotalForm
         TabOrder = 4
       end
       object pIrValue: TPanel
-        Left = 211
+        Left = 221
         Top = 30
         Width = 75
         Height = 25
@@ -432,9 +432,9 @@ object TotalForm: TTotalForm
         TabOrder = 5
       end
       object Panel63: TPanel
-        Left = 288
+        Left = 298
         Top = 30
-        Width = 50
+        Width = 40
         Height = 25
         BevelKind = bkFlat
         BevelOuter = bvNone

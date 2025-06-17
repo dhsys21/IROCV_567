@@ -40,8 +40,8 @@ __fastcall TTotalForm::TTotalForm(TComponent* Owner)
 	clNo = clSilver;
 	clYes = clrConInfo->Color;
 
+    ReadchannelMapping();
 	MakePanel(BaseForm->lblLineNo->Caption);
-//	this->ScaleBy(60,100);
 	start_delay_time = 0;
 }
 //---------------------------------------------------------------------------
@@ -64,14 +64,15 @@ void __fastcall TTotalForm::FormShow(TObject *Sender)
 	pdev[7] = pdev8;
 	pdev[7]->ParentBackground = false;
 
-	ReadRemeasureInfo();
-
 	stage.init = true;
 	m_bAuto = true;
 	bLocal = false;
 
+    this->ReadCaliboffset();                      //20171202 개별보정을 위해 추가
+    ReadRemeasureInfo();
 	ReadSystemInfo();
-	ReadchannelMapping();
+
+    btnMeasureInfoClick(this);
 	Initialization();
 
 	Timer_PLCConnect->Enabled = true;
@@ -81,8 +82,6 @@ void __fastcall TTotalForm::FormShow(TObject *Sender)
 	pback->Width = 620;
 	this->Width = pback->Width + 10;
 	this->Height = pback->Height;
-
-	this->ReadCaliboffset();                      //20171202 개별보정을 위해 추가
 
 	OldPLCStatus = "";
 	PLCStatus = "";
@@ -99,14 +98,12 @@ void __fastcall TTotalForm::FormShow(TObject *Sender)
 	pProcess[5] = pFinish;
 	pProcess[6] = pProbeOpen;
 	pProcess[7] = pTrayOut;
-
-	btnMeasureInfoClick(this);
 }
 //---------------------------------------------------------------------------
 // 구조체 초기화 : 트레이 정보, 재측정 정보
 void __fastcall TTotalForm::InitCellDisplay()
 {
-	for(int i=0; i<MAXCHANNEL; ++i){
+	for(int i = 0; i < MAXCHANNEL; ++i){
 		panel[i]->Color = clLine;
 		panel[i]->ParentBackground = false;
 		if(MeasureInfoForm->stage == this->Tag){
@@ -125,7 +122,7 @@ void __fastcall TTotalForm::InitTrayStruct()
 	this->WriteRemeasureInfo();
 	tray.trayid = "start";
 
-	for(int i=0; i<MAXCHANNEL; ++i){
+	for(int i = 0; i < MAXCHANNEL; ++i){
 		tray.cell[i] = 1;	//CELL INFO
 //		tray.cell_serial[i] = 1;
 	}
@@ -172,9 +169,7 @@ void __fastcall TTotalForm::PLCInitialization()
 	{
 		Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_IR_VALUE + i, 0);
 		Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Ocv_Data, PC_D_IROCV_OCV_VALUE + i, 0);
-
 	}
-
 
 	WriteIRMINMAX();
 
@@ -211,7 +206,6 @@ void __fastcall TTotalForm::ClientConnect(TObject *Sender,
 	send.tx_mode = 0;  	// 초기화
 	send.time_out = 0;
 	send.re_send = 0;
-
 
 	if(stage.arl == nLocal){
 		this->CmdManualMod(true);
@@ -530,9 +524,6 @@ void __fastcall TTotalForm::btnTrayOutClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
-
-
 // 메인화면 패널 만들기
 // 1,2 라인 / 3,4 라인 다름.
 void __fastcall TTotalForm::MakePanel(AnsiString type)
@@ -540,13 +531,13 @@ void __fastcall TTotalForm::MakePanel(AnsiString type)
 	int nx, ny, nw, nh;
     nh = (pBase->Height-25)/LINECOUNT;
     nw = (pBase->Width-25)/LINECOUNT;
-
+    int ch;
 	if(type == "3") //* 왼쪽 위가 1번, 오른쪽 방향으로 1 -> 24
 	{
 		nx = 1;
 		ny = 1;
 
-		for(int index=0; index<MAXCHANNEL;){
+		for(int index = 0; index < MAXCHANNEL;){
 			panel[index] = new TPanel(this);
 			panel[index]->Parent = pBase;
 			panel[index]->Left =  nx;
@@ -562,9 +553,13 @@ void __fastcall TTotalForm::MakePanel(AnsiString type)
 			panel[index]->Tag = index;
 	//		panel[index]->Caption = index;
 
-			panel[index]->Hint = IntToStr(index+1) + " (" + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1) + ")";
-			panel[index]->ShowHint = true;
+			//panel[index]->Hint = IntToStr(index+1) + " (" + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1) + ")";
+            //* 채널 위치 -> 릴레이가 12줄이므로 위치를 계산해야 함
+            ch = chReverseMap[index + 1];
+            if(ch >= 289) ch  = ch - 288;
+            panel[index]->Hint = IntToStr(index + 1) + " : " + IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
 
+			panel[index]->ShowHint = true;
 			panel[index]->OnMouseEnter =  ChInfoMouseEnter;
 			panel[index]->OnMouseLeave =  ChInfoMouseLeave;
 
@@ -585,7 +580,7 @@ void __fastcall TTotalForm::MakePanel(AnsiString type)
 		nx = pBase->Width - nw - 1;
 		ny = 1;
 
-		for(int index=0; index<MAXCHANNEL;){
+		for(int index = 0; index < MAXCHANNEL;){
 			panel[index] = new TPanel(this);
 			panel[index]->Parent = pBase;
 			panel[index]->Left =  nx;
@@ -601,9 +596,12 @@ void __fastcall TTotalForm::MakePanel(AnsiString type)
 			panel[index]->Tag = index;
 	//		panel[index]->Caption = index;
 
-			panel[index]->Hint = IntToStr(index+1) + " (" + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1) + ")";
-			panel[index]->ShowHint = true;
+			//panel[index]->Hint = IntToStr(index+1) + " (" + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1) + ")";
+            ch = chReverseMap[index + 1];
+            if(ch >= 289) ch  = ch - 288;
+            panel[index]->Hint = "POS : " + IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
 
+			panel[index]->ShowHint = true;
 			panel[index]->OnMouseEnter =  ChInfoMouseEnter;
 			panel[index]->OnMouseLeave =  ChInfoMouseLeave;
 
@@ -624,7 +622,7 @@ void __fastcall TTotalForm::MakePanel(AnsiString type)
 		nx = 1;
 		ny = pBase->Height - nh - 1;
 
-		for(int index=0; index<MAXCHANNEL;){
+		for(int index = 0; index < MAXCHANNEL;){
 			panel[index] = new TPanel(this);
 			panel[index]->Parent = pBase;
 			panel[index]->Left =  nx;
@@ -641,9 +639,12 @@ void __fastcall TTotalForm::MakePanel(AnsiString type)
 			panel[index]->Tag = index;
 	//		panel[index]->Caption = index;
 
-			panel[index]->Hint = IntToStr(index+1) + " (" + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1) + ")";
-			panel[index]->ShowHint = true;
+			//panel[index]->Hint = IntToStr(index+1) + " (" + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1) + ")";
+            ch = chReverseMap[index + 1];
+            if(ch >= 289) ch  = ch - 288;
+            panel[index]->Hint = "POS : " + IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
 
+			panel[index]->ShowHint = true;
 			panel[index]->OnMouseEnter =  ChInfoMouseEnter;
 			panel[index]->OnMouseLeave =  ChInfoMouseLeave;
 
@@ -664,7 +665,7 @@ void __fastcall TTotalForm::MakePanel(AnsiString type)
 		nx = pBase->Width - nw - 1;
 		ny = pBase->Height - nh - 1;
 
-		for(int index=0; index<MAXCHANNEL;){
+		for(int index = 0; index < MAXCHANNEL;){
 			panel[index] = new TPanel(this);
 			panel[index]->Parent = pBase;
 			panel[index]->Left =  nx;
@@ -681,9 +682,12 @@ void __fastcall TTotalForm::MakePanel(AnsiString type)
 			panel[index]->Tag = index;
 	//		panel[index]->Caption = index;
 
-			panel[index]->Hint = IntToStr(index+1) + " (" + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1) + ")";
-			panel[index]->ShowHint = true;
+			//panel[index]->Hint = IntToStr(index+1) + " (" + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1) + ")";
+            ch = chReverseMap[index + 1];
+            if(ch >= 289) ch  = ch - 288;
+            panel[index]->Hint = "POS : " + IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
 
+			panel[index]->ShowHint = true;
 			panel[index]->OnMouseEnter =  ChInfoMouseEnter;
 			panel[index]->OnMouseLeave =  ChInfoMouseLeave;
 
@@ -1353,6 +1357,7 @@ void __fastcall TTotalForm::ChInfoMouseEnter(TObject *Sender)
 	pnl = (TPanel*)Sender;
 
 	pPos->Caption = pnl->Hint;
+
 	pIrValue->Caption = FormatFloat("0.00",tray.after_value[pnl->Tag]);
 	pOcvValue->Caption = FormatFloat("0.0",tray.ocv_value[pnl->Tag]);
 }
@@ -1715,18 +1720,24 @@ void __fastcall TTotalForm::plc_Barcode()
 //---------------------------------------------------------------------------
 void __fastcall TTotalForm::btnMeasureInfoClick(TObject *Sender)
 {
+    InitMeasureForm();
+
 	MeasureInfoForm->Left = 640;
 	MeasureInfoForm->Top = 85;
-	for(int i=0; i<MAXCHANNEL; ++i){
+
+    int ch;
+	for(int i = 0; i < MAXCHANNEL; ++i){
         MeasureInfoForm->pir[i]->Caption = "-";
         MeasureInfoForm->pir[i]->ParentBackground = false;
         MeasureInfoForm->pocv[i]->Caption = "-";
         MeasureInfoForm->pocv[i]->Color = pnormal2->Color;
+
+        //* 채널 위치 -> 릴레이가 12줄이므로 위치를 계산해야 함
+        ch = chReverseMap[i + 1];
+        if(ch >= 289) ch  = ch - 288;
+        MeasureInfoForm->pir[i]->Hint = "POS : " + IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
+        MeasureInfoForm->pocv[i]->Hint = "POS : " + IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
 	}	// 모두 초기화
-
-	InitMeasureForm();
-//	MeasureInfoForm->GroupBox5->Visible = true;
-
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------

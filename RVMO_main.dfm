@@ -8,7 +8,7 @@ object BaseForm: TBaseForm
   VertScrollBar.Range = 300
   VertScrollBar.Visible = False
   BorderIcons = [biSystemMenu, biMinimize]
-  Caption = 'IR/OCV (Ver.250617 003)'
+  Caption = 'IR/OCV (Ver.250617 004)'
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -472,7 +472,7 @@ object BaseForm: TBaseForm
     Top = 13
     Width = 21
     Height = 40
-    Caption = '2'
+    Caption = '3'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWhite
     Font.Height = -33

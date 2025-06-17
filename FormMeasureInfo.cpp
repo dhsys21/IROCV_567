@@ -53,12 +53,12 @@ void __fastcall TMeasureInfoForm::FormCreate(TObject *Sender)
 {
 	IrChart->Series[0]->Clear();
 	OcvChart->Series[0]->Clear();
-	for(int i=0; i<MAXCHANNEL; ++i){
+	for(int i = 0; i < MAXCHANNEL; ++i){
 		IrChart->Series[0]->AddXY(i+1, 0);
 		OcvChart->Series[0]->AddXY(i+1, 0);
 	}
 
-	MakeUIPanel(BaseForm->lblLineNo->Caption);
+    MakeUIPanel(BaseForm->lblLineNo->Caption);
 	MakePanel(BaseForm->lblLineNo->Caption);
 }
 //---------------------------------------------------------------------------
@@ -306,8 +306,10 @@ void __fastcall TMeasureInfoForm::SetOption(TPanel *pnl, int nx, int ny, int nw,
 	pnl->BevelKind = bkNone;
 	pnl->BevelOuter = bvNone;
 	pnl->Tag = index;
-//	pnl->Hint = "Ã¤³Î : " + IntToStr(index+1) + "(" + IntToStr((index%16)+1) + "-" + IntToStr((index+16)/16)+ ")";
-	pnl->Hint = "CH : " + IntToStr(index+1) + "(" + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1) + ")";
+	//pnl->Hint = "CH : " + IntToStr(index+1) + "(" + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1) + ")";
+    pnl->OnMouseEnter = ChInfoMouseEnter;
+    pnl->OnMouseLeave = ChInfoMouseLeave;
+
 	pnl->ShowHint = true;
 	pnl->Caption = index+1;
 }
@@ -393,9 +395,6 @@ void __fastcall TMeasureInfoForm::btnSaveClick(TObject *Sender)
 		FileClose(file_handle);
 		}
 		else return;
-
-
-
 }
 //---------------------------------------------------------------------------
 void __fastcall TMeasureInfoForm::btnIrClick(TObject *Sender)
@@ -422,7 +421,6 @@ void __fastcall TMeasureInfoForm::btnInitClick(TObject *Sender)
 	BaseForm->nForm[stage]->OnInit();
 }
 //---------------------------------------------------------------------------
-
 void __fastcall TMeasureInfoForm::btnAutoClick(TObject *Sender)
 {
 	BaseForm->nForm[stage]->InitTrayStruct();
@@ -430,7 +428,6 @@ void __fastcall TMeasureInfoForm::btnAutoClick(TObject *Sender)
 	BaseForm->nForm[stage]->CmdAutoTest();
 }
 //---------------------------------------------------------------------------
-
 void __fastcall TMeasureInfoForm::btnStopClick(TObject *Sender)
 {
 	BaseForm->nForm[stage]->CmdForceStop();
@@ -447,7 +444,6 @@ void __fastcall TMeasureInfoForm::btnProbeClick(TObject *Sender)
     probetimer->Enabled = true;
 }
 //---------------------------------------------------------------------------
-
 void __fastcall TMeasureInfoForm::PanelDblClickk(TObject *Sender)
 {
 	TPanel *pnl;
@@ -462,12 +458,13 @@ void __fastcall TMeasureInfoForm::ChInfoMouseEnter(TObject *Sender)
 	int index;
 	index = pnl->Tag;
 	pch->Caption = index + 1;
-//	ppos->Caption = IntToStr((index%16)+1) + "-" + IntToStr((index+16)/16);
-	ppos->Caption = IntToStr((index+LINECOUNT)/LINECOUNT) + "-" + IntToStr((index%LINECOUNT)+1);
+
+	//ppos->Caption = IntToStr((index+LINECOUNT)/LINECOUNT) + "-" + IntToStr((index%LINECOUNT)+1);
+    int ch = BaseForm->nForm[stage]->chReverseMap[index + 1];
+    if(ch >= 289) ch  = ch - 288;
+    ppos->Caption = IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
 }
 //---------------------------------------------------------------------------
-
-
 void __fastcall TMeasureInfoForm::ChInfoMouseLeave(TObject *Sender)
 {
 	pch->Caption = "";
