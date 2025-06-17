@@ -33,7 +33,7 @@ object Form_Language: TForm_Language
       'CHANNEL='#52292#45328
       'IR=IR'
       'OCV=OCV'
-      'REMEAINFO='#51116#52769#51221#51221#48372
+      'REMEAINFO='#48520#47049#51221#48372
       'INIT='#52488#44592#54868
       'OK='#54869#51064
       'msgTooManyNG=NG '#49472#51060' '#45320#47924' '#47566#49845#45768#45796'. '#54869#51064#54644#51452#49464#50836)
@@ -80,7 +80,7 @@ object Form_Language: TForm_Language
       'CHANNEL=CHANNEL'
       'IR=IR'
       'OCV=OCV'
-      'REMEAINFO=REMEA. INFO.'
+      'REMEAINFO=NG INFO.'
       'INIT=INIT.'
       'OK=OK'
       'msgTooManyNG=Too many NG cells. Please check it.')

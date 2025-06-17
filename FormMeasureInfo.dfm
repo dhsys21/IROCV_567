@@ -771,7 +771,7 @@ object MeasureInfoForm: TMeasureInfoForm
     end
   end
   object GroupBox5: TGroupBox
-    Left = 1046
+    Left = 1048
     Top = 8
     Width = 197
     Height = 159
@@ -787,14 +787,14 @@ object MeasureInfoForm: TMeasureInfoForm
     object Panel1: TPanel
       Left = 5
       Top = 24
-      Width = 100
+      Width = 64
       Height = 30
       BevelOuter = bvNone
       Caption = 'CHANNEL'
       Color = 12353126
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWhite
-      Font.Height = -17
+      Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentBackground = False
@@ -802,9 +802,9 @@ object MeasureInfoForm: TMeasureInfoForm
       TabOrder = 0
     end
     object pch: TPanel
-      Left = 108
-      Top = 24
-      Width = 85
+      Left = 71
+      Top = 23
+      Width = 120
       Height = 30
       BevelOuter = bvNone
       Color = 8552834
@@ -820,14 +820,14 @@ object MeasureInfoForm: TMeasureInfoForm
     object Panel36: TPanel
       Left = 5
       Top = 55
-      Width = 100
+      Width = 64
       Height = 30
       BevelOuter = bvNone
       Caption = 'POS'
       Color = 12353126
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWhite
-      Font.Height = -17
+      Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentBackground = False
@@ -835,9 +835,9 @@ object MeasureInfoForm: TMeasureInfoForm
       TabOrder = 2
     end
     object ppos: TPanel
-      Left = 108
-      Top = 55
-      Width = 85
+      Left = 71
+      Top = 54
+      Width = 120
       Height = 30
       BevelOuter = bvNone
       Color = 8552834

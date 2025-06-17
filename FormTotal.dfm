@@ -999,9 +999,9 @@ object TotalForm: TTotalForm
       end
     end
     object btnRemeasureInfo: TAdvSmoothButton
-      Left = 463
+      Left = 484
       Top = 161
-      Width = 140
+      Width = 110
       Height = 59
       Appearance.Font.Charset = DEFAULT_CHARSET
       Appearance.Font.Color = clWindowText
@@ -1027,7 +1027,7 @@ object TotalForm: TTotalForm
       Status.Appearance.Font.Name = 'Tahoma'
       Status.Appearance.Font.Style = []
       BevelColor = clMedGray
-      Caption = 'Remea. Info.'
+      Caption = 'NG Info.'
       Color = clWhite
       ParentFont = False
       TabOrder = 9

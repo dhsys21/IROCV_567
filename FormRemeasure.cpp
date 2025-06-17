@@ -70,7 +70,7 @@ void __fastcall TRemeasureForm::MakePanel(AnsiString type)
 	int nx, ny, nw, nh;
     nw = pnl_nw;
     nh = pnl_nh / 2;
-
+    int ch;
 	if(type == "3")
 	{
 		nx = nw + 4;
@@ -92,6 +92,14 @@ void __fastcall TRemeasureForm::MakePanel(AnsiString type)
 			SetOption(pre[index], nx, ny+nh, nw, nh, index);
 			pre[index]->Color = pcolor1->Color;
 			pre[index]->ParentBackground = false;
+
+            //* 채널 위치 표시
+//            pch[index]->Hint = "POS : " + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1);
+//            pch[index]->OnMouseEnter = ChInfoMouseEnter;
+//			pch[index]->OnMouseLeave = ChInfoMouseLeave;
+//            pre[index]->Hint = "POS : " + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1);
+//            pre[index]->OnMouseEnter = ChInfoMouseEnter;
+//			pre[index]->OnMouseLeave = ChInfoMouseLeave;
 
 			index += 1;
 			nx += (nw + 1);
@@ -126,6 +134,14 @@ void __fastcall TRemeasureForm::MakePanel(AnsiString type)
 			SetOption(pre[index], nx, ny+nh, nw, nh, index);
 			pre[index]->Color = pcolor1->Color;
 			pre[index]->ParentBackground = false;
+
+            //* 채널 위치 표시
+//            pch[index]->Hint = "POS : " + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1);
+//            pch[index]->OnMouseEnter = ChInfoMouseEnter;
+//			pch[index]->OnMouseLeave = ChInfoMouseLeave;
+//            pre[index]->Hint = "POS : " + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1);
+//            pre[index]->OnMouseEnter = ChInfoMouseEnter;
+//			pre[index]->OnMouseLeave = ChInfoMouseLeave;
 
 			index += 1;
 			nx -= (nw + 1);
@@ -163,6 +179,14 @@ void __fastcall TRemeasureForm::MakePanel(AnsiString type)
 			pre[index]->Color = pcolor1->Color;
 			pre[index]->ParentBackground = false;
 
+            //* 채널 위치 표시
+//            pch[index]->Hint = "POS : " + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1);
+//            pch[index]->OnMouseEnter = ChInfoMouseEnter;
+//			pch[index]->OnMouseLeave = ChInfoMouseLeave;
+//            pre[index]->Hint = "POS : " + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1);
+//            pre[index]->OnMouseEnter = ChInfoMouseEnter;
+//			pre[index]->OnMouseLeave = ChInfoMouseLeave;
+
 			index += 1;
 			nx = nx + (nw + 1);
 			if(index % 2 == 0) nx += 1;
@@ -198,6 +222,16 @@ void __fastcall TRemeasureForm::MakePanel(AnsiString type)
 			SetOption(pre[index], nx, ny+nh+1, nw, nh, index);
 			pre[index]->Color = pcolor1->Color;
 			pre[index]->ParentBackground = false;
+
+            //* 채널 위치 표시
+//            ch = BaseForm->nForm[stage]->chReverseMap[index + 1];
+//            if(ch >= 289) ch  = ch - 288;
+//            pch[index]->Hint = "POS : " + IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
+//            pch[index]->OnMouseEnter = ChInfoMouseEnter;
+//			pch[index]->OnMouseLeave = ChInfoMouseLeave;
+//            pre[index]->Hint = "POS : " + IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
+//            pre[index]->OnMouseEnter = ChInfoMouseEnter;
+//			pre[index]->OnMouseLeave = ChInfoMouseLeave;
 
 			index += 1;
 			nx = nx - (nw + 1);
@@ -328,7 +362,15 @@ void __fastcall TRemeasureForm::SetOption(TPanel *pnl, int nx, int ny, int nw, i
 	pnl->BevelKind = bkNone;
 	pnl->BevelOuter = bvNone;
 	pnl->Tag = index; // index + 16
-	pnl->Hint = "POS : " + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1);
+	//pnl->Hint = "POS : " + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1);
+    int ch = BaseForm->nForm[stage]->chReverseMap[index + 1];
+    if(ch >= 289) ch  = ch - 288;
+    pch[index]->Hint = "POS : " + IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
+    pch[index]->OnMouseEnter = ChInfoMouseEnter;
+    pch[index]->OnMouseLeave = ChInfoMouseLeave;
+    pre[index]->Hint = "POS : " + IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
+    pre[index]->OnMouseEnter = ChInfoMouseEnter;
+    pre[index]->OnMouseLeave = ChInfoMouseLeave;
 
 	pnl->ShowHint = true;
 	pnl->OnDblClick = chInitdblClick;
@@ -394,4 +436,25 @@ void __fastcall TRemeasureForm::AccInitBtnClick(TObject *Sender)
 
 }
 //---------------------------------------------------------------------------
+void __fastcall TRemeasureForm::ChInfoMouseEnter(TObject *Sender)
+{
+	TPanel *pnl;
+	pnl = (TPanel*)Sender;
+	int index;
+	index = pnl->Tag;
+	pnlCh->Caption = index + 1;
 
+    int ch = BaseForm->nForm[stage]->chReverseMap[index + 1];
+    if(ch >= 289) ch  = ch - 288;
+	//pnlPos->Caption = IntToStr((index+LINECOUNT)/LINECOUNT) + "-" + IntToStr((index%LINECOUNT)+1);
+    pnlPos->Caption = IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TRemeasureForm::ChInfoMouseLeave(TObject *Sender)
+{
+	pnlCh->Caption = "";
+	pnlPos->Caption = "";
+}
+//---------------------------------------------------------------------------

@@ -77,11 +77,17 @@ __published:	// IDE-managed Components
 	TLabel *Label2;
 	TLabel *Label4;
 	TLabel *Label5;
+	TPanel *Panel20;
+	TPanel *pnlCh;
+	TPanel *Panel36;
+	TPanel *pnlPos;
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall FormHide(TObject *Sender);
 	void __fastcall chInitdblClick(TObject *Sender);
 	void __fastcall AccInitBtnClick(TObject *Sender);
+    void __fastcall ChInfoMouseEnter(TObject *Sender);
+	void __fastcall ChInfoMouseLeave(TObject *Sender);
 private:	// User declarations
 	void __fastcall MakePanel(AnsiString type);
 	void __fastcall MakeUIPanel(AnsiString type);
@@ -93,7 +99,6 @@ private:	// User declarations
 	int mode;
     int pnl_nw;
     int pnl_nh;
-
 public:		// User declarations
 	int *acc_remeasure;
 	AnsiString *acc_init;
