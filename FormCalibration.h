@@ -59,6 +59,8 @@ __published:	// IDE-managed Components
 	TAdvSmoothButton *btnOffset;
 	TStringGrid *StringGrid1;
 	TAdvSmoothButton *AdvSmoothButton1;
+	TPanel *ppos;
+	TPanel *Panel36;
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall btnStopClick(TObject *Sender);

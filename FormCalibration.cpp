@@ -118,6 +118,10 @@ void __fastcall TCaliForm::SetValues(int ch, int pos)
     ManStandardEdit->Text = StringGrid1->Cells[pos + 1][ch];
     ManMeasureEdit->Text = StringGrid1->Cells[pos + 2][ch];
     ManOffsetEdit->Text = StringGrid1->Cells[pos + 3][ch];
+
+    int channel = BaseForm->nForm[stage]->chReverseMap[pos == 0 ? ch : ch + 288];
+    if(channel >= 289) channel = channel - 288;
+    ppos->Caption = IntToStr((channel - 1)/LINECOUNT + 1) + "-" + IntToStr((channel - 1)%LINECOUNT + 1);
 }
 //---------------------------------------------------------------------------
 int __fastcall TCaliForm::SetCh(int channel)

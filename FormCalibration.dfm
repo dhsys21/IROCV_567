@@ -779,7 +779,7 @@ object CaliForm: TCaliForm
   end
   object GroupBox6: TGroupBox
     Left = 1319
-    Top = 457
+    Top = 495
     Width = 228
     Height = 123
     Caption = 'ALL_OFFSET'
@@ -962,6 +962,39 @@ object CaliForm: TCaliForm
     Version = '2.1.1.5'
     OnClick = AdvSmoothButton1Click
     TMSStyle = 8
+  end
+  object ppos: TPanel
+    Left = 1403
+    Top = 412
+    Width = 133
+    Height = 30
+    BevelOuter = bvNone
+    Color = 8552834
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWhite
+    Font.Height = -17
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentBackground = False
+    ParentFont = False
+    TabOrder = 12
+  end
+  object Panel36: TPanel
+    Left = 1326
+    Top = 412
+    Width = 75
+    Height = 30
+    BevelOuter = bvNone
+    Caption = 'POS'
+    Color = 12353126
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWhite
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentBackground = False
+    ParentFont = False
+    TabOrder = 13
   end
   object SaveDialog: TSaveDialog
     DefaultExt = '*.csv'
