@@ -531,7 +531,7 @@ void __fastcall TTotalForm::MakePanel(AnsiString type)
 	int nx, ny, nw, nh;
     nh = (pBase->Height-25)/LINECOUNT;
     nw = (pBase->Width-25)/LINECOUNT;
-    int ch;
+
 	if(type == "3") //* 왼쪽 위가 1번, 오른쪽 방향으로 1 -> 24
 	{
 		nx = 1;
@@ -552,13 +552,7 @@ void __fastcall TTotalForm::MakePanel(AnsiString type)
 			panel[index]->BevelOuter = bvNone;
 			panel[index]->Tag = index;
 	//		panel[index]->Caption = index;
-
-			//panel[index]->Hint = IntToStr(index+1) + " (" + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1) + ")";
-            //* 채널 위치 -> 릴레이가 12줄이므로 위치를 계산해야 함
-            ch = chReverseMap[index + 1];
-            if(ch >= 289) ch  = ch - 288;
-            panel[index]->Hint = IntToStr(index + 1) + " : " + IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
-
+	//		panel[index]->Hint = IntToStr(index+1) + " (" + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1) + ")";
 			panel[index]->ShowHint = true;
 			panel[index]->OnMouseEnter =  ChInfoMouseEnter;
 			panel[index]->OnMouseLeave =  ChInfoMouseLeave;
@@ -595,12 +589,7 @@ void __fastcall TTotalForm::MakePanel(AnsiString type)
 			panel[index]->BevelOuter = bvNone;
 			panel[index]->Tag = index;
 	//		panel[index]->Caption = index;
-
-			//panel[index]->Hint = IntToStr(index+1) + " (" + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1) + ")";
-            ch = chReverseMap[index + 1];
-            if(ch >= 289) ch  = ch - 288;
-            panel[index]->Hint = "POS : " + IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
-
+	//		panel[index]->Hint = IntToStr(index+1) + " (" + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1) + ")";
 			panel[index]->ShowHint = true;
 			panel[index]->OnMouseEnter =  ChInfoMouseEnter;
 			panel[index]->OnMouseLeave =  ChInfoMouseLeave;
@@ -638,12 +627,7 @@ void __fastcall TTotalForm::MakePanel(AnsiString type)
 			panel[index]->BevelOuter = bvNone;
 			panel[index]->Tag = index;
 	//		panel[index]->Caption = index;
-
-			//panel[index]->Hint = IntToStr(index+1) + " (" + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1) + ")";
-            ch = chReverseMap[index + 1];
-            if(ch >= 289) ch  = ch - 288;
-            panel[index]->Hint = "POS : " + IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
-
+	//		panel[index]->Hint = IntToStr(index+1) + " (" + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1) + ")";
 			panel[index]->ShowHint = true;
 			panel[index]->OnMouseEnter =  ChInfoMouseEnter;
 			panel[index]->OnMouseLeave =  ChInfoMouseLeave;
@@ -681,12 +665,7 @@ void __fastcall TTotalForm::MakePanel(AnsiString type)
 			panel[index]->BevelOuter = bvNone;
 			panel[index]->Tag = index;
 	//		panel[index]->Caption = index;
-
-			//panel[index]->Hint = IntToStr(index+1) + " (" + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1) + ")";
-            ch = chReverseMap[index + 1];
-            if(ch >= 289) ch  = ch - 288;
-            panel[index]->Hint = "POS : " + IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
-
+	//		panel[index]->Hint = IntToStr(index+1) + " (" + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1) + ")";
 			panel[index]->ShowHint = true;
 			panel[index]->OnMouseEnter =  ChInfoMouseEnter;
 			panel[index]->OnMouseLeave =  ChInfoMouseLeave;
@@ -703,6 +682,16 @@ void __fastcall TTotalForm::MakePanel(AnsiString type)
 			}
 		}
 	}
+
+    //* 채널 위치 -> 릴레이가 12줄이므로 위치를 계산해야 함
+    int ch;
+    for(int index = 0; index < MAXCHANNEL; index++)
+    {
+        ch = chReverseMap[index + 1];
+        if(ch >= 289) ch  = ch - 288;
+        if(panel[index] != NULL)
+            panel[index]->Hint = IntToStr(index + 1) + " : " + IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
+    }
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
