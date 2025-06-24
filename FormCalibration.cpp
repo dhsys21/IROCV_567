@@ -206,7 +206,8 @@ void __fastcall TCaliForm::btnStopClick(TObject *Sender)
 void __fastcall TCaliForm::btnAuto1Click(TObject *Sender)
 {
     int ch, pos;
-	BaseForm->nForm[stage]->InitTrayStruct();
+	BaseForm->nForm[stage]->InitTrayStruct(1);
+    BaseForm->nForm[stage]->InitTrayStruct(2);
 	for(int i = 1; i <= MAXCHANNEL; i++)
 	{
         ch = SetCh(i);

@@ -153,7 +153,7 @@ void __fastcall TTotalForm::InitRemea(int traypos)
 void __fastcall TTotalForm::InitCellDisplay(int traypos)
 {
     int channel;
-	for(int i = 0; i < MAXCHANNEL; ++i){
+	for(int i = 0; i < CHANNELCOUNT; ++i){
         channel = GetChMap(this->Tag, traypos, i) - 1;
 		panel[channel]->Color = clLine;
 		panel[channel]->ParentBackground = false;
@@ -162,6 +162,7 @@ void __fastcall TTotalForm::InitCellDisplay(int traypos)
 			MeasureInfoForm->DisplayOcvValue(channel, clLine, "");
 		}
 	}
+    Panel_State->Caption = "InitCellDisplay : " + IntToStr(traypos);
 }
 //---------------------------------------------------------------------------
 void __fastcall TTotalForm::InitTrayStruct(int traypos)
@@ -494,13 +495,21 @@ void __fastcall TTotalForm::localTestClick(TObject *Sender)
 //---------------------------------------------------------------------------
 void  __fastcall TTotalForm::OnInit()
 {
-	for(int i=0; i<MAXCHANNEL; ++i){
-		panel[i]->Color = clLine;
-		tray.ocv_value[i] = 0;
-		tray.after_value[i] = 0;
-		tray.orginal_value[i] = 0;
-		MeasureInfoForm->DisplayIrValue(i, clLine, "-");
-		MeasureInfoForm->DisplayOcvValue(i, clLine, "-");
+	OnInit(1);
+    OnInit(2);
+}
+//---------------------------------------------------------------------------
+void  __fastcall TTotalForm::OnInit(int traypos)
+{
+    int channel;
+	for(int i = 0; i < MAXCHANNEL; ++i){
+        channel = GetChMap(this->Tag, traypos, i) - 1;
+		panel[channel]->Color = clLine;
+		tray.ocv_value[channel] = 0;
+		tray.after_value[channel] = 0;
+		tray.orginal_value[channel] = 0;
+		MeasureInfoForm->DisplayIrValue(channel, clLine, "-");
+		MeasureInfoForm->DisplayOcvValue(channel, clLine, "-");
 	}
 }
 //---------------------------------------------------------------------------
@@ -2023,30 +2032,30 @@ void __fastcall TTotalForm::AutoInspection_Wait()
 		case 4: //* 해당 트레이 위치에서 셀이 없을 때 처리
             if(nTrayPos == 1){
                 tray.pos1_complete = true;
-                SetPcValue(PC_D_PRE_COMPLETE1, 1);
-                SetPcValue(PC_D_PRE_TRAY_POS_MOVE, 1);
+                SetPcValue(PC_D_IROCV_COMPLETE1, 1);
+                SetPcValue(PC_D_IROCV_TRAY_POS_MOVE, 1);
                 DisplayProcess(sBarcode, "AutoInspection_Wait", "[STEP 4] TRAY POS 1 CELL = 0, COMPLETE = 1, TRAY_POS_MOVE = 1 ... ");
 
                 nStep = 5;
             } else if(nTrayPos == 2){
                 tray.pos2_complete = true;
-                SetPcValue(PC_D_PRE_COMPLETE2, 1);
+                SetPcValue(PC_D_IROCV_COMPLETE2, 1);
                 DisplayProcess(sBarcode, "AutoInspection_Wait", "[STEP 4] TRAY POS 2 CELL = 0, COMPLETE =1 ... ");
 
                 nStep = 6;
             }
         	break;
         case 5: //* 트레이 위치 1 : COMPLETE1, TRAY_POS_MOVE 신호 확인
-            if(GetPcValue(PC_D_PRE_COMPLETE1) == 1 && GetPcValue(PC_D_PRE_TRAY_POS_MOVE) == 1)
+            if(GetPcValue(PC_D_IROCV_COMPLETE1) == 1 && GetPcValue(PC_D_IROCV_TRAY_POS_MOVE) == 1)
                 nStep = 7;
             else{
-                SetPcValue(PC_D_PRE_COMPLETE1, 1);
-                SetPcValue(PC_D_PRE_TRAY_POS_MOVE, 1);
+                SetPcValue(PC_D_IROCV_COMPLETE1, 1);
+                SetPcValue(PC_D_IROCV_TRAY_POS_MOVE, 1);
             }
         	break;
         case 6: //* 트레이 위치 2 : COMPLETE2 신호 확인
-            if(GetPcValue(PC_D_PRE_COMPLETE2) == 1) nStep = 7;
-            else SetPcValue(PC_D_PRE_COMPLETE2, 1);
+            if(GetPcValue(PC_D_IROCV_COMPLETE2) == 1) nStep = 7;
+            else SetPcValue(PC_D_IROCV_COMPLETE2, 1);
             break;
         case 7:
             //* 트레이 위치가 1이고 셀이 없으면 트레이 위치이동 pos1_complete = 1, tray_pos_move = 1
@@ -2062,7 +2071,7 @@ void __fastcall TTotalForm::AutoInspection_Wait()
             else{
                 //* 트레이가 2번째 위치로 옮겨 졌으면 probe close 부터 다시 시작
                 if(nTrayPos == 2){
-                    SetPcValue(PC_D_PRE_TRAY_POS_MOVE, 0);
+                    SetPcValue(PC_D_IROCV_TRAY_POS_MOVE, 0);
                     DisplayProcess(sFinish, "AutoInspection_Wait", "[STEP 7] TRAY POS1 : PreCharger Finish ... ");
                 	nSection = STEP_WAIT;
                 	nStep = 3;
@@ -2185,7 +2194,7 @@ void __fastcall TTotalForm::AutoInspection_Measure()
             else{
                 //* 트레이가 2번째 위치로 옮겨 졌으면 probe close 부터 다시 시작
                 if(nTrayPos == 2){
-                    SetPcValue(PC_D_PRE_TRAY_POS_MOVE, 0);
+                    SetPcValue(PC_D_IROCV_TRAY_POS_MOVE, 0);
                     DisplayProcess(sFinish, "AutoInspection_Measure", "[STEP 6] MOVE TRAY to POSITION 2 ... ");
                 	nSection = STEP_WAIT;
                 	nStep = 3;

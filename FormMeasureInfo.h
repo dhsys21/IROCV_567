@@ -115,6 +115,8 @@ __published:	// IDE-managed Components
 	TPanel *Panel17;
 	TPanel *Panel18;
 	TLabel *MSA_COUNT_CHECK;
+	TAdvSmoothButton *btnInit1;
+	TAdvSmoothButton *btnInit2;
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall btnSaveClick(TObject *Sender);
 	void __fastcall btnIrClick(TObject *Sender);
@@ -137,6 +139,8 @@ __published:	// IDE-managed Components
 	void __fastcall advBtnRemeasureClick(TObject *Sender);
 	void __fastcall advRemeasureTrayOutClick(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
+	void __fastcall btnInit1Click(TObject *Sender);
+	void __fastcall btnInit2Click(TObject *Sender);
 
 private:	// User declarations
 	void __fastcall MakePanel(AnsiString type);

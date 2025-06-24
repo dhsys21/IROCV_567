@@ -478,6 +478,7 @@ public:		// User declarations
 	void __fastcall ResultReportToPLC();
 
 	void __fastcall OnInit();	// 초기화 요청
+    void __fastcall OnInit(int traypos);
 	void __fastcall CmdVersion();
 	void __fastcall CmdEmergencyStop();
 	void __fastcall CmdReset();

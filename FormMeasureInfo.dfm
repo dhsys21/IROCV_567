@@ -772,9 +772,9 @@ object MeasureInfoForm: TMeasureInfoForm
   end
   object GroupBox5: TGroupBox
     Left = 1048
-    Top = 8
+    Top = 0
     Width = 197
-    Height = 159
+    Height = 192
     Caption = 'CHANNEL Info.'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -851,10 +851,10 @@ object MeasureInfoForm: TMeasureInfoForm
       TabOrder = 3
     end
     object btnInit: TAdvSmoothButton
-      Left = 108
-      Top = 90
+      Left = 103
+      Top = 121
       Width = 85
-      Height = 25
+      Height = 30
       Appearance.Font.Charset = DEFAULT_CHARSET
       Appearance.Font.Color = clWindowText
       Appearance.Font.Height = -11
@@ -897,10 +897,10 @@ object MeasureInfoForm: TMeasureInfoForm
       OnClick = chkGraphClick
     end
     object btnSave: TAdvSmoothButton
-      Left = 12
-      Top = 122
-      Width = 75
-      Height = 25
+      Left = 10
+      Top = 121
+      Width = 85
+      Height = 30
       Appearance.Font.Charset = DEFAULT_CHARSET
       Appearance.Font.Color = clWindowText
       Appearance.Font.Height = -11
@@ -933,18 +933,92 @@ object MeasureInfoForm: TMeasureInfoForm
       OnClick = btnSaveClick
       TMSStyle = 8
     end
+    object btnInit1: TAdvSmoothButton
+      Left = 10
+      Top = 154
+      Width = 85
+      Height = 30
+      Appearance.Font.Charset = DEFAULT_CHARSET
+      Appearance.Font.Color = clWindowText
+      Appearance.Font.Height = -11
+      Appearance.Font.Name = 'Tahoma'
+      Appearance.Font.Style = [fsBold]
+      Appearance.Spacing = 0
+      Appearance.Rounding = 3
+      Appearance.WordWrapping = False
+      Status.Caption = '0'
+      Status.Appearance.Fill.Color = clRed
+      Status.Appearance.Fill.ColorMirror = clNone
+      Status.Appearance.Fill.ColorMirrorTo = clNone
+      Status.Appearance.Fill.GradientType = gtSolid
+      Status.Appearance.Fill.GradientMirrorType = gtSolid
+      Status.Appearance.Fill.BorderColor = clGray
+      Status.Appearance.Fill.Rounding = 0
+      Status.Appearance.Fill.ShadowOffset = 0
+      Status.Appearance.Fill.Glow = gmNone
+      Status.Appearance.Font.Charset = DEFAULT_CHARSET
+      Status.Appearance.Font.Color = clWhite
+      Status.Appearance.Font.Height = -11
+      Status.Appearance.Font.Name = 'Tahoma'
+      Status.Appearance.Font.Style = []
+      BevelColor = clMedGray
+      Caption = 'INIT 1'
+      Color = clWhite
+      ParentFont = False
+      TabOrder = 7
+      Version = '2.1.1.5'
+      OnClick = btnInit1Click
+      TMSStyle = 8
+    end
+    object btnInit2: TAdvSmoothButton
+      Left = 103
+      Top = 154
+      Width = 85
+      Height = 30
+      Appearance.Font.Charset = DEFAULT_CHARSET
+      Appearance.Font.Color = clWindowText
+      Appearance.Font.Height = -11
+      Appearance.Font.Name = 'Tahoma'
+      Appearance.Font.Style = [fsBold]
+      Appearance.Spacing = 0
+      Appearance.Rounding = 3
+      Appearance.WordWrapping = False
+      Status.Caption = '0'
+      Status.Appearance.Fill.Color = clRed
+      Status.Appearance.Fill.ColorMirror = clNone
+      Status.Appearance.Fill.ColorMirrorTo = clNone
+      Status.Appearance.Fill.GradientType = gtSolid
+      Status.Appearance.Fill.GradientMirrorType = gtSolid
+      Status.Appearance.Fill.BorderColor = clGray
+      Status.Appearance.Fill.Rounding = 0
+      Status.Appearance.Fill.ShadowOffset = 0
+      Status.Appearance.Fill.Glow = gmNone
+      Status.Appearance.Font.Charset = DEFAULT_CHARSET
+      Status.Appearance.Font.Color = clWhite
+      Status.Appearance.Font.Height = -11
+      Status.Appearance.Font.Name = 'Tahoma'
+      Status.Appearance.Font.Style = []
+      BevelColor = clMedGray
+      Caption = 'INIT 2'
+      Color = clWhite
+      ParentFont = False
+      TabOrder = 8
+      Version = '2.1.1.5'
+      OnClick = btnInit2Click
+      TMSStyle = 8
+    end
   end
   object pLocal: TPanel
     Left = 1048
-    Top = 173
+    Top = 203
     Width = 197
-    Height = 509
+    Height = 494
     BevelOuter = bvNone
     Color = clWhite
     TabOrder = 2
     object GroupBox4: TGroupBox
       Left = 5
-      Top = 107
+      Top = 104
       Width = 180
       Height = 96
       Caption = '1 Channel'
@@ -1048,8 +1122,8 @@ object MeasureInfoForm: TMeasureInfoForm
       end
     end
     object GroupBox3: TGroupBox
-      Left = 0
-      Top = 9
+      Left = 5
+      Top = 1
       Width = 185
       Height = 92
       Caption = 'IR/OCV'
@@ -1137,7 +1211,7 @@ object MeasureInfoForm: TMeasureInfoForm
     end
     object GroupBox1: TGroupBox
       Left = 5
-      Top = 377
+      Top = 363
       Width = 180
       Height = 128
       Caption = 'PROBE SETTING'
@@ -1225,7 +1299,7 @@ object MeasureInfoForm: TMeasureInfoForm
     end
     object GroupBox2: TGroupBox
       Left = 5
-      Top = 217
+      Top = 209
       Width = 180
       Height = 146
       Caption = 'MSA'

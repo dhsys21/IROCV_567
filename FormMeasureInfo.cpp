@@ -796,14 +796,26 @@ void __fastcall TMeasureInfoForm::probetimerTimer(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TMeasureInfoForm::advBtnRemeasureClick(TObject *Sender)
 {
-	BaseForm->nForm[0]->RemeasureAllBtnClick(this);
+	BaseForm->nForm[stage]->RemeasureAllBtnClick(this);
 	this->Close();
 }
 //---------------------------------------------------------------------------
 void __fastcall TMeasureInfoForm::advRemeasureTrayOutClick(TObject *Sender)
 {
 	// tray_out on
-	BaseForm->nForm[0]->CmdTrayOut();
+	BaseForm->nForm[stage]->CmdTrayOut();
 	this->Close();
 }
 //---------------------------------------------------------------------------
+void __fastcall TMeasureInfoForm::btnInit1Click(TObject *Sender)
+{
+    BaseForm->nForm[stage]->OnInit(1);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMeasureInfoForm::btnInit2Click(TObject *Sender)
+{
+    BaseForm->nForm[stage]->OnInit(2);
+}
+//---------------------------------------------------------------------------
+

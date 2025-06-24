@@ -164,7 +164,8 @@ void __fastcall TTotalForm::CmdManualMod(bool Set)
 {
 	if(Set){
 		SendData("MAN", "O");
-		this->InitTrayStruct();
+		this->InitTrayStruct(1);
+        this->InitTrayStruct(2);
 
 		DisplayStatus(nManual);
         nSection = STEP_WAIT;
@@ -174,7 +175,8 @@ void __fastcall TTotalForm::CmdManualMod(bool Set)
 	}
 	else{
 		SendData("MAN", "X");
-		this->InitTrayStruct();
+		this->InitTrayStruct(1);
+        this->InitTrayStruct(2);
 
         DisplayStatus(nVacancy);
         nSection = STEP_WAIT;

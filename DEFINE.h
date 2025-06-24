@@ -164,8 +164,6 @@ typedef struct{
 	float Cali_value[MAXCHANNEL];
 	int measure_result[MAXCHANNEL];
 	bool first;
-	AnsiString precharger[MAXCHANNEL];
-	AnsiString precharge_volt[MAXCHANNEL];
 	AnsiString arrive;
     AnsiString finish;
 	AnsiString cell_model;
