@@ -8,7 +8,7 @@ object BaseForm: TBaseForm
   VertScrollBar.Range = 300
   VertScrollBar.Visible = False
   BorderIcons = [biSystemMenu, biMinimize]
-  Caption = 'IR/OCV (Ver.250617 006)'
+  Caption = 'IR/OCV (Ver.250624 001)'
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -6023,9 +6023,9 @@ object BaseForm: TBaseForm
     end
   end
   object pstepInfo1: TPanel
-    Left = 205
-    Top = 20
-    Width = 180
+    Left = 1405
+    Top = 30
+    Width = 145
     Height = 30
     BevelKind = bkFlat
     BevelOuter = bvNone
@@ -6041,14 +6041,14 @@ object BaseForm: TBaseForm
     OnClick = pstepInfo1Click
     object rbKorean: TRadioButton
       Tag = 1
-      Left = 7
+      Left = 5
       Top = 4
-      Width = 74
+      Width = 40
       Height = 20
-      Caption = #54620#44397#50612
+      Caption = 'Ko'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -16
+      Font.Height = -15
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
@@ -6056,19 +6056,34 @@ object BaseForm: TBaseForm
       OnClick = rbKoreanClick
     end
     object rbEnglish: TRadioButton
-      Left = 87
+      Left = 50
       Top = 4
-      Width = 90
+      Width = 40
       Height = 20
-      Caption = 'English'
-      Checked = True
+      Caption = 'En'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -16
+      Font.Height = -15
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
       TabOrder = 1
+      OnClick = rbKoreanClick
+    end
+    object rbChinese: TRadioButton
+      Left = 95
+      Top = 4
+      Width = 40
+      Height = 20
+      Caption = 'Cn'
+      Checked = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -15
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 2
       TabStop = True
       OnClick = rbKoreanClick
     end

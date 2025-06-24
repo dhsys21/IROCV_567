@@ -35,25 +35,25 @@ void __fastcall TTotalForm::WriteSystemInfo()
 	//* 최대/최소 대신에 평균값 +/- 범위로 변경
 	//* 2022 11 07
 	ini->WriteBool("MAIN", "USE_AVERAGE", chkUseAverage->Checked);
-	//ini->WriteFloat("MAIN", "IR_AVG", BaseForm->StringToDouble(editIrAvg->Text, 12));
-	ini->WriteFloat("MAIN", "IR_RANGE", BaseForm->StringToDouble(editIrRange->Text, 5));
-	//ini->WriteFloat("MAIN", "OCV_AVG", BaseForm->StringToDouble(editOcvAvg->Text, 1500));
-	ini->WriteFloat("MAIN", "OCV_RANGE", BaseForm->StringToDouble(editOcvRange->Text, 1000));
+	//ini->WriteFloat("MAIN", "IR_AVG", StringToDouble(editIrAvg->Text, 12));
+	ini->WriteFloat("MAIN", "IR_RANGE", StringToDouble(editIrRange->Text, 5));
+	//ini->WriteFloat("MAIN", "OCV_AVG", StringToDouble(editOcvAvg->Text, 1500));
+	ini->WriteFloat("MAIN", "OCV_RANGE", StringToDouble(editOcvRange->Text, 1000));
 
-	ini->WriteFloat("MAIN", "IR1", BaseForm->StringToDouble(irEdit1->Text, 12));
-	ini->WriteFloat("MAIN", "IR2", BaseForm->StringToDouble(irEdit2->Text, 20));
-	ini->WriteFloat("MAIN", "OCV1", BaseForm->StringToDouble(ocvEdit1->Text, 1000));
-	ini->WriteFloat("MAIN", "OCV2", BaseForm->StringToDouble(ocvEdit2->Text, 3000));
+	ini->WriteFloat("MAIN", "IR1", StringToDouble(irEdit1->Text, 12));
+	ini->WriteFloat("MAIN", "IR2", StringToDouble(irEdit2->Text, 20));
+	ini->WriteFloat("MAIN", "OCV1", StringToDouble(ocvEdit1->Text, 1000));
+	ini->WriteFloat("MAIN", "OCV2", StringToDouble(ocvEdit2->Text, 3000));
 
-	//config.ir_avg = BaseForm->StringToDouble(editIrAvg->Text, 14);
-	config.ir_range = BaseForm->StringToDouble(editIrRange->Text, 5);
-	//config.ocv_avg = BaseForm->StringToDouble(editOcvAvg->Text, 1500);
-	config.ocv_range = BaseForm->StringToDouble(editOcvRange->Text, 1000);
+	//config.ir_avg = StringToDouble(editIrAvg->Text, 14);
+	config.ir_range = StringToDouble(editIrRange->Text, 5);
+	//config.ocv_avg = StringToDouble(editOcvAvg->Text, 1500);
+	config.ocv_range = StringToDouble(editOcvRange->Text, 1000);
 
-	config.ir_min = BaseForm->StringToDouble(irEdit1->Text, 12);
-	config.ir_max = BaseForm->StringToDouble(irEdit2->Text, 5);
-	config.ocv_min = BaseForm->StringToDouble(ocvEdit1->Text, 1000);
-	config.ocv_max = BaseForm->StringToDouble(ocvEdit2->Text, 3000);
+	config.ir_min = StringToDouble(irEdit1->Text, 12);
+	config.ir_max = StringToDouble(irEdit2->Text, 5);
+	config.ocv_min = StringToDouble(ocvEdit1->Text, 1000);
+	config.ocv_max = StringToDouble(ocvEdit2->Text, 3000);
 
 	delete ini;
 }

@@ -23,6 +23,7 @@
 //	Channel °¹¼ö
 //---------------------------------------------------------------------------
 const int MAXCHANNEL = 576;
+const int CHANNELCOUNT = 288;
 const int LINECOUNT	= 24;
 
 const int SEND = 1;
@@ -146,12 +147,16 @@ const int OPBOX = 101;
 typedef struct{
     bool ams;
     bool amf;
+    bool trayin;
 	AnsiString trayid;
 	int cell[MAXCHANNEL];
 	AnsiString cell_type;
 	AnsiString lotid;
 	AnsiString cell_serial[MAXCHANNEL];
-	int cell_count;
+	int cell_count1;
+    int cell_count2;
+    bool pos1_complete;
+    bool pos2_complete;
 	int rem_mode;
 	float orginal_value[MAXCHANNEL];
 	float after_value[MAXCHANNEL];

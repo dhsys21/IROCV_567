@@ -61,9 +61,9 @@ void __fastcall TCaliForm::WriteCaliboffset()
         ch = SetCh(index);
         pos = SetPos(index);
 
-        ini->WriteFloat("STANDARD", IntToStr(index), BaseForm->StringToDouble(StringGrid1->Cells[pos + 1][ch], 0));
-        ini->WriteFloat("MEASURE", IntToStr(index), BaseForm->StringToDouble(StringGrid1->Cells[pos + 2][ch], 0));
-        ini->WriteFloat("IR OFFSET", IntToStr(index), BaseForm->StringToDouble(StringGrid1->Cells[pos + 3][ch], 0));
+        ini->WriteFloat("STANDARD", IntToStr(index), StringToDouble(StringGrid1->Cells[pos + 1][ch], 0));
+        ini->WriteFloat("MEASURE", IntToStr(index), StringToDouble(StringGrid1->Cells[pos + 2][ch], 0));
+        ini->WriteFloat("IR OFFSET", IntToStr(index), StringToDouble(StringGrid1->Cells[pos + 3][ch], 0));
 	}
 
 	delete ini;
@@ -171,7 +171,7 @@ void __fastcall TCaliForm::InsertValue(int channel, double value, TColor clr)
     //* Measure
     StringGrid1->Cells[pos + 2][ch] = FormatFloat("0.00", value);
     //* Offset
-    StringGrid1->Cells[pos + 3][ch] = BaseForm->StringToDouble(StringGrid1->Cells[pos + 1][ch], 0) - value;
+    StringGrid1->Cells[pos + 3][ch] = StringToDouble(StringGrid1->Cells[pos + 1][ch], 0) - value;
     //* Color
     clrMeasureArr[channel - 1] = clr;
 
@@ -296,7 +296,7 @@ void __fastcall TCaliForm::btnApplyClick(TObject *Sender)
 	{
         ch = SetCh(i);
         pos = SetPos(i);
-		BaseForm->nForm[stage]->stage.ir_offset[i] =  BaseForm->StringToDouble(StringGrid1->Cells[pos + 3][ch], 0);
+		BaseForm->nForm[stage]->stage.ir_offset[i] =  StringToDouble(StringGrid1->Cells[pos + 3][ch], 0);
 	}
 	WriteCaliboffset();
 }
@@ -399,7 +399,7 @@ void __fastcall TCaliForm::StringGrid1DrawCell(TObject *Sender, int ACol, int AR
     }
     else if(ACol == 2 || ACol == 6)
     {
-        double value = BaseForm->StringToDouble(text, 0.0);
+        double value = StringToDouble(text, 0.0);
         if(value == 0) clrMeasureArr[channel - 1] = BaseForm->nForm[stage]->cl_ce->Color;
 
         canvas->Brush->Color = clrMeasureArr[channel - 1];
@@ -410,7 +410,7 @@ void __fastcall TCaliForm::StringGrid1DrawCell(TObject *Sender, int ACol, int AR
     }
     else{
         double value = 0.0;
-        value = BaseForm->StringToDouble(text, 0);
+        value = StringToDouble(text, 0);
     }
 
     //* ¼¿ ±×¸®±â
@@ -439,8 +439,8 @@ void __fastcall TCaliForm::AdvSmoothButton1Click(TObject *Sender)
     TColor clr;
     double value;
     int channel;
-    channel = BaseForm->StringToInt(chEdit->Text, 1);
-    value = BaseForm->StringToDouble(ManMeasureEdit->Text, 0.0);
+    channel = StringToInt(chEdit->Text, 1);
+    value = StringToDouble(ManMeasureEdit->Text, 0.0);
 
     if (value == 0) {
         clr = BaseForm->nForm[stage]->cl_ce->Color;;

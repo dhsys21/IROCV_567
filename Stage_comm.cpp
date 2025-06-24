@@ -74,7 +74,7 @@ void __fastcall TTotalForm::CmdTrayOut()
 	Sleep(2000);
 	//Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_TRAY_OUT, 1);
 	WritePLCLog("CmdTrayOut", "IROCV TRAY OUT = 1");
-    if(tray.cell_count > NgCount){
+    if(tray.cell_count1 > NgCount){
 		if(BaseForm->chkTest->Checked == false)
 			Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data,  PC_D_IROCV_TRAY_OUT, 1);
         DisplayStatus(nFinish);
@@ -265,7 +265,7 @@ void __fastcall TTotalForm::ProcessIr(AnsiString param)
 	AnsiString msg_ir, msg_ocv, result;
 	int channel = 0;
     //* 트레이 위치에 따라 맵핑 다르게 적용
-    int boardchannel = BaseForm->StringToInt(param.SubString(1, 3), 0);
+    int boardchannel = StringToInt(param.SubString(1, 3), 0);
     if(boardchannel < 1) return;
 	channel = chMap[boardchannel + nTrayPos * 288];
 
@@ -391,7 +391,7 @@ void __fastcall TTotalForm::ProcessOcv(AnsiString param)
 	int channel = 0;
 	//channel = chMap[param.SubString(1, 3).ToInt()];
     //* 트레이 위치에 따라 맵핑 다르게 적용
-    int boardchannel = BaseForm->StringToInt(param.SubString(1, 3), 0);
+    int boardchannel = StringToInt(param.SubString(1, 3), 0);
     if(boardchannel < 1) return;
 	channel = chMap[boardchannel + nTrayPos * 288];
 
@@ -629,7 +629,12 @@ void __fastcall TTotalForm::SetPcValue(int pc_address, int value)
 {
     Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data,  pc_address, value);
 }
-
+//---------------------------------------------------------------------------
+double __fastcall TTotalForm::GetPcValue(int pc_address)
+{
+    double value = Mod_PLC->GetDouble(Mod_PLC->pc_Interface_Data, pc_address);
+    return value;
+}
 //---------------------------------------------------------------------------
 // PLC 명령어
 //---------------------------------------------------------------------------

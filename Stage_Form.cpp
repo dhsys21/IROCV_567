@@ -29,15 +29,16 @@ void __fastcall TTotalForm::ProcessError(AnsiString err1, AnsiString err2,AnsiSt
 //---------------------------------------------------------------------------
 
 // 전지 정보 표시
-void __fastcall TTotalForm::DisplayTrayInfo()
+void __fastcall TTotalForm::DisplayTrayInfo(int traypos)
 {
-	
-	for(int i=0; i<MAXCHANNEL; ++i){
-		if(tray.cell[i] == 1){
-			SetProcessColor(i, Line);
+	int channel;
+	for(int i = 0; i < CHANNELCOUNT; ++i){
+        channel = GetChMap(this->Tag, traypos, i) - 1;
+		if(tray.cell[channel] == 1){
+			SetProcessColor(channel, Line);
 		}
 		else{
-			SetProcessColor(i, NoCell);
+			SetProcessColor(channel, NoCell);
 		}
 	}
 }

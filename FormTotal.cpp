@@ -6,6 +6,7 @@
 
 #include "FormTotal.h"
 #include "RVMO_main.h"
+#include "Util.h"
 #include "FormMeasureInfo.h"
 #include "Modplc.h"
 #include "FormCalibration.h"
@@ -101,30 +102,79 @@ void __fastcall TTotalForm::FormShow(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 // 구조체 초기화 : 트레이 정보, 재측정 정보
-void __fastcall TTotalForm::InitCellDisplay()
+void __fastcall TTotalForm::InitData(int traypos)
 {
+    InitTrayInfo(traypos);
+    InitRemea(traypos);
+}
+//---------------------------------------------------------------------------
+void __fastcall TTotalForm::InitTrayInfo(int traypos)
+{
+    int channel;
+    tray.ams = false;
+    tray.amf = false;
+    tray.trayin = false;
+    tray.trayid = "";
+    tray.cell_model = "";
+    tray.lot_number = "";
+    if(traypos == 1){ //* position 1이 첫번째 측정위치일때
+        tray.cell_count1 = 0;
+        tray.cell_count2 = 0;
+
+        tray.pos1_complete = false;
+        tray.pos2_complete = false;
+    } else if(traypos == 2){
+        tray.cell_count2 = 0;
+
+        tray.pos2_complete = false;
+    }
+
+    for(int i = 0; i < CHANNELCOUNT; i++){
+        channel = GetChMap(this->Tag, traypos, i) - 1;
+        tray.cell[channel] = 0;
+        tray.measure_result[channel] = 0;
+        tray.cell_serial[channel] = "";
+    }
+}
+//---------------------------------------------------------------------------
+void __fastcall TTotalForm::InitRemea(int traypos)
+{
+    retest.re_excute = false;
+    retest.cnt_error = 0;
+    retest.cnt_remeasure = 0;
+    retest.re_index = 0;
+    int channel;
+    for(int i = 0; i < CHANNELCOUNT; i++){
+        channel = GetChMap(this->Tag, traypos, i) - 1;
+        retest.cell[channel] = 0;
+    }
+}
+//---------------------------------------------------------------------------
+void __fastcall TTotalForm::InitCellDisplay(int traypos)
+{
+    int channel;
 	for(int i = 0; i < MAXCHANNEL; ++i){
-		panel[i]->Color = clLine;
-		panel[i]->ParentBackground = false;
+        channel = GetChMap(this->Tag, traypos, i) - 1;
+		panel[channel]->Color = clLine;
+		panel[channel]->ParentBackground = false;
 		if(MeasureInfoForm->stage == this->Tag){
-			MeasureInfoForm->DisplayIrValue(i, clLine, "");
-			MeasureInfoForm->DisplayOcvValue(i, clLine, "");
+			MeasureInfoForm->DisplayIrValue(channel, clLine, "");
+			MeasureInfoForm->DisplayOcvValue(channel, clLine, "");
 		}
 	}
 }
 //---------------------------------------------------------------------------
-void __fastcall TTotalForm::InitTrayStruct()
+void __fastcall TTotalForm::InitTrayStruct(int traypos)
 {
-	InitCellDisplay();
-	memset(&tray, 0, sizeof(tray));
-	memset(&retest, 0, sizeof(retest));
+    this->WriteRemeasureInfo();
+	InitCellDisplay(traypos);
 
-	this->WriteRemeasureInfo();
+    InitData(traypos);
 	tray.trayid = "start";
-
-	for(int i = 0; i < MAXCHANNEL; ++i){
-		tray.cell[i] = 1;	//CELL INFO
-//		tray.cell_serial[i] = 1;
+    int channel;
+	for(int i = 0; i < CHANNELCOUNT; ++i){
+        channel = GetChMap(this->Tag, traypos, i) - 1;
+		tray.cell[channel] = 1; // CELL INFO
 	}
 	tray.first = true;
 
@@ -134,10 +184,15 @@ void __fastcall TTotalForm::InitTrayStruct()
 //---------------------------------------------------------------------------
 void __fastcall TTotalForm::Initialization()
 {
+	Initialization(1);
+    Initialization(2);
+}
+//---------------------------------------------------------------------------
+void __fastcall TTotalForm::Initialization(int traypos)
+{
 	PLCInitialization();
-	this->InitTrayStruct();
+	this->InitTrayStruct(traypos);
 
-//    if(m_Auto)
 	nSection = STEP_WAIT;
 
 	nStep = 0;
@@ -161,7 +216,7 @@ void __fastcall TTotalForm::PLCInitialization()
 	{
 		for(int j = 0; j < LINECOUNT; j++)
 		{
-			Mod_PLC->SetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + i, j, false);
+			Mod_PLC->SetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + (i * 2), j, false);
 		}
 	}
 
@@ -458,14 +513,30 @@ void __fastcall TTotalForm::RemeasureAllBtnClick(TObject *Sender)
 //	retest.re_excute = false;
 	//CmdBattHeight();
 	//CmdAutoTest();     // 2017 09 11 herald
-	InitTrayStruct();
+	InitTrayStruct(nTrayPos);
 
 //	LoadTrayInfo(tray.trayid);
-	tray.cell_count = 0;
-	for(int i = 0; i < MAXCHANNEL; i++){
-		tray.cell[i] = Mod_PLC->GetDouble(Mod_PLC->plc_Interface_Data, PLC_D_IROCV_TRAY_CELL_DATA + i);
-		tray.cell_count += tray.cell[i];
-	}
+
+	//* Cell 정보 가져오기. 1 => 셀있음, 0 => 셀없음
+    //* Cell 정보는 tray pos 상관없이 전체를 가져옴.
+    for(int i = 0; i < LINECOUNT; i++)
+    {
+        for(int j = 0; j < LINECOUNT; j++)
+        {
+            tray.cell[i * LINECOUNT + j] = GetPlcData(PLC_D_IROCV_TRAY_CELL_DATA + (i * 2), j);
+        }
+    }
+
+    int channel;
+    tray.cell_count1 = 0;
+    tray.cell_count2 = 0;
+    for(int i = 0; i < CHANNELCOUNT; i++){
+        channel = GetChMap(this->Tag, nTrayPos, i);
+        if(nTrayPos == 1)
+            tray.cell_count1 += tray.cell[channel];
+        else if(nTrayPos == 2)
+            tray.cell_count2 += tray.cell[channel];
+    }
 
 	Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_PROB_CLOSE, 1);
 	WritePLCLog("RemeasureAllBtnClick", "IROCV PROBE CLOSE = 1");
@@ -1422,8 +1493,8 @@ void __fastcall TTotalForm::SetRemeasureList()
 		editIrAvg->Text = FormatFloat("0.00", tray.ir_avg);
 		editOcvAvg->Text = FormatFloat("0.00", tray.ocv_avg);
 
-		config.ir_range = BaseForm->StringToDouble(editIrRange->Text, 3);
-		config.ocv_range = BaseForm->StringToDouble(editOcvRange->Text, 1000);
+		config.ir_range = StringToDouble(editIrRange->Text, 3);
+		config.ocv_range = StringToDouble(editOcvRange->Text, 1000);
 
 		if(tray.ir_avgAll_count < 2) tray.ir_sigma = 1;
 		else tray.ir_sigma = GetSigma(tray.after_value, tray.ir_flag, tray.ir_avg, tray.ir_avgAll_count - 1);
@@ -1733,20 +1804,18 @@ void __fastcall TTotalForm::btnMeasureInfoClick(TObject *Sender)
 void __fastcall TTotalForm::Timer_AutoInspectionTimer(TObject *Sender)
 {
     if(ErrorCheck()) return;
-	if(stage.arl == nAuto && Mod_PLC->GetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_STAGE_AUTO_READY) == 0){
-		Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_STAGE_AUTO_READY, 1);
+	if(stage.arl == nAuto && GetPcValue(PC_D_IROCV_STAGE_AUTO_READY) == 0){
+        SetPcValue(PC_D_IROCV_STAGE_AUTO_READY, 1);
 		IROCVStage = "IROCV STAGE AUTO READY = 1";
 		WritePLCLog("IROCV STAGE AUTO/MANUAL", IROCVStage);
 	}
-	else if(stage.arl == nLocal && Mod_PLC->GetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_STAGE_AUTO_READY) == 1){
-		Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_STAGE_AUTO_READY, 0);
-
+	else if(stage.arl == nLocal && GetPcValue(PC_D_IROCV_STAGE_AUTO_READY) == 1){
+        SetPcValue(PC_D_IROCV_STAGE_AUTO_READY, 0);
 		IROCVStage = "IROCV STAGE AUTO READY = 0";
 		WritePLCLog("IROCV STAGE AUTO/MANUAL", IROCVStage);
 	}
 
 	/* 2021-08-23 comment for test
-
 	{
 		Panel_State->Color = clRed;
 		Panel_State->Font->Color = clWhite;
@@ -1758,6 +1827,8 @@ void __fastcall TTotalForm::Timer_AutoInspectionTimer(TObject *Sender)
 		Panel_State->Font->Color = clBlack;
 	}
 	*/
+
+    nTrayPos = GetTrayPos();
 	switch(nSection)
 	{
 		case STEP_WAIT:
@@ -1814,8 +1885,6 @@ bool __fastcall TTotalForm::ErrorCheck()
 		return true;
 	}
 
-
-
 	if(bLocal == true && Mod_PLC->GetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_STAGE_AUTO_READY) == 0)
 	{
 		Panel_State->Caption = "IR/OCV is not in AutoMode";
@@ -1828,40 +1897,40 @@ bool __fastcall TTotalForm::ErrorCheck()
 void __fastcall TTotalForm::AutoInspection_Wait()
 {
 	AnsiString trayid;
+    int channel;
 	switch(nStep)
 	{
-		case 0: // Tray In Check // Remeasure Count
+		case 0: //* Tray In 확인
 			if(Mod_PLC->GetDouble(Mod_PLC->plc_Interface_Data, PLC_D_IROCV_TRAY_IN))
 			{
 				if(chkBypass->Checked == true)
 				{
-					DisplayProcess(sTrayIn, "AutoInspection_Wait", "Bypass ...");
+					DisplayProcess(sTrayIn, "AutoInspection_Wait", "[STEP 0] Bypass ...");
 					CmdTrayOut();                                  // badinformation, writeresultfile, trayout
 					nStep = 0;
 					nSection = STEP_FINISH;
 				}
 				else
 				{
-					DisplayProcess(sTrayIn, "AutoInspection_Wait", "IR/OCV Tray In ...");
+					DisplayProcess(sTrayIn, "AutoInspection_Wait", "[STEP 0] IR/OCV Tray In ...");
 
 					PLCInitialization();
-					InitTrayStruct();
+					InitTrayStruct(nTrayPos);
 					DisplayStatus(nREADY);
 					nStep = 1;
 				}
 			}
 			else {
 				DisplayStatus(nVacancy);
-				DisplayProcess(sReady, "AutoInspection_Wait", " IR/OCV is ready... ");
+				DisplayProcess(sReady, "AutoInspection_Wait", "[STEP 0] IR/OCV is ready... ");
 			}
 			break;
-		case 1: //BarCode
+		case 1: //* BCR 리딩
 			m_dateTime = Now();
-			trayid = Mod_PLC->GetString(Mod_PLC->plc_Interface_Data, PLC_D_IROCV_TRAY_ID, 10);
-
+            trayid = GetPlcValue(PLC_D_IROCV_TRAY_ID, 10);
 			if(trayid != "")
 			{
-				DisplayProcess(sBarcode, "AutoInspection_Wait", "BCR OK ...(" + trayid + ")");
+				DisplayProcess(sBarcode, "AutoInspection_Wait", "[STEP 1] BCR OK ...(" + trayid + ")");
 
                 pTrayid->Caption = trayid;
 				editTrayId->Text = trayid;
@@ -1870,50 +1939,88 @@ void __fastcall TTotalForm::AutoInspection_Wait()
 			}
 			else
 			{
-				DisplayProcess(sBarcode, "AutoInspection_Wait", " BCR Error ... ", true);
+				DisplayProcess(sBarcode, "AutoInspection_Wait", "[STEP 1] BCR Error ... ", true);
 				return;
 			}
 			break;
-		case 2:
+		case 2: //* CELL 정보 (유무) 확인. cell 갯수 계산
             DisplayStatus(nREADY);
-			tray.cell_count = 0;
-			for(int i = 0; i < LINECOUNT; i++)
-            {
-                for(int j = 0; j < LINECOUNT; j++)
-                {
-					tray.cell[i * LINECOUNT + j] = Mod_PLC->GetData(Mod_PLC->plc_Interface_Data, PLC_D_IROCV_TRAY_CELL_DATA + (i * 2), j);
-                    tray.cell_count += tray.cell[i * LINECOUNT + j];
-                }
-            }
-
-			nStep = 3;
-			break;
-		case 3:    // CELL DATA
-			start_delay_time++;
-//			Panel_State->Caption = IntToStr(start_delay_time);
-			if(tray.cell_count > 0 || chkCycle->Checked)
+			//* Cell 정보 가져오기. 1 => 셀있음, 0 => 셀없음
+            //* Cell 정보는 tray pos 상관없이 전체를 가져옴.
+            for(int i = 0; i < LINECOUNT; i++)
 			{
-                WriteTrayInfo();
-				DisplayTrayInfo();
-
-				if(start_delay_time > 1){
-
-					DisplayProcess(sProbeDown, "AutoInspection_Wait", " PROBE IS CLOSED ... ");
-					Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_PROB_CLOSE, 1);
-
-                    WriteCommLog("AutoInspection_Wait", "PC_INTERFACE_PROB_CLOSE ...");
-					WritePLCLog("AutoInspection_Wait", "PC_D_IROCV_PROB_CLOSE = 1");
-
-					nSection = STEP_MEASURE;
-					nStep = 0;
-					nStepCount = 0;
-					start_delay_time = 0;
+				for(int j = 0; j < LINECOUNT; j++)
+				{
+					tray.cell[i * LINECOUNT + j] = GetPlcData(PLC_D_IROCV_TRAY_CELL_DATA + (i * 2), j);
 				}
 			}
-			else
-			{
-				DisplayProcess(sBarcode, "AutoInspection_Wait", " NO CELL ... ", true);
+
+            //* Tray Info 저장
+            WriteTrayInfo();
+
+            //* Cell 갯수. tray pos 별 갯수. 갯수가 0이면 바로 종료
+            //* tray pos 1 => cell_count1, tray pos 2 => cell_count2
+            tray.cell_count1 = 0;
+            tray.cell_count2 = 0;
+            for(int i = 0; i < CHANNELCOUNT; i++){
+                channel = GetChMap(this->Tag, nTrayPos, i);
+                if(nTrayPos == 1)
+                	tray.cell_count1 += tray.cell[channel];
+                else if(nTrayPos == 2)
+                    tray.cell_count2 += tray.cell[channel];
+            }
+
+            DisplayProcess(sBarcode, "AutoInspection_Wait", "[STEP 2] Reading Cell info ... ");
+			nStep = 3;
+			break;
+		case 3:  //* Tray 정보 표시
+			start_delay_time++;
+//			Panel_State->Caption = IntToStr(start_delay_time);
+            //* tray pos 1 이고 셀 갯수가 1개 이상이면 측정. 셀 갯수가 0개면 종료
+            //* tray pos 2 이고 셀 갯수가 1개 이상이면 측정. 셀 갯수가 0개면 종료
+            if(tray.cell_count1 == 0 && tray.cell_count2 == 0){
+                DisplayProcess(sBarcode, "AutoInspection_Wait", "[STEP 3] NO CELL ... ", true);
 				return;
+            }
+            else if(nTrayPos == 1 && tray.cell_count1 == 0){
+                DisplayTrayInfo(1);
+                DisplayTrayInfo(2);
+            	//SetPcValue(PC_D_PRE_PROB_OPEN, 1); //* 현재 open 상태
+
+                DisplayProcess(sBarcode, "AutoInspection_Wait", "[STEP 3] TRAY POS 1 and CELL = 0 ... ");
+                nStep = 4;
+            }
+            else if(nTrayPos == 2 && tray.cell_count2 == 0){
+                DisplayTrayInfo(2);
+            	//SetPcValue(PC_D_PRE_PROB_OPEN, 1); //* 현재 open 상태
+
+                DisplayProcess(sBarcode, "AutoInspection_Wait", "[STEP 3] TRAY POS 2 and CELL = 0 ... ");
+                nStep = 4;
+            }
+			else if((nTrayPos == 1 && tray.cell_count1 > 0) || (nTrayPos == 2 && tray.cell_count2 > 0))
+			{
+				//* WriteTrayInfo();
+                if(nTrayPos == 1){
+                    tray.pos1_complete = false;
+
+                    DisplayTrayInfo(1);
+                    DisplayTrayInfo(2);
+
+                    DisplayProcess(sProbeDown, "AutoInspection_Wait", "[STEP 3] (Tray Pos 1) PROBE IS CLOSED ... ");
+                }else if(nTrayPos == 2){
+                    tray.pos2_complete = false;
+
+                    DisplayTrayInfo(2);
+
+                    DisplayProcess(sProbeDown, "AutoInspection_Wait", "[STEP 3] (Tray Pos 2) PROBE IS CLOSED ... ");
+                }
+
+                SetPcValue(PC_D_IROCV_PROB_CLOSE, 1);
+				WritePLCLog("AutoInspection_Wait", "[STEP 3] Tray Position : " + IntToStr(nTrayPos) + " -> PC_D_PRE_PROB_CLOSE = 1");
+
+				nSection = STEP_MEASURE;
+				nStep = 0;
+                nStepCount = 0;
 			}
 			break;
 		default:
@@ -1968,7 +2075,6 @@ void __fastcall TTotalForm::AutoInspection_Measure()
 			PLCStatus = " IR/OCV Remeasure ... ";
 			Panel_State->Caption = PLCStatus;
 
-            nTrayPos = GetTrayPos();
 			plc_probe_close = Mod_PLC->GetDouble(Mod_PLC->plc_Interface_Data, PLC_D_IROCV_PROB_CLOSE);
 			plc_tray_in = Mod_PLC->GetDouble(Mod_PLC->plc_Interface_Data, PLC_D_IROCV_TRAY_IN);
 

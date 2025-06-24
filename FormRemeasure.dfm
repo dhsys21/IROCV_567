@@ -90,7 +90,7 @@ object RemeasureForm: TRemeasureForm
     Left = 1058
     Top = 23
     Width = 180
-    Height = 243
+    Height = 220
     Caption = 'ACOUNT'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -101,7 +101,7 @@ object RemeasureForm: TRemeasureForm
     TabOrder = 0
     object Panel39: TPanel
       Left = 6
-      Top = 143
+      Top = 119
       Width = 64
       Height = 30
       BevelOuter = bvNone
@@ -120,7 +120,7 @@ object RemeasureForm: TRemeasureForm
     end
     object Panel40: TPanel
       Left = 6
-      Top = 175
+      Top = 151
       Width = 64
       Height = 30
       BevelOuter = bvNone
@@ -140,7 +140,7 @@ object RemeasureForm: TRemeasureForm
     end
     object pAccCnt: TPanel
       Left = 72
-      Top = 143
+      Top = 119
       Width = 100
       Height = 30
       BevelOuter = bvNone
@@ -158,7 +158,7 @@ object RemeasureForm: TRemeasureForm
     end
     object pAccDate: TPanel
       Left = 72
-      Top = 175
+      Top = 151
       Width = 100
       Height = 30
       BevelOuter = bvNone
@@ -177,7 +177,7 @@ object RemeasureForm: TRemeasureForm
     end
     object pcolor1: TPanel
       Left = 3
-      Top = 208
+      Top = 184
       Width = 56
       Height = 30
       BevelKind = bkFlat
@@ -198,7 +198,7 @@ object RemeasureForm: TRemeasureForm
     end
     object pcolor2: TPanel
       Left = 62
-      Top = 208
+      Top = 184
       Width = 56
       Height = 30
       BevelKind = bkFlat
@@ -218,7 +218,7 @@ object RemeasureForm: TRemeasureForm
     end
     object pcolor4: TPanel
       Left = 120
-      Top = 208
+      Top = 184
       Width = 56
       Height = 30
       BevelKind = bkFlat
@@ -239,7 +239,7 @@ object RemeasureForm: TRemeasureForm
     end
     object AccInitBtn: TAdvSmoothButton
       Left = 72
-      Top = 40
+      Top = 26
       Width = 100
       Height = 25
       Appearance.Font.Charset = DEFAULT_CHARSET
@@ -276,7 +276,7 @@ object RemeasureForm: TRemeasureForm
     end
     object Panel20: TPanel
       Left = 6
-      Top = 80
+      Top = 56
       Width = 64
       Height = 30
       BevelOuter = bvNone
@@ -293,7 +293,7 @@ object RemeasureForm: TRemeasureForm
     end
     object pnlCh: TPanel
       Left = 72
-      Top = 80
+      Top = 56
       Width = 100
       Height = 30
       BevelOuter = bvNone
@@ -309,7 +309,7 @@ object RemeasureForm: TRemeasureForm
     end
     object Panel36: TPanel
       Left = 6
-      Top = 111
+      Top = 87
       Width = 64
       Height = 30
       BevelOuter = bvNone
@@ -326,7 +326,7 @@ object RemeasureForm: TRemeasureForm
     end
     object pnlPos: TPanel
       Left = 72
-      Top = 111
+      Top = 87
       Width = 100
       Height = 30
       BevelOuter = bvNone

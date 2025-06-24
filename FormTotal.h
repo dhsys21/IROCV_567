@@ -323,6 +323,8 @@ __published:	// IDE-managed Components
 	TAdvSmoothPanel *pnlTrayOut;
 	TAdvSmoothPanel *pnlProbeOpen;
 	TAdvSmoothPanel *pnlProbeClose;
+	TAdvSmoothPanel *pnlTrayPosTitle;
+	TAdvSmoothPanel *pnlTrayPos;
 	void __fastcall ClientConnect(TObject *Sender,
 		  TCustomWinSocket *Socket);
 	void __fastcall ClientDisconnect(TObject *Sender,
@@ -452,20 +454,23 @@ private:	// User declarations
 	TColor clNo;
 	TColor clYes;
 
-	void __fastcall InitCellDisplay();
+	void __fastcall InitCellDisplay(int traypos);
 	void __fastcall ModChange();
 
     TPanel *pProcess[8];
     int NgCount;
     int nTrayPos;
 public:		// User declarations
-
 	void __fastcall InitMeasureForm();
 	void __fastcall InitMeasureFormRemeasure();
-	void __fastcall InitTrayStruct();
+	void __fastcall InitTrayStruct(int traypos);
 	void __fastcall Initialization();
+    void __fastcall Initialization(int traypos);
 	void __fastcall PLCInitialization();
 	void __fastcall DisplayStatus(int status);
+    void __fastcall InitData(int traypos);
+    void __fastcall InitTrayInfo(int traypos);
+    void __fastcall InitRemea(int traypos);
 
 	void __fastcall AutoInspection_Wait();
 	void __fastcall AutoInspection_Measure();
@@ -507,10 +512,12 @@ public:		// User declarations
     double __fastcall GetPlcValue(int plc_address);
     int __fastcall GetPlcData(int plc_address, int bit_num);
     void __fastcall SetPcValue(int pc_address, int value);
+    double __fastcall GetPcValue(int pc_address);
 
 	STAGE_INFO stage;
-	CONFIG config;					// 환경 설정
+	CONFIG config;	// 환경 설정
 	TRAY_INFO tray;
+    REMEASURE retest;
 
 	TPanel *panel[MAXCHANNEL];
 	TPanel *pdev[8];
@@ -530,23 +537,22 @@ public:		// User declarations
 	int nSection, nStep, nStepCount;
 	bool m_bAuto;
     bool mAuto;
+
 	//------------ STAGE 통신 관련 -------------------//
-
 	TExtInput  sensor;				//  센서
-	TExtOutput  sensor_out;				//  센서
+	TExtOutput  sensor_out;			//  센서
 
-	SEND_DATA send;				// 전송 데이터
+	SEND_DATA send;					// 전송 데이터
 	queue<string> q_cmd;
 	queue<string> q_param;
 	queue<int> q_txMode;
 
-	REMEASURE retest;
 	void __fastcall RemeasureExcute();
     void __fastcall RemeasureExcute2();
 	void __fastcall ReadRemeasureInfo();
 	void __fastcall WriteRemeasureInfo();
-	int senCnt;
 
+	int senCnt;
 	AnsiString OldSenCmd;
 	AnsiString OldPLCStatus, PLCStatus, OldErrorCheckStatus, ErrorCheckStatus, OldIROCVStage, IROCVStage;
 
@@ -571,7 +577,7 @@ public:		// User declarations
 	void __fastcall WriteIROCVValue();
 	void __fastcall WriteIRMINMAX();
 
-	void __fastcall DisplayTrayInfo();
+	void __fastcall DisplayTrayInfo(int traypos);
     void __fastcall ShowPLCSignal(TAdvSmoothPanel *advPanel, bool bOn);
 
 	__fastcall TTotalForm(TComponent* Owner);

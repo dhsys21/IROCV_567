@@ -13,8 +13,8 @@
 #include <Vcl.Imaging.jpeg.hpp>
 #include <Vcl.Imaging.pngimage.hpp>
 
-
 #include "DEFINE.h"
+#include "Util.h"
 #include "FormTotal.h"
 #include "FormPLCInterface.h"
 #include "FormLanguage.h"
@@ -66,6 +66,7 @@ __published:	// IDE-managed Components
 	TButton *Button5;
 	TButton *btnNgCountErr;
 	TCheckBox *chkTest;
+	TRadioButton *rbChinese;
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall ClockTimerTimer(TObject *Sender);
@@ -118,8 +119,8 @@ public:		// User declarations
 	void __fastcall ReadDefaultOffset();
 	void __fastcall WriteDefaultOffset();
 
-	int __fastcall StringToInt(UnicodeString str, int def);
-	double __fastcall StringToDouble(UnicodeString str, double def);
+	//int __fastcall StringToInt(UnicodeString str, int def);
+	//double __fastcall StringToDouble(UnicodeString str, double def);
     vector<int> __fastcall StringToVector(UnicodeString str);
 
 	TDateTime rem_date;

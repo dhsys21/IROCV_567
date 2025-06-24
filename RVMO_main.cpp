@@ -255,19 +255,19 @@ void __fastcall TBaseForm::advPLCInterfaceShowClick(TObject *Sender)
 //---------------------------------------------------------------------------
 
 
-int __fastcall TBaseForm::StringToInt(UnicodeString str, int def)
-{
-	int iVal;
-	if(TryStrToInt(str, iVal) == true) return iVal;
-	else return def;
-}
-//---------------------------------------------------------------------------
-double __fastcall TBaseForm::StringToDouble(UnicodeString str, double def)
-{
-	double dVal;
-	if(TryStrToFloat(str, dVal) == true) return dVal;
-	else return def;
-}
+//int __fastcall TBaseForm::StringToInt(UnicodeString str, int def)
+//{
+//	int iVal;
+//	if(TryStrToInt(str, iVal) == true) return iVal;
+//	else return def;
+//}
+////---------------------------------------------------------------------------
+//double __fastcall TBaseForm::StringToDouble(UnicodeString str, double def)
+//{
+//	double dVal;
+//	if(TryStrToFloat(str, dVal) == true) return dVal;
+//	else return def;
+//}
 //---------------------------------------------------------------------------
 vector<int> __fastcall TBaseForm::StringToVector(UnicodeString str)
 {

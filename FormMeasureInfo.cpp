@@ -423,7 +423,8 @@ void __fastcall TMeasureInfoForm::btnInitClick(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TMeasureInfoForm::btnAutoClick(TObject *Sender)
 {
-	BaseForm->nForm[stage]->InitTrayStruct();
+    int traypos = StringToInt(BaseForm->nForm[this->Tag]->pnlTrayPos->Caption->Text, 1);
+	BaseForm->nForm[stage]->InitTrayStruct(traypos);
 	//BaseForm->nForm[stage]->CmdDeviceInfo();
 	BaseForm->nForm[stage]->CmdAutoTest();
 }

@@ -223,8 +223,8 @@ void __fastcall TForm_PLCInterface::btnWriteNgValueClick(TObject *Sender)
 
 void __fastcall TForm_PLCInterface::btnWriteIrOcvValueClick(TObject *Sender)
 {
-	double ir_base = BaseForm->StringToDouble(editIR->Text, 1);
-	double ocv_base = BaseForm->StringToDouble(editOCV->Text, 1);
+	double ir_base = StringToDouble(editIR->Text, 1);
+	double ocv_base = StringToDouble(editOCV->Text, 1);
 
 	// ir value 1 Word
 	for(int i = 0; i < MAXCHANNEL; i++)

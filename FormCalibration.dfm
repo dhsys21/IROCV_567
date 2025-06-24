@@ -794,7 +794,7 @@ object CaliForm: TCaliForm
     object Label4: TLabel
       Left = 2
       Top = 107
-      Width = 224
+      Width = 230
       Height = 14
       Align = alBottom
       Caption = 'Sets the offset of the entire channel.'
@@ -809,7 +809,6 @@ object CaliForm: TCaliForm
       ParentShowHint = False
       ShowHint = False
       Visible = False
-      ExplicitWidth = 230
     end
     object Panel52: TPanel
       Left = 6
