@@ -200,7 +200,7 @@ void __fastcall TTotalForm::Initialization(int traypos)
     n_bMeasureStart = false;
 }
 //---------------------------------------------------------------------------
-void __fastcall TTotalForm::PLCInitialization()
+void __fastcall TTotalForm::PLCInitialization(int traypos)
 {
 	Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_TRAY_OUT, 0);
 	Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_PROB_OPEN, 0);
@@ -208,23 +208,33 @@ void __fastcall TTotalForm::PLCInitialization()
 	Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_ERROR, 0);
 
 	Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURING, 0);
-    Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_COMPLETE1, 0);
-    Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_COMPLETE2, 0);
-    Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_TRAY_POS_MOVE, 0);
+    if(traypos == 1){
+        Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_COMPLETE1, 0);
+        Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_COMPLETE2, 0);
+        Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_TRAY_POS_MOVE, 0);
+    } else if(traypos == 2){
+        Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_COMPLETE2, 0);
+        Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_TRAY_POS_MOVE, 0);
+    }
 
 	Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_NG_COUNT, 0);
-	for(int i = 0; i < LINECOUNT; i++)
+    int channel, index;
+	for(int i = 0; i < LINECOUNT / 2; i++)
 	{
 		for(int j = 0; j < LINECOUNT; j++)
 		{
-			Mod_PLC->SetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + (i * 2), j, false);
+			//Mod_PLC->SetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + (i * 2), j, false);
+            index = (trayPos - 1) * 288 + (i * 24 + j) + 1;
+            channel = chmap[index];
+            Mod_PLC->SetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + (channel / 24) * 2, channel % 24, false);
 		}
 	}
 
-	for(int i = 0; i < MAXCHANNEL; i++)
+	for(int i = 0; i < CHANNELCOUNT; i++)
 	{
-		Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_IR_VALUE + i, 0);
-		Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Ocv_Data, PC_D_IROCV_OCV_VALUE + i, 0);
+        channel = GetChMap(this->Tag, traypos, i) - 1;
+		Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_IR_VALUE + channel, 0);
+		Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Ocv_Data, PC_D_IROCV_OCV_VALUE + channel, 0);
 	}
 
 	WriteIRMINMAX();
@@ -502,7 +512,7 @@ void  __fastcall TTotalForm::OnInit()
 void  __fastcall TTotalForm::OnInit(int traypos)
 {
     int channel;
-	for(int i = 0; i < MAXCHANNEL; ++i){
+	for(int i = 0; i < CHANNELCOUNT; ++i){
         channel = GetChMap(this->Tag, traypos, i) - 1;
 		panel[channel]->Color = clLine;
 		tray.ocv_value[channel] = 0;
@@ -1030,7 +1040,7 @@ void __fastcall TTotalForm::OnReceiveStage(TMessage& Msg)
 			case RST:
 				send.tx_mode = 0;
 				ErrorMsg(RESET);
-                Initialization(); // 2017 09 04 herald
+                Initialization(nTrayPos);
 				//SendData("STA");
 				break;        // 모든 에러 해제
 			case SIZ:
