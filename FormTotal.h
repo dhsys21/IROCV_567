@@ -466,7 +466,7 @@ public:		// User declarations
 	void __fastcall InitTrayStruct(int traypos);
 	void __fastcall Initialization();
     void __fastcall Initialization(int traypos);
-	void __fastcall PLCInitialization();
+	void __fastcall PLCInitialization(int traypos);
 	void __fastcall DisplayStatus(int status);
     void __fastcall InitData(int traypos);
     void __fastcall InitTrayInfo(int traypos);

@@ -191,7 +191,7 @@ void __fastcall TTotalForm::Initialization()
 //---------------------------------------------------------------------------
 void __fastcall TTotalForm::Initialization(int traypos)
 {
-	PLCInitialization();
+	PLCInitialization(traypos);
 	this->InitTrayStruct(traypos);
 
 	nSection = STEP_WAIT;
@@ -208,6 +208,7 @@ void __fastcall TTotalForm::PLCInitialization(int traypos)
 	Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_ERROR, 0);
 
 	Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURING, 0);
+    Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_NG_COUNT, 0);
     if(traypos == 1){
         Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_COMPLETE1, 0);
         Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_COMPLETE2, 0);
@@ -217,15 +218,14 @@ void __fastcall TTotalForm::PLCInitialization(int traypos)
         Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_TRAY_POS_MOVE, 0);
     }
 
-	Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_NG_COUNT, 0);
     int channel, index;
 	for(int i = 0; i < LINECOUNT / 2; i++)
 	{
 		for(int j = 0; j < LINECOUNT; j++)
 		{
 			//Mod_PLC->SetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + (i * 2), j, false);
-            index = (trayPos - 1) * 288 + (i * 24 + j) + 1;
-            channel = chmap[index];
+            index = (traypos - 1) * 288 + (i * 24 + j) + 1;
+            channel = chMap[index];
             Mod_PLC->SetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + (channel / 24) * 2, channel % 24, false);
 		}
 	}
@@ -1933,8 +1933,7 @@ void __fastcall TTotalForm::AutoInspection_Wait()
 				{
 					DisplayProcess(sTrayIn, "AutoInspection_Wait", "[STEP 0] IR/OCV Tray In ...");
 
-					PLCInitialization();
-					InitTrayStruct(nTrayPos);
+					Initialization();
 					DisplayStatus(nREADY);
 					nStep = 1;
 				}
