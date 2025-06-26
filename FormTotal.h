@@ -458,7 +458,8 @@ private:	// User declarations
 	void __fastcall ModChange();
 
     TPanel *pProcess[8];
-    int NgCount;
+    int NgCount; //* 셀이 있는데 fail 이면
+    int ngCount; //* 셀이 있는데 fail 이거나 셀이 없는 경우
     int nTrayPos;
 public:		// User declarations
 	void __fastcall InitMeasureForm();

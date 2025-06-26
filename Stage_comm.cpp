@@ -74,7 +74,7 @@ void __fastcall TTotalForm::CmdTrayOut()
 	Sleep(2000);
 	//Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_TRAY_OUT, 1);
 	WritePLCLog("CmdTrayOut", "IROCV TRAY OUT = 1");
-    if(tray.cell_count1 > NgCount){
+    if((tray.cell_count1 + tray.cell_count2) > NgCount){
 		if(BaseForm->chkTest->Checked == false)
 			Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data,  PC_D_IROCV_TRAY_OUT, 1);
         DisplayStatus(nFinish);

@@ -187,6 +187,12 @@ void __fastcall TTotalForm::Initialization()
 {
 	Initialization(1);
     Initialization(2);
+
+    ngCount = 0;
+    NgCount = 0;
+    nSection = STEP_WAIT;
+	nStep = 0;
+    n_bMeasureStart = false;
 }
 //---------------------------------------------------------------------------
 void __fastcall TTotalForm::Initialization(int traypos)
@@ -194,10 +200,7 @@ void __fastcall TTotalForm::Initialization(int traypos)
 	PLCInitialization(traypos);
 	this->InitTrayStruct(traypos);
 
-	nSection = STEP_WAIT;
 
-	nStep = 0;
-    n_bMeasureStart = false;
 }
 //---------------------------------------------------------------------------
 void __fastcall TTotalForm::PLCInitialization(int traypos)
@@ -224,9 +227,9 @@ void __fastcall TTotalForm::PLCInitialization(int traypos)
 		for(int j = 0; j < LINECOUNT; j++)
 		{
 			//Mod_PLC->SetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + (i * 2), j, false);
-            index = (traypos - 1) * 288 + (i * 24 + j) + 1;
+            index = (traypos - 1) * CHANNELCOUNT + (i * LINECOUNT + j) + 1;
             channel = chMap[index];
-            Mod_PLC->SetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + (channel / 24) * 2, channel % 24, false);
+            Mod_PLC->SetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + (channel / LINECOUNT) * 2, channel % LINECOUNT, false);
 		}
 	}
 
@@ -1739,8 +1742,6 @@ void __fastcall TTotalForm::WriteIROCVValue()
 }
 void __fastcall TTotalForm::BadInfomation()
 {
-	int ngCount = 0;
-    NgCount = 0;
 	for(int i = 0; i < LINECOUNT; ++i){
         int irocvNg = 0;
 		for(int j = 0; j < LINECOUNT; j++)
@@ -1755,6 +1756,7 @@ void __fastcall TTotalForm::BadInfomation()
 			}
 			else if((tray.cell[(i * LINECOUNT) + j] == 1) && retest.cell[(i * LINECOUNT) + j] == '0')
 			{
+                //* ok -> false
 				//Mod_PLC->SetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + i, j, false);
 			}
 			else
