@@ -612,6 +612,10 @@ void __fastcall TTotalForm::btnTrayOutClick(TObject *Sender)
 {
 	if(MessageBox(Handle, L"Are you sure you want to eject the tray?", L"", MB_YESNO|MB_ICONQUESTION) == ID_YES){
 		for(int i = 0; i < MAXCHANNEL; i++) retest.cell[i] = '0';
+        SetPcValue(PC_D_IROCV_PROB_CLOSE, 0);
+        SetPcValue(PC_D_IROCV_PROB_OPEN, 1);
+        SetPcValue(PC_D_IROCV_COMPLETE1, 1);
+        SetPcValue(PC_D_IROCV_COMPLETE2, 1);
 		this->CmdTrayOut();
 	}
 }
@@ -1062,7 +1066,7 @@ void __fastcall TTotalForm::OnReceiveStage(TMessage& Msg)
 				tray.ams = false;
 				tray.amf = true;
 
-				ResponseAutoTestFinish();
+				ResponseAutoTestFinish(nTrayPos);
 				break;
 			case IR:        // IR 셀 검사
 				if(pb->Position < pb->Max)pb->Position += 1;
@@ -1144,7 +1148,7 @@ void __fastcall TTotalForm::CmdTestMode()
 			CmdDeviceInfo();	// 전체 재측정
 		}
 		else{
-			SetRemeasureList();	// 개별 재측정
+			SetRemeasureList(nTrayPos);	// 개별 재측정
 		}
 	}
 	else{
@@ -1182,7 +1186,7 @@ void __fastcall TTotalForm::RemeasureExcute()
 		}
 	}
 	retest.re_excute = false;
-	SetRemeasureList();
+	SetRemeasureList(nTrayPos);
 	CmdForceStop();
 	WriteCommLog("IR/OCV STOP", "RemeasureExcute()");
 }
@@ -1216,7 +1220,7 @@ void __fastcall TTotalForm::RemeasureExcute2()
 		}
 	}
 	retest.re_excute = false;
-	SetRemeasureList();
+	SetRemeasureList(nTrayPos);
 	CmdForceStop();
 	WriteCommLog("IR/OCV STOP", "RemeasureExcute()");
 }
@@ -1497,7 +1501,7 @@ void __fastcall TTotalForm::btnAutoClick(TObject *Sender)
 	VisibleBox(GrpMain);
 }
 //---------------------------------------------------------------------------
-void __fastcall TTotalForm::SetRemeasureList()
+void __fastcall TTotalForm::SetRemeasureList(int traypos)
 {
 	bool brem = false;
 	int remeasure_cnt = 0;
@@ -1530,7 +1534,9 @@ void __fastcall TTotalForm::SetRemeasureList()
 		ocvMin = tray.ocv_avg - config.ocv_range * tray.ocv_sigma;
 		ocvMax = tray.ocv_avg + config.ocv_range * tray.ocv_sigma;
 		 //* 색상도 바꿔야 함....
-		for(int index = 0;index < MAXCHANNEL;++index){
+         int index;
+		for(int i = 0;i < CHANNELCOUNT;++i){
+            index = GetChMap(this->Tag, traypos, i) - 1;
 			if(tray.cell[index] == 1){
 
 				if(tray.after_value[index] < config.ir_min || tray.after_value[index] > config.ir_max)
@@ -1607,7 +1613,7 @@ double __fastcall TTotalForm::GetSigma(float values[], bool flags[], double avg,
     return sigma;
 }
 //---------------------------------------------------------------------------
-void __fastcall TTotalForm::SetRemeasureList2()
+void __fastcall TTotalForm::SetRemeasureList2(int traypos)
 {
 	bool brem = false;
 	int remeasure_cnt = 0;
@@ -1615,7 +1621,9 @@ void __fastcall TTotalForm::SetRemeasureList2()
 	if(stage.arl == nAuto){
 		retest.cnt_error = 0;
 
-		for(int index=0;index<MAXCHANNEL;++index){
+        int index;
+		for(int i = 0; i < CHANNELCOUNT; ++i){
+            index = GetChMap(this->Tag, traypos, i) - 1;
 			if(tray.cell[index] == 1){
 				if(tray.after_value[index] < config.ir_min || tray.after_value[index] > config.ir_max){
 					retest.cell[index] = '2';
@@ -1741,6 +1749,40 @@ void __fastcall TTotalForm::WriteIROCVValue()
 
 }
 void __fastcall TTotalForm::BadInfomation()
+{
+	for(int i = 0; i < LINECOUNT; ++i){
+        int irocvNg = 0;
+		for(int j = 0; j < LINECOUNT; j++)
+		{
+			if((tray.cell[(i * LINECOUNT) + j] == 1) && retest.cell[(i * LINECOUNT) + j] != '0')
+			{
+				//Mod_PLC->SetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + i, j, true);
+                //* ng -> true
+                irocvNg |= 1 << j;
+				ngCount++;
+				NgCount++;
+			}
+			else if((tray.cell[(i * LINECOUNT) + j] == 1) && retest.cell[(i * LINECOUNT) + j] == '0')
+			{
+                //* ok -> false
+				//Mod_PLC->SetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + i, j, false);
+			}
+			else
+			{
+                //* ng -> true
+                irocvNg |= 1 << j;
+				//Mod_PLC->SetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + i, j, true);
+				ngCount++;
+			}
+		}
+        Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + (i * 2), irocvNg);
+	}
+
+	Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_NG_COUNT, ngCount);
+}
+//---------------------------------------------------------------------------
+// 트레이 위치 변경이 없을 때 버전
+void __fastcall TTotalForm::BadInfomation2()
 {
 	for(int i = 0; i < LINECOUNT; ++i){
         int irocvNg = 0;
@@ -2367,7 +2409,7 @@ void __fastcall TTotalForm::btnConnectIROCVClick(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TTotalForm::Button1Click(TObject *Sender)
 {
-	SetRemeasureList();
+	SetRemeasureList(nTrayPos);
     CmdTrayOut();
 }
 //---------------------------------------------------------------------------

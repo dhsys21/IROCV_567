@@ -233,7 +233,7 @@ int __fastcall TTotalForm::SensorState(AnsiString cmd)
 	return -3;
 }
 //---------------------------------------------------------------------------
-void __fastcall TTotalForm::ResponseAutoTestFinish()
+void __fastcall TTotalForm::ResponseAutoTestFinish(int traypos)
 {
 //*
 //    if(config.average_use == true) SetRemeasureList();
@@ -249,8 +249,8 @@ void __fastcall TTotalForm::ResponseAutoTestFinish()
 //		SendData("AMF");    //kedison
 		SendData("SEN");
 //		CmdForceStop();
-		if(config.average_use == true) SetRemeasureList();
-		else SetRemeasureList2();
+		if(config.average_use == true) SetRemeasureList(traypos);
+		else SetRemeasureList2(traypos);
 	}
 }
 //---------------------------------------------------------------------------

@@ -502,7 +502,7 @@ public:		// User declarations
 	void __fastcall plc_Barcode();
 	void __fastcall CmdStart();
 	void __fastcall CmdDeviceInfo();
-	void __fastcall ResponseAutoTestFinish();
+	void __fastcall ResponseAutoTestFinish(int traypos);
 	void __fastcall ReadchannelMapping();
 
 //---------------------------------------------------------------------------
@@ -569,13 +569,14 @@ public:		// User declarations
 
 	int remLimit;
     void __fastcall VisibleSpec(bool bUseAverage);
-	void __fastcall SetRemeasureList();
-	void __fastcall SetRemeasureList2();
+	void __fastcall SetRemeasureList(int traypos);
+	void __fastcall SetRemeasureList2(int traypos);
 	void __fastcall AddRemeasureList();
 	void __fastcall ViewRemeasureList();
     void __fastcall WriteTrayInfo();
 	void __fastcall SetTrayID(AnsiString str_id);
 	void __fastcall BadInfomation();
+    void __fastcall BadInfomation2();
 	void __fastcall WriteIROCVValue();
 	void __fastcall WriteIRMINMAX();
 
