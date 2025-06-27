@@ -16,6 +16,7 @@ __published:	// IDE-managed Components
 	TValueListEditor *VLE_KOREAN;
 	TValueListEditor *VLE_ENGLISH;
 	TStringGrid *sGridLanguage;
+	TValueListEditor *VLE_CHINESE;
 private:	// User declarations
     void __fastcall SetLanguage();
 public:		// User declarations

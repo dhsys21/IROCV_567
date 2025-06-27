@@ -6071,6 +6071,7 @@ object BaseForm: TBaseForm
       OnClick = rbKoreanClick
     end
     object rbChinese: TRadioButton
+      Tag = 2
       Left = 95
       Top = 4
       Width = 40
