@@ -621,8 +621,8 @@ object CaliForm: TCaliForm
     end
     object btnMeasure: TAdvSmoothButton
       Tag = 2
-      Left = 155
-      Top = 49
+      Left = 157
+      Top = 45
       Width = 68
       Height = 30
       Appearance.GlowPercentage = 50

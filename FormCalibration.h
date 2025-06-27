@@ -85,8 +85,6 @@ private:	// User declarations
 	void __fastcall MakePanel(AnsiString type);
     void __fastcall MakeGrid();
     void __fastcall SetValues(int ch, int pos);
-    int __fastcall SetPos(int channel);
-    int __fastcall SetCh(int channel);
     int __fastcall GetChannel(int col, int row);
     void __fastcall InitColor();
 
@@ -95,7 +93,7 @@ private:	// User declarations
 public:		// User declarations
 	__fastcall TCaliForm(TComponent* Owner);
     void __fastcall WriteCaliFile(bool Data);
-	void __fastcall WriteCaliboffset();
+	void __fastcall WriteCalibOffset();
 	void __fastcall ReadCaliboffset();
     void __fastcall InsertValue(int channel, double value, TColor clr);
 

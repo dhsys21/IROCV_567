@@ -269,7 +269,7 @@ void __fastcall TTotalForm::ProcessIr(AnsiString param)
     //* 트레이 위치에 따라 맵핑 다르게 적용
     int boardchannel = StringToInt(param.SubString(1, 3), 0);
     if(boardchannel < 1) return;
-	channel = chMap[boardchannel + nTrayPos * 288];
+	channel = chMap[boardchannel + (nTrayPos - 1) * 288];
 
 	param.Delete(1,3);
 	int pos = param.Pos("E");
@@ -294,10 +294,8 @@ void __fastcall TTotalForm::ProcessIr(AnsiString param)
 		}
 	}
 
-	if(value <= 0 || value > 900)result = "CE";
+	if(value <= 0 || value > 900) result = "CE";
 	else result = "GO";
-
-    int index = channel - 1;
 
 	if(CaliForm->stage != this->Tag)
 	{
@@ -315,7 +313,7 @@ void __fastcall TTotalForm::ProcessIr(AnsiString param)
 			value = 0;
         }
 
-        CaliForm->InsertValue(channel, value, clr);
+        CaliForm->InsertValue(channel, value, clr);  // 보정
 	}
 
     //* RemeasureExecute는 Tray position 고려해서 맵핑값 적용필요
