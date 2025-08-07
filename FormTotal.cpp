@@ -1166,18 +1166,18 @@ void __fastcall TTotalForm::RemeasureExcute()
 		ch = i + 1;
 		boardch = chReverseMap[ch] - (nTrayPos * 288);
 		switch(retest.cell[i]){
-			case '2':	// IR 불량
+			case 2:	// IR 불량
 				this->MakeData(3, "IR*", FormatFloat("000", boardch));
 				if(tray.ocv_value[i] < config.ocv_min || tray.ocv_value[i] > config.ocv_max){
-					retest.cell[i] = '3';
+					retest.cell[i] = 3;
 				}else{
 					retest.re_index = ++i;
 				}
 				return;
-			case '3':	// OCV 불량
+			case 3:	// OCV 불량
 				this->MakeData(3, "OCV", FormatFloat("000", boardch));
 				if(tray.after_value[i] < config.ir_min || tray.after_value[i] > config.ir_max){
-					retest.cell[i] = '2';
+					retest.cell[i] = 2;
 				}
 				retest.re_index = ++i;
 				return;
@@ -1200,18 +1200,18 @@ void __fastcall TTotalForm::RemeasureExcute2()
 		value = i + 1;
 		value = chReverseMap[value];
 		switch(retest.cell[i]){
-			case '2':	// IR 불량
+			case 2:	// IR 불량
 				this->MakeData(3, "IR*", FormatFloat("000", value));
 				if(tray.ocv_value[i] < config.ocv_min || tray.ocv_value[i] > config.ocv_max){
-					retest.cell[i] = '3';
+					retest.cell[i] = 3;
 				}else{
 					retest.re_index = ++i;
 				}
 				return;
-			case '3':	// OCV 불량
+			case 3:	// OCV 불량
 				this->MakeData(3, "OCV", FormatFloat("000", value));
 				if(tray.after_value[i] < config.ir_min || tray.after_value[i] > config.ir_max){
-					retest.cell[i] = '2';
+					retest.cell[i] = 2;
 				}
 				retest.re_index = ++i;
 				return;
@@ -1501,7 +1501,7 @@ void __fastcall TTotalForm::btnAutoClick(TObject *Sender)
 	VisibleBox(GrpMain);
 }
 //---------------------------------------------------------------------------
-void __fastcall TTotalForm::SetRemeasureList(int traypos)
+void __fastcall TTotalForm::SetRemeasureList_Avg(int traypos)
 {
 	bool brem = false;
 	int remeasure_cnt = 0;
@@ -1541,7 +1541,7 @@ void __fastcall TTotalForm::SetRemeasureList(int traypos)
 
 				if(tray.after_value[index] < config.ir_min || tray.after_value[index] > config.ir_max)
 				{
-					retest.cell[index] = '2'; // ir spec ng
+					retest.cell[index] = 2; // ir spec ng
 					SetProcessColor(index, AverageOver);
 					retest.cnt_error += 1;
 					remeasure_cnt += 1;
@@ -1549,7 +1549,7 @@ void __fastcall TTotalForm::SetRemeasureList(int traypos)
 				}
 				else if((tray.after_value[index] >= config.ir_min && tray.after_value[index] <= config.ir_max)
 					&& (tray.after_value[index] < irMin || tray.after_value[index] > irMax)){
-					retest.cell[index] = '5'; // ir average ng
+					retest.cell[index] = 5; // ir average ng
 					SetProcessColor(index, AverageOver);
 					retest.cnt_error += 1;
 					remeasure_cnt += 1;
@@ -1557,8 +1557,8 @@ void __fastcall TTotalForm::SetRemeasureList(int traypos)
 				}
 				else if(tray.ocv_value[index] < 100 || tray.ocv_value[index] > 4200)
 				{
-					if(retest.cell[index] != '2' || retest.cell[index] != '5'){
-						retest.cell[index] = '3';  // ocv spec ng
+					if(retest.cell[index] != 2 || retest.cell[index] != 5){
+						retest.cell[index] = 3;  // ocv spec ng
 						retest.cnt_error += 1;
 						remeasure_cnt += 1;
 						if(tray.first) acc_remeasure[index] += 1;
@@ -1566,17 +1566,17 @@ void __fastcall TTotalForm::SetRemeasureList(int traypos)
 				}
 				else if((tray.ocv_value[index] >= 100 && tray.ocv_value[index] <= 4200)
 					&& (tray.ocv_value[index] < ocvMin || tray.ocv_value[index] > ocvMax)){
-					if(retest.cell[index] != '2' || retest.cell[index] != '5'){
-						retest.cell[index] = '6'; // ocv average ng
+					if(retest.cell[index] != 2 || retest.cell[index] != 5){
+						retest.cell[index] = 6; // ocv average ng
 						retest.cnt_error += 1;
 						remeasure_cnt += 1;
 						if(tray.first) acc_remeasure[index] += 1;
 					}
 				}else{
-					retest.cell[index] = '0';
+					retest.cell[index] = 0;
 				}
 			}
-			else retest.cell[index] = '0';
+			else retest.cell[index] = 0;
 		}
 
 		tray.first = false;
@@ -1613,7 +1613,7 @@ double __fastcall TTotalForm::GetSigma(float values[], bool flags[], double avg,
     return sigma;
 }
 //---------------------------------------------------------------------------
-void __fastcall TTotalForm::SetRemeasureList2(int traypos)
+void __fastcall TTotalForm::SetRemeasureList(int traypos)
 {
 	bool brem = false;
 	int remeasure_cnt = 0;
@@ -1626,7 +1626,7 @@ void __fastcall TTotalForm::SetRemeasureList2(int traypos)
             index = GetChMap(this->Tag, traypos, i) - 1;
 			if(tray.cell[index] == 1){
 				if(tray.after_value[index] < config.ir_min || tray.after_value[index] > config.ir_max){
-					retest.cell[index] = '2';
+					retest.cell[index] = 2;
 					retest.cnt_error += 1;
 					remeasure_cnt += 1;
 					if(tray.first){
@@ -1634,17 +1634,17 @@ void __fastcall TTotalForm::SetRemeasureList2(int traypos)
 					}
 				}
 				else if(tray.ocv_value[index] < config.ocv_min || tray.ocv_value[index] > config.ocv_max){
-					if(retest.cell[index] != '2'){
-						retest.cell[index] = '3';
+					if(retest.cell[index] != 2){
+						retest.cell[index] = 3;
 						retest.cnt_error += 1;
 						remeasure_cnt += 1;
 						if(tray.first)acc_remeasure[index] += 1;
 					}
 				}else{
-					retest.cell[index] = '0';
+					retest.cell[index] = 0;
 				}
 			}
-			else retest.cell[index] = '0';
+			else retest.cell[index] = 0;
 		}
 
         tray.first = false;
@@ -1736,25 +1736,49 @@ void __fastcall TTotalForm::SetTrayID(AnsiString str_id)
 //---------------------------------------------------------------------------
 void __fastcall TTotalForm::WriteIROCVValue()
 {
+    Mod_PLC->PLC_Write_Result = true;
 	// ir value 1 Word => Max Value = 65535
 	for(int i = 0; i < MAXCHANNEL; i++)
 	{
-		Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_IR_VALUE + i, FormatFloat("0000", (tray.after_value[i] * 100)) % (256 * 256));
+//		Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_IR_VALUE + i, FormatFloat("0000", (tray.after_value[i] * 100)) % (256 * 256));
+        int32_t ir_int = static_cast<int32_t>(std::floor(tray.after_value[i] * 100.0 + 0.5));
+        Mod_PLC->SetIrValue(PC_D_IROCV_IR_VALUE, i, ir_int);
 	}
 
 	for(int i = 0; i < MAXCHANNEL; i++)
 	{
-		Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Ocv_Data, PC_D_IROCV_OCV_VALUE + i, FormatFloat("00000", (tray.ocv_value[i] * 10)) % (256 * 256));
+//		Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Ocv_Data, PC_D_IROCV_OCV_VALUE + i, FormatFloat("00000", (tray.ocv_value[i] * 10)) % (256 * 256));
+        int32_t ocv_int = static_cast<int32_t>(std::floor(tray.ocv_value[i] * 10.0 + 0.5));
+        Mod_PLC->SetOcvValue(PC_D_IROCV_OCV_VALUE, i, ocv_int);
 	}
 
 }
+//---------------------------------------------------------------------------
+void __fastcall TTotalForm::WriteIROCVValue(int initValue)
+{
+    Mod_PLC->PLC_Write_Result = true;
+	for(int i = 0; i < MAXCHANNEL; i++)
+        Mod_PLC->SetIrValue(PC_D_IROCV_IR_VALUE, i, initValue);
+
+	for(int i = 0; i < MAXCHANNEL; i++)
+        Mod_PLC->SetOcvValue(PC_D_IROCV_OCV_VALUE, i, initValue);
+}
+//---------------------------------------------------------------------------
 void __fastcall TTotalForm::BadInfomation()
 {
+    int ngCount = 0;
+    NgCount = 0;
+    int iCell = 0;
+    int iRetest = 0;
+    TColor clr;
 	for(int i = 0; i < LINECOUNT; ++i){
         int irocvNg = 0;
 		for(int j = 0; j < LINECOUNT; j++)
 		{
-			if((tray.cell[(i * LINECOUNT) + j] == 1) && retest.cell[(i * LINECOUNT) + j] != '0')
+            iCell = tray.cell[i * LINECOUNT + j];
+            iRetest = retest.cell[i * LINECOUNT + j];
+            clr = panel[i * LINECOUNT + j]->Color;
+			if((tray.cell[(i * LINECOUNT) + j] == 1) && retest.cell[(i * LINECOUNT) + j] != 0)
 			{
 				//Mod_PLC->SetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + i, j, true);
                 //* ng -> true
@@ -1762,7 +1786,7 @@ void __fastcall TTotalForm::BadInfomation()
 				ngCount++;
 				NgCount++;
 			}
-			else if((tray.cell[(i * LINECOUNT) + j] == 1) && retest.cell[(i * LINECOUNT) + j] == '0')
+			else if((tray.cell[(i * LINECOUNT) + j] == 1) && retest.cell[(i * LINECOUNT) + j] == 0)
 			{
                 //* ok -> false
 				//Mod_PLC->SetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + i, j, false);
@@ -1796,7 +1820,7 @@ void __fastcall TTotalForm::BadInfomation2()
 				ngCount++;
 				NgCount++;
 			}
-			else if((tray.cell[(i * LINECOUNT) + j] == 1) && retest.cell[(i * LINECOUNT) + j] == '0')
+			else if((tray.cell[(i * LINECOUNT) + j] == 1) && retest.cell[(i * LINECOUNT) + j] == 0)
 			{
                 //* ok -> false
 				//Mod_PLC->SetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + i, j, false);

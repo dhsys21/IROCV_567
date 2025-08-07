@@ -28,7 +28,6 @@ const int DEVCODE_W			=	0xB4;		//	링크 레지스터
 //---------------------------------------------------------------------------
 const int PLC_INDEX_INTERFACE					=		1;
 
-
 const int PC_INDEX_INTERFACE					=		11;
 //---------------------------------------------------------------------------
 
@@ -37,18 +36,23 @@ const int PC_INDEX_INTERFACE					=		11;
 //---------------------------------------------------------------------------
 const int PLC_D_INTERFACE_START_DEV_NUM	 			=	44000;
 const int PLC_D_INTERFACE_LEN 						= 	100;
+const int PLC_D_CELL_SERIAL_NUM                     =	{95000};
+const int PLC_D_CELL_SERIAL_LEN                     =   5800; //* 총 5800 word. 828 * 7번 읽어야 함
+const int PLC_D_CELL_SERIAL_READLEN                 =   828;  //* 길이 테스트 필요
 
 const int PC_D_INTERFACE_START_DEV_NUM1				=	45000;
-const int PC_D_INTERFACE_LEN1	 					= 	700;
-const int PC_D_INTERFACE_START_DEV_NUM2				=	46000;
-const int PC_D_INTERFACE_LEN2	 					= 	600;
+const int PC_D_INTERFACE_LEN1	 					= 	100;
+const int PC_D_INTERFACE_IR                         =   45100;
+const int PC_D_INTERFACE_IR_LEN                     =   600;
+const int PC_D_INTERFACE_OCV						=	46000;
+const int PC_D_INTERFACE_OCV_LEN 					= 	600;
 //---------------------------------------------------------------------------
 
 
 //---------------------------------------------------------------------------
 //	PLC - PC Interface
 //---------------------------------------------------------------------------
-// PLC - IR/OCV
+// PLC - IR/OCV   - D44000
 const int PLC_D_HEART_BEAT				   			=	0;
 const int PLC_D_IROCV_AUTO_MANUAL	                =   1;
 const int PLC_D_IROCV_ERROR    	  			        =   2;
@@ -56,11 +60,20 @@ const int PLC_D_IROCV_TRAY_IN   	  		        =   3;
 const int PLC_D_IROCV_PROB_OPEN 	  		        =   4;
 const int PLC_D_IROCV_PROB_CLOSE    	  	        =   5;
 const int PLC_D_IROCV_TRAY_POS                      =   6;
+const int PLC_D_IROCV_COMPLETE	    	  	        =   8;
 
 const int PLC_D_IROCV_TRAY_ID   	  		        =   10;
+//CELL SERIAL  - Write Start, Write Complete
+const int PLC_D_IROCV_CELL_SERIAL_START            	=   20;
+const int PLC_D_IROCV_CELL_SERIAL_COMP             	=   21;
+const int PLC_D_IROCV_CELL_SERIAL_COUNT             =   22;
+
 // TRAY INFO     256
 const int PLC_D_IROCV_TRAY_CELL_DATA                = 	30;
 
+// CELL SERIAL TRAY ID   - D95000
+const int PLC_D_IROCV_CELL_SERIAL_TRAYID            =   0;
+const int PLC_D_IROCV_CELL_SERIAL                  	=   10;
 //---------------------------------------------------------------------------
 //	PLC - PC Interface
 //---------------------------------------------------------------------------
@@ -82,6 +95,11 @@ const int PC_D_IROCV_IR_MAX							=   13;
 const int PC_D_IROCV_OCV_MIN						=   15;
 const int PC_D_IROCV_OCV_MAX						=   17;
 const int PC_D_IROCV_NG_ALARM                       =   19;
+
+// CELL SERIAL - Read Start, Read Complete
+const int PC_D_IROCV_CELL_SERIAL_START              =   20;
+const int PC_D_IROCV_CELL_SERIAL_COMP               =   21;
+const int PC_D_IROCV_CELLID_BYPASS	                =   22;
 
 // OK/NG - D45030
 const int PC_D_IROCV_MEASURE_OK_NG			   		=	30;
@@ -168,6 +186,7 @@ private:	// User declarations
 	void __fastcall PLC_Initialization();
 	void __fastcall PLC_DataChange(int subCommand, int address, int devCode, int devLen);
 	void __fastcall PLC_Recv_Interface();
+    void __fastcall PLC_Recv_Interface_CellSerial(int index, int wordsToRead);
 
 	PLC_DATA plc_Data;
 	AnsiString plc_Read, plc_Read_Temp;
@@ -206,9 +225,34 @@ public:		// User declarations
 	double __fastcall GetDouble(unsigned char (*data)[2], int column);
 	AnsiString __fastcall GetString(unsigned char (*data)[2], int column, int count);
 
+//---------------------------------------------------------------------------
+//  실제호출함수
+    AnsiString __fastcall GetCellSrial(int plc_address, int index, int size);
+    AnsiString __fastcall GetCellSrialTrayId(int plc_address, int size);
+    double __fastcall GetCellSrialValue(int plc_address);
+
+    AnsiString __fastcall GetPlcValue(int plc_address, int size);
+    double __fastcall GetPlcValue(int plc_address);
+    int __fastcall GetPlcData(int plc_address, int bit_num);
+    double __fastcall GetValue(int pc_address);
+    void __fastcall SetValue(int pc_address, int value);
+    void __fastcall SetSpecValue(int pc_address, int value);
+    void __fastcall SetIrValue(int pc_address, int index, int value);
+    void __fastcall SetOcvValue(int pc_address, int index, int value);
+    int __fastcall GetIrValue(int pc_address, int index);
+    int __fastcall GetOcvValue(int pc_address, int index);
+
+	bool PLC_Write_Result; //voltage, current 값은 필요 시에만 쓰기를 한다.
+    //* PLC DATA
+    int currentReadTask;
+    int CellSerialIndex;
 	unsigned char plc_Interface_Data[PLC_D_INTERFACE_LEN][2];
+    unsigned char plc_Interface_Cell_Serial[PLC_D_CELL_SERIAL_LEN][2];
+    //* PC DATA
+    int currentWriteTask;
 	unsigned char pc_Interface_Data[PC_D_INTERFACE_LEN1][2];
-	unsigned char pc_Interface_Ocv_Data[PC_D_INTERFACE_LEN2][2];
+    unsigned char pc_Interface_Ir_Data[PC_D_INTERFACE_IR_LEN][2];
+	unsigned char pc_Interface_Ocv_Data[PC_D_INTERFACE_OCV_LEN][2];
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMod_PLC *Mod_PLC;

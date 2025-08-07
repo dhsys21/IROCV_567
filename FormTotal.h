@@ -570,7 +570,7 @@ public:		// User declarations
 	int remLimit;
     void __fastcall VisibleSpec(bool bUseAverage);
 	void __fastcall SetRemeasureList(int traypos);
-	void __fastcall SetRemeasureList2(int traypos);
+	void __fastcall SetRemeasureList_Avg(int traypos);
 	void __fastcall AddRemeasureList();
 	void __fastcall ViewRemeasureList();
     void __fastcall WriteTrayInfo();
@@ -578,6 +578,7 @@ public:		// User declarations
 	void __fastcall BadInfomation();
     void __fastcall BadInfomation2();
 	void __fastcall WriteIROCVValue();
+    void __fastcall WriteIROCVValue(int initValue);
 	void __fastcall WriteIRMINMAX();
 
 	void __fastcall DisplayTrayInfo(int traypos);

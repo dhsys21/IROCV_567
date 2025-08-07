@@ -249,8 +249,8 @@ void __fastcall TTotalForm::ResponseAutoTestFinish(int traypos)
 //		SendData("AMF");    //kedison
 		SendData("SEN");
 //		CmdForceStop();
-		if(config.average_use == true) SetRemeasureList(traypos);
-		else SetRemeasureList2(traypos);
+		if(config.average_use == true) SetRemeasureList_Avg(traypos);
+		else SetRemeasureList(traypos);
 	}
 }
 //---------------------------------------------------------------------------

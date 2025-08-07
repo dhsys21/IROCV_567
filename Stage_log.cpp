@@ -384,11 +384,11 @@ void __fastcall TTotalForm::WriteResultFile()
 
 		if(tray.cell[i] == 1)
 		{
-			if(retest.cell[i] == '0') ok_ng = "OK";
-			else if(retest.cell[i] == '2') ok_ng = "IR SPEC NG";
-            else if(retest.cell[i] == '5') ok_ng = "IR Avg. NG";
-			else if(retest.cell[i] == '3') ok_ng = "OCV SPEC NG";
-            else if(retest.cell[i] == '6') ok_ng = "OCV Avg. NG";
+			if(retest.cell[i] == 0) ok_ng = "OK";
+			else if(retest.cell[i] == 2) ok_ng = "IR SPEC NG";
+            else if(retest.cell[i] == 5) ok_ng = "IR Avg. NG";
+			else if(retest.cell[i] == 3) ok_ng = "OCV SPEC NG";
+            else if(retest.cell[i] == 6) ok_ng = "OCV Avg. NG";
 
 			cell = "O";
 		}
@@ -432,7 +432,7 @@ void __fastcall TTotalForm::WriteOKNG()
 
 	for(int i = 0; i < MAXCHANNEL; ++i)
 	{
-		if((tray.cell[i] == 1) && retest.cell[i] == '0') ok_ng = "OK";
+		if((tray.cell[i] == 1) && retest.cell[i] == 0) ok_ng = "OK";
 		else ok_ng = "NG";
 		file = file + IntToStr(i+1) + "," + ok_ng + "\r\n";
 	}
