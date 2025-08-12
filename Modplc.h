@@ -34,17 +34,17 @@ const int PC_INDEX_INTERFACE					=		11;
 //---------------------------------------------------------------------------
 //	시작 번지
 //---------------------------------------------------------------------------
-const int PLC_D_INTERFACE_START_DEV_NUM	 			=	44000;
+const int PLC_D_INTERFACE_START_DEV_NUM	 			=	37000;
 const int PLC_D_INTERFACE_LEN 						= 	100;
-const int PLC_D_CELL_SERIAL_NUM                     =	{95000};
-const int PLC_D_CELL_SERIAL_LEN                     =   5800; //* 총 5800 word. 828 * 7번 읽어야 함
-const int PLC_D_CELL_SERIAL_READLEN                 =   828;  //* 길이 테스트 필요
-
-const int PC_D_INTERFACE_START_DEV_NUM1				=	45000;
+const int PLC_D_CELL_SERIAL_NUM                     =	{86000};
+const int PLC_D_CELL_SERIAL_LEN                     =   5760; //* 총 5760 word. 822 * 7번 읽어야 함
+const int PLC_D_CELL_SERIAL_READLEN                 =   822;  //* 길이 테스트 필요
+//---------------------------------------------------------------------------
+const int PC_D_INTERFACE_START_DEV_NUM1				=	38000;
 const int PC_D_INTERFACE_LEN1	 					= 	100;
-const int PC_D_INTERFACE_IR                         =   45100;
+const int PC_D_INTERFACE_IR                         =   38100;
 const int PC_D_INTERFACE_IR_LEN                     =   600;
-const int PC_D_INTERFACE_OCV						=	46000;
+const int PC_D_INTERFACE_OCV						=	39000;
 const int PC_D_INTERFACE_OCV_LEN 					= 	600;
 //---------------------------------------------------------------------------
 
@@ -52,7 +52,7 @@ const int PC_D_INTERFACE_OCV_LEN 					= 	600;
 //---------------------------------------------------------------------------
 //	PLC - PC Interface
 //---------------------------------------------------------------------------
-// PLC - IR/OCV   - D44000
+// PLC - IR/OCV   - D37000
 const int PLC_D_HEART_BEAT				   			=	0;
 const int PLC_D_IROCV_AUTO_MANUAL	                =   1;
 const int PLC_D_IROCV_ERROR    	  			        =   2;
@@ -60,24 +60,18 @@ const int PLC_D_IROCV_TRAY_IN   	  		        =   3;
 const int PLC_D_IROCV_PROB_OPEN 	  		        =   4;
 const int PLC_D_IROCV_PROB_CLOSE    	  	        =   5;
 const int PLC_D_IROCV_TRAY_POS                      =   6;
-const int PLC_D_IROCV_COMPLETE	    	  	        =   8;
 
 const int PLC_D_IROCV_TRAY_ID   	  		        =   10;
-//CELL SERIAL  - Write Start, Write Complete
-const int PLC_D_IROCV_CELL_SERIAL_START            	=   20;
-const int PLC_D_IROCV_CELL_SERIAL_COMP             	=   21;
-const int PLC_D_IROCV_CELL_SERIAL_COUNT             =   22;
 
-// TRAY INFO     256
+// TRAY INFO - 576
 const int PLC_D_IROCV_TRAY_CELL_DATA                = 	30;
 
-// CELL SERIAL TRAY ID   - D95000
-const int PLC_D_IROCV_CELL_SERIAL_TRAYID            =   0;
-const int PLC_D_IROCV_CELL_SERIAL                  	=   10;
+// CELL SERIAL TRAY ID   - D86000
+const int PLC_D_IROCV_CELL_SERIAL                  	=   0;
 //---------------------------------------------------------------------------
 //	PLC - PC Interface
 //---------------------------------------------------------------------------
-// PC - IR/OCV
+// PC - IR/OCV - 38000
 const int PC_D_HEART_BEAT			  				=	0;
 const int PC_D_IROCV_STAGE_AUTO_READY     	    	=   1;
 const int PC_D_IROCV_ERROR    	  			    	=   2;
@@ -96,15 +90,11 @@ const int PC_D_IROCV_OCV_MIN						=   15;
 const int PC_D_IROCV_OCV_MAX						=   17;
 const int PC_D_IROCV_NG_ALARM                       =   19;
 
-// CELL SERIAL - Read Start, Read Complete
-const int PC_D_IROCV_CELL_SERIAL_START              =   20;
-const int PC_D_IROCV_CELL_SERIAL_COMP               =   21;
-const int PC_D_IROCV_CELLID_BYPASS	                =   22;
-
-// OK/NG - D45030
+// OK/NG - D38030
 const int PC_D_IROCV_MEASURE_OK_NG			   		=	30;
-
+// 38100
 const int PC_D_IROCV_IR_VALUE                   	=   100;
+// 39000
 const int PC_D_IROCV_OCV_VALUE                   	=   0;
 //---------------------------------------------------------------------------
 
@@ -242,7 +232,7 @@ public:		// User declarations
     int __fastcall GetIrValue(int pc_address, int index);
     int __fastcall GetOcvValue(int pc_address, int index);
 
-	bool PLC_Write_Result; //voltage, current 값은 필요 시에만 쓰기를 한다.
+	bool PLC_Write_Result; //ir, current 값은 필요 시에만 쓰기를 한다.
     //* PLC DATA
     int currentReadTask;
     int CellSerialIndex;

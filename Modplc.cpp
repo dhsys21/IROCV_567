@@ -184,10 +184,10 @@ void __fastcall TMod_PLC::Timer_PC_WriteMsgTimer(TObject *Sender)
                         }
 
                         //* write ir, ocv 완료
-                        if(GetPlcValue(PLC_D_IROCV_COMPLETE) == 1){
-                            SetValue(PC_D_IROCV_COMPLETE1, 0);
-                            SetValue(PC_D_IROCV_COMPLETE2, 0);
-                        }
+//                        if(GetPlcValue(PLC_D_IROCV_COMPLETE) == 1){
+//                            SetValue(PC_D_IROCV_COMPLETE1, 0);
+//                            SetValue(PC_D_IROCV_COMPLETE2, 0);
+//                        }
 
                         //* General Data, Result Data, Min/Max Data, IR Data
                         PC_DataChange(0, PC_D_INTERFACE_START_DEV_NUM1, DEVCODE_D, PC_D_INTERFACE_LEN1);
@@ -197,13 +197,13 @@ void __fastcall TMod_PLC::Timer_PC_WriteMsgTimer(TObject *Sender)
                         break;
                     case nIR: //* 2word 씩 해야 하면 여기에 2번에 나눠서 쓰기. 사이에 sleep(50) 추가
                         PC_DataChange(0, PC_D_INTERFACE_IR, DEVCODE_D, PC_D_INTERFACE_IR_LEN);
-                        ClientSocket_PC->Socket->SendBuf(&pc_Data, sizeof(pc_Data));        // should comment for emulator
+                        ClientSocket_PC->Socket->SendBuf(&pc_Data, sizeof(pc_Data));
                         ClientSocket_PC->Socket->SendBuf(&pc_Interface_Ir_Data, sizeof(pc_Interface_Ir_Data));
                         currentWriteTask = nOCV;
                         break;
                     case nOCV: //* 2word 씩 해야 하면 여기에 2번에 나눠서 쓰기. 사이에 sleep(50) 추가
                         PC_DataChange(0, PC_D_INTERFACE_OCV, DEVCODE_D, PC_D_INTERFACE_OCV_LEN);
-                        ClientSocket_PC->Socket->SendBuf(&pc_Data, sizeof(pc_Data));        // should comment for emulator
+                        ClientSocket_PC->Socket->SendBuf(&pc_Data, sizeof(pc_Data));
                         ClientSocket_PC->Socket->SendBuf(&pc_Interface_Ocv_Data, sizeof(pc_Interface_Ocv_Data));
                         currentWriteTask = nPCDATA;
                         break;
@@ -309,7 +309,7 @@ void __fastcall TMod_PLC::ClientSocket_PLCRead(TObject *Sender, TCustomWinSocket
 //                        	currentReadTask = nCELLSERIAL;
                         currentReadTask = nCELLSERIAL;
                         break;
-                    case nCELLSERIAL:  // 828워드를 7번에 나눠서 읽음
+                    case nCELLSERIAL:  // 822워드를 7번에 나눠서 읽음
                         int wordsRead = PLC_D_CELL_SERIAL_READLEN;
                         PLC_Recv_Interface_CellSerial(CellSerialIndex, wordsRead);
                         CellSerialIndex++;
@@ -343,10 +343,12 @@ void __fastcall TMod_PLC::Timer_PLC_WriteMsgTimer(TObject *Sender)
             {
                 case nSTANDARD:
                     PLC_DataChange(0, PLC_D_INTERFACE_START_DEV_NUM, DEVCODE_D, PLC_D_INTERFACE_LEN);
+//                    currentReadTask = nCELLSERIAL;
                     break;
-                case nCELLSERIAL: // 한번에 820 word만 요청
+                case nCELLSERIAL: // 한번에 822 word만 요청
                     startAddress = PLC_D_CELL_SERIAL_NUM + (CellSerialIndex * PLC_D_CELL_SERIAL_READLEN);
                     PLC_DataChange(0, startAddress, DEVCODE_D, PLC_D_CELL_SERIAL_READLEN);
+//                    currentReadTask = nSTANDARD;
                     break;
                 default:
                 	break;

@@ -201,6 +201,7 @@ void __fastcall TMeasureInfoForm::MakeUIPanel(AnsiString type)
 	clir->Top = 2;
 	clocv->Top = clir->Height +4;
 
+    //* 왼쪽 하단 1번
     if(type == "1"){
         ny = Panel2->Height - (nh) - 2;
         nx = nw + 4;
@@ -222,6 +223,7 @@ void __fastcall TMeasureInfoForm::MakeUIPanel(AnsiString type)
             if( index % (LINECOUNT / 4) == 0) ny -= 2;
         }
     }
+    //* 오른쪽 하단 1번
     else if(type == "2"){
         ny = Panel2->Height - (nh) - 2;
         nx = Panel2->Width - (nw + 2);
@@ -243,6 +245,7 @@ void __fastcall TMeasureInfoForm::MakeUIPanel(AnsiString type)
             if( index % (LINECOUNT / 4) == 0) ny -= 2;
         }
     }
+    //* 왼쪽 상단이 1번 -> 오른쪽으로 24번까지
     else if(type == "3"){
         ny = nh + 4;
         nx = nw + 4;
@@ -263,6 +266,7 @@ void __fastcall TMeasureInfoForm::MakeUIPanel(AnsiString type)
             if( index % (LINECOUNT / 4) == 0) ny += 2;
         }
     }
+    //* 오른쪽 상단 1번 -> 왼쪽으로 24번
     else if(type == "4"){
         ny = nh + 4;
         nx = Panel2->Width - (nw + 2);;

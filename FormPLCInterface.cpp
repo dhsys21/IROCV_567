@@ -42,22 +42,13 @@ void __fastcall TForm_PLCInterface::SetListViewPLC()
 	AddListView(ListView_PLC, "D" + IntToStr(PLC_D_INTERFACE_START_DEV_NUM + PLC_D_IROCV_PROB_OPEN), "PROB OPEN");
 	AddListView(ListView_PLC, "D" + IntToStr(PLC_D_INTERFACE_START_DEV_NUM + PLC_D_IROCV_PROB_CLOSE), "PROB CLOSE");
     AddListView(ListView_PLC, "D" + IntToStr(PLC_D_INTERFACE_START_DEV_NUM + PLC_D_IROCV_TRAY_POS), "TRAY POS");
-    AddListView(ListView_PLC, "D" + IntToStr(PLC_D_INTERFACE_START_DEV_NUM + PLC_D_IROCV_COMPLETE), "READ COMPLETE");
 	AddListView(ListView_PLC, "D" + IntToStr(PLC_D_INTERFACE_START_DEV_NUM + PLC_D_IROCV_TRAY_ID), "IN TRAY BCR DATA");
-
-    //* Cell Serial Data
-    AddListView(ListView_PLC, "D" + IntToStr(PLC_D_INTERFACE_START_DEV_NUM + PLC_D_IROCV_CELL_SERIAL_START), "CELL SERIAL WRITE START");
-	AddListView(ListView_PLC, "D" + IntToStr(PLC_D_INTERFACE_START_DEV_NUM + PLC_D_IROCV_CELL_SERIAL_COMP), "CELL SERIAL WRITE COMPLETE");
-    AddListView(ListView_PLC, "D" + IntToStr(PLC_D_INTERFACE_START_DEV_NUM + PLC_D_IROCV_CELL_SERIAL_COUNT), "CELL SERIAL COUNT");
 
 	// CELL INFO => 1 : YES, 0 : NO
 	for(int i = 0; i < LINECOUNT; i++)
 	{
 		AddListView(ListView_PLC, "D" + IntToStr(PLC_D_INTERFACE_START_DEV_NUM + PLC_D_IROCV_TRAY_CELL_DATA + (i * 2)), "TRAY CELL DATA #" + IntToStr(i + 1));
 	}
-
-    //* CELL SERIAL DATA
-    AddListView(ListView_PLC, "D" + IntToStr(PLC_D_CELL_SERIAL_NUM + PLC_D_IROCV_CELL_SERIAL_TRAYID), "CELL SERIAL TRAY ID");
 
     for(int i = 0; i < LINECOUNT; i++)
        AddListView(ListView_PLC, "D" + IntToStr(PLC_D_CELL_SERIAL_NUM + PLC_D_IROCV_CELL_SERIAL + (i * 10 * LINECOUNT)), "CELL SERIAL #" + IntToStr(i * LINECOUNT + 1));
@@ -84,11 +75,6 @@ void __fastcall TForm_PLCInterface::SetListViewPC()
 	AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_OCV_MIN), "IROCV OCV MIN.");
 	AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_OCV_MAX), "IROCV OCV MAX.");
 	AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_NG_ALARM), "NG ALARM");
-
-    // CELL SERIAL
-    AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_CELL_SERIAL_START), "CELL SERIAL READ START");
-	AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_CELL_SERIAL_COMP), "CELL SERIAL READ COMPLETE");
-    AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_CELLID_BYPASS), "CELL ID BYPASS");
 
 	for(int i = 0; i < LINECOUNT; i++)
 		AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_MEASURE_OK_NG + (i * 2)), "IR/OCV OK/NG DATA #" + IntToStr(i + 1));
@@ -142,11 +128,6 @@ void __fastcall TForm_PLCInterface::Timer_UpdateTimer(TObject *Sender)
         ListView_PLC->Items->Item[index++]->SubItems->Strings[1] = Mod_PLC->GetDouble(Mod_PLC->plc_Interface_Data, PLC_D_IROCV_TRAY_POS);
 		ListView_PLC->Items->Item[index++]->SubItems->Strings[1] = Mod_PLC->GetString(Mod_PLC->plc_Interface_Data, PLC_D_IROCV_TRAY_ID, 10);
 
-        //* CELL SERIAL
-        ListView_PLC->Items->Item[index++]->SubItems->Strings[1] = Mod_PLC->GetPlcValue(PLC_D_IROCV_CELL_SERIAL_START);
-		ListView_PLC->Items->Item[index++]->SubItems->Strings[1] = Mod_PLC->GetPlcValue(PLC_D_IROCV_CELL_SERIAL_COMP);
-		ListView_PLC->Items->Item[index++]->SubItems->Strings[1] = Mod_PLC->GetPlcValue(PLC_D_IROCV_CELL_SERIAL_COUNT);
-
 		AnsiString cell_info;
 		for(int i = 0; i < LINECOUNT; i++)
 		{
@@ -159,8 +140,6 @@ void __fastcall TForm_PLCInterface::Timer_UpdateTimer(TObject *Sender)
 			Label4->Caption += Mod_PLC->GetDouble(Mod_PLC->plc_Interface_Data, PLC_D_IROCV_TRAY_CELL_DATA + (i * 2));
 		}
 
-        //* CELL SERIAL
-        ListView_PLC->Items->Item[index++]->SubItems->Strings[1] = Mod_PLC->GetCellSrialTrayId(PLC_D_IROCV_CELL_SERIAL_TRAYID, 10);
         for(int i = 0; i < LINECOUNT; i++)
             ListView_PLC->Items->Item[index++]->SubItems->Strings[1] = Mod_PLC->GetCellSrial(PLC_D_IROCV_CELL_SERIAL, i * LINECOUNT, 10);
 	}
@@ -186,11 +165,6 @@ void __fastcall TForm_PLCInterface::Timer_UpdateTimer(TObject *Sender)
 		ListView_PC->Items->Item[index++]->SubItems->Strings[1] = Mod_PLC->GetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_OCV_MIN);
 		ListView_PC->Items->Item[index++]->SubItems->Strings[1] = Mod_PLC->GetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_OCV_MAX);
 		ListView_PC->Items->Item[index++]->SubItems->Strings[1] = Mod_PLC->GetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_NG_ALARM);
-
-        //* CELL SERIAL
-        ListView_PC->Items->Item[index++]->SubItems->Strings[1] = Mod_PLC->GetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_CELL_SERIAL_START);
-        ListView_PC->Items->Item[index++]->SubItems->Strings[1] = Mod_PLC->GetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_CELL_SERIAL_COMP);
-        ListView_PC->Items->Item[index++]->SubItems->Strings[1] = Mod_PLC->GetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_CELLID_BYPASS);
 
 		AnsiString okng_bin;
 		for(int i = 0; i < LINECOUNT; i++)
