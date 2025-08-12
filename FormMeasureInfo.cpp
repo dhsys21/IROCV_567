@@ -185,6 +185,31 @@ void __fastcall TMeasureInfoForm::MakePanel(AnsiString type)
     }
 }
 //---------------------------------------------------------------------------
+void __fastcall TMeasureInfoForm::SetChannelInfo()
+{
+    SetChannelInfo(1);
+    SetChannelInfo(2);
+}
+//---------------------------------------------------------------------------
+void __fastcall TMeasureInfoForm::SetChannelInfo(int traypos)
+{
+    //* 채널 위치 -> 릴레이가 12줄이므로 위치를 계산해야 함
+    int channel, rchannel;
+    for(int index = 0; index < MAXCHANNEL / 2; index++){
+        //channel = GetChMap(stage, traypos, index) - 1;
+        channel = GetChannel(traypos, index) - 1;
+
+        pir[channel]->Caption = IntToStr(channel + 1);
+        pir[channel]->Color = pnormal1->Color;
+
+        pocv[channel]->Caption = SetChannelHint(channel);//GetChPosF(channel)	+ "-" + GetChPosR(channel);
+        pocv[channel]->Hint = "CH " + SetChannelHint(channel);//GetChPosF(channel) + "-" + GetChPosR(channel);
+        pocv[channel]->Color = pnormal2->Color;
+        pocv[channel]->Refresh();
+    }
+    //btnDisCharge->Caption = "SetChannelInfo";
+}
+//---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 void __fastcall TMeasureInfoForm::MakeUIPanel(AnsiString type)
 {
@@ -463,11 +488,7 @@ void __fastcall TMeasureInfoForm::ChInfoMouseEnter(TObject *Sender)
 	int index;
 	index = pnl->Tag;
 	pch->Caption = index + 1;
-
-	//ppos->Caption = IntToStr((index+LINECOUNT)/LINECOUNT) + "-" + IntToStr((index%LINECOUNT)+1);
-    int ch = BaseForm->nForm[stage]->chReverseMap[index + 1];
-    if(ch >= 289) ch  = ch - 288;
-    ppos->Caption = IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
+    ppos->Caption = SetChannelHint(index);
 }
 //---------------------------------------------------------------------------
 void __fastcall TMeasureInfoForm::ChInfoMouseLeave(TObject *Sender)

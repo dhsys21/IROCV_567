@@ -8,7 +8,7 @@ object BaseForm: TBaseForm
   VertScrollBar.Range = 300
   VertScrollBar.Visible = False
   BorderIcons = [biSystemMenu, biMinimize]
-  Caption = 'IR/OCV (Ver.250812 002)'
+  Caption = 'IR/OCV (Ver.250812 003)'
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -6023,8 +6023,8 @@ object BaseForm: TBaseForm
     end
   end
   object pstepInfo1: TPanel
-    Left = 1405
-    Top = 30
+    Left = 1319
+    Top = 31
     Width = 145
     Height = 30
     BevelKind = bkFlat
@@ -6135,6 +6135,76 @@ object BaseForm: TBaseForm
     Font.Style = []
     ParentFont = False
     TabOrder = 12
+  end
+  object btnViewLog: TAdvSmoothButton
+    Left = 1471
+    Top = 6
+    Width = 80
+    Height = 27
+    Appearance.Font.Charset = DEFAULT_CHARSET
+    Appearance.Font.Color = clBlack
+    Appearance.Font.Height = -16
+    Appearance.Font.Name = 'Tahoma'
+    Appearance.Font.Style = [fsBold]
+    Appearance.Rounding = 3
+    Status.Caption = '0'
+    Status.Appearance.Fill.Color = clRed
+    Status.Appearance.Fill.ColorMirror = clNone
+    Status.Appearance.Fill.ColorMirrorTo = clNone
+    Status.Appearance.Fill.GradientType = gtSolid
+    Status.Appearance.Fill.GradientMirrorType = gtSolid
+    Status.Appearance.Fill.BorderColor = clGray
+    Status.Appearance.Fill.Rounding = 8
+    Status.Appearance.Fill.ShadowOffset = 0
+    Status.Appearance.Fill.Glow = gmNone
+    Status.Appearance.Font.Charset = DEFAULT_CHARSET
+    Status.Appearance.Font.Color = clWhite
+    Status.Appearance.Font.Height = -11
+    Status.Appearance.Font.Name = 'Tahoma'
+    Status.Appearance.Font.Style = []
+    BevelColor = clSilver
+    Caption = 'LOG'
+    Color = clWhite
+    ParentFont = False
+    TabOrder = 13
+    Version = '2.1.1.5'
+    OnClick = btnViewLogClick
+    TMSStyle = 8
+  end
+  object btnViewData: TAdvSmoothButton
+    Left = 1471
+    Top = 34
+    Width = 80
+    Height = 27
+    Appearance.Font.Charset = DEFAULT_CHARSET
+    Appearance.Font.Color = clBlack
+    Appearance.Font.Height = -16
+    Appearance.Font.Name = 'Tahoma'
+    Appearance.Font.Style = [fsBold]
+    Appearance.Rounding = 3
+    Status.Caption = '0'
+    Status.Appearance.Fill.Color = clRed
+    Status.Appearance.Fill.ColorMirror = clNone
+    Status.Appearance.Fill.ColorMirrorTo = clNone
+    Status.Appearance.Fill.GradientType = gtSolid
+    Status.Appearance.Fill.GradientMirrorType = gtSolid
+    Status.Appearance.Fill.BorderColor = clGray
+    Status.Appearance.Fill.Rounding = 8
+    Status.Appearance.Fill.ShadowOffset = 0
+    Status.Appearance.Fill.Glow = gmNone
+    Status.Appearance.Font.Charset = DEFAULT_CHARSET
+    Status.Appearance.Font.Color = clWhite
+    Status.Appearance.Font.Height = -11
+    Status.Appearance.Font.Name = 'Tahoma'
+    Status.Appearance.Font.Style = []
+    BevelColor = clSilver
+    Caption = 'DATA'
+    Color = clWhite
+    ParentFont = False
+    TabOrder = 14
+    Version = '2.1.1.5'
+    OnClick = btnViewDataClick
+    TMSStyle = 8
   end
   object ClockTimer: TTimer
     Interval = 300

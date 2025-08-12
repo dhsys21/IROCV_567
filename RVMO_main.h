@@ -67,6 +67,8 @@ __published:	// IDE-managed Components
 	TButton *btnNgCountErr;
 	TCheckBox *chkTest;
 	TRadioButton *rbChinese;
+	TAdvSmoothButton *btnViewLog;
+	TAdvSmoothButton *btnViewData;
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall ClockTimerTimer(TObject *Sender);
@@ -83,6 +85,8 @@ __published:	// IDE-managed Components
 	void __fastcall pstepInfo1Click(TObject *Sender);
 	void __fastcall btnNgCountErrClick(TObject *Sender);
 	void __fastcall Label1Click(TObject *Sender);
+	void __fastcall btnViewLogClick(TObject *Sender);
+	void __fastcall btnViewDataClick(TObject *Sender);
 
 
 private:	// User declarations

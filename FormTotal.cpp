@@ -524,6 +524,7 @@ void  __fastcall TTotalForm::OnInit(int traypos)
 		MeasureInfoForm->DisplayIrValue(channel, clLine, "-");
 		MeasureInfoForm->DisplayOcvValue(channel, clLine, "-");
 	}
+    MeasureInfoForm->SetChannelInfo(traypos);
 }
 //---------------------------------------------------------------------------
 // 통신 정보 보기 - 삭제할것
@@ -781,13 +782,16 @@ void __fastcall TTotalForm::MakePanel(AnsiString type)
 	}
 
     //* 채널 위치 -> 릴레이가 12줄이므로 위치를 계산해야 함
-    int ch;
-    for(int index = 0; index < MAXCHANNEL; index++)
+    AnsiString hint = "";
+    for(int index = 0; index < MAXCHANNEL;)
     {
-        ch = chReverseMap[index + 1];
-        if(ch >= 289) ch  = ch - 288;
+        hint = SetChannelHint(index);
         if(panel[index] != NULL)
-            panel[index]->Hint = IntToStr(index + 1) + " : " + IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
+            panel[index]->Hint = hint;
+
+        index += 1;
+//            panel[index]->Hint = IntToStr(index + 1) + " : "
+//            	+ GetChPosF(index) + "-" + GetChPosR(index);
     }
 }
 //---------------------------------------------------------------------------
@@ -1880,11 +1884,12 @@ void __fastcall TTotalForm::btnMeasureInfoClick(TObject *Sender)
         MeasureInfoForm->pocv[i]->Color = pnormal2->Color;
 
         //* 채널 위치 -> 릴레이가 12줄이므로 위치를 계산해야 함
-        ch = chReverseMap[i + 1];
-        if(ch >= 289) ch  = ch - 288;
-        MeasureInfoForm->pir[i]->Hint = "POS : " + IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
-        MeasureInfoForm->pocv[i]->Hint = "POS : " + IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
+//        ch = chReverseMap[i + 1];
+//        if(ch >= 289) ch  = ch - 288;
+//        MeasureInfoForm->pir[i]->Hint = "POS : " + IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
+//        MeasureInfoForm->pocv[i]->Hint = "POS : " + IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
 	}	// 모두 초기화
+    MeasureInfoForm->SetChannelInfo();
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------

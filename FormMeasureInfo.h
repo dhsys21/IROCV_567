@@ -170,6 +170,8 @@ public:		// User declarations
 	void __fastcall DisplayIrValue(int index, AnsiString caption);
 	void __fastcall DisplayOcvValue(int index, TColor clr, AnsiString caption );
 
+    void __fastcall SetChannelInfo(int traypos);
+    void __fastcall SetChannelInfo();
 	__fastcall TMeasureInfoForm(TComponent* Owner);
 };
 //---------------------------------------------------------------------------

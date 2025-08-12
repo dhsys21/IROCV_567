@@ -361,3 +361,15 @@ void __fastcall TBaseForm::Label1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TBaseForm::btnViewLogClick(TObject *Sender)
+{
+    OpenFolder(LOG_PATH);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TBaseForm::btnViewDataClick(TObject *Sender)
+{
+    OpenFolder(DATA_PATH);
+}
+//---------------------------------------------------------------------------
+
