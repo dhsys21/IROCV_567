@@ -501,7 +501,7 @@ public:		// User declarations
 	void __fastcall CmdDeviceInfo();
 	void __fastcall ResponseAutoTestFinish(int traypos);
 	void __fastcall ReadchannelMapping();
-
+    void __fastcall ReadResultFile(int traypos);
 //---------------------------------------------------------------------------
 // PLC
 	AnsiString PLC_IPADDRESS;

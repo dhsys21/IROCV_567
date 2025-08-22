@@ -275,7 +275,7 @@ void __fastcall TTotalForm::WriteResultFile()
 	AnsiString dir;
 	AnsiString cell, cell_id, ir, ocv, ch, ok_ng;
 
-	dir = (AnsiString)DATA_PATH + Now().FormatString("yyyymmdd") + "\\" + lblTitle->Caption + "\\";
+	dir = (AnsiString)DATA_PATH + Now().FormatString("yyyymmdd") + "\\";
 	ForceDirectories((AnsiString)dir);
 
 	filename =  dir + tray.trayid +  "-" + Now().FormatString("yymmddhhnnss") + ".csv";
@@ -334,7 +334,7 @@ void __fastcall TTotalForm::WriteResultFile(int traypos)
 	AnsiString dir;
 	AnsiString cell, cell_id, ir, ocv, ch, ok_ng;
 
-	dir = (AnsiString)DATA_PATH + Now().FormatString("yyyymmdd") + "\\" + lblTitle->Caption + "\\";
+	dir = (AnsiString)DATA_PATH + Now().FormatString("yyyymmdd") + "\\";
 	ForceDirectories((AnsiString)dir);
 
 	filename =  dir + tray.trayid + "_TP" + IntToStr(traypos) + ".csv";
@@ -383,6 +383,52 @@ void __fastcall TTotalForm::WriteResultFile(int traypos)
 	}
 	FileWrite(file_handle, file.c_str(), file.Length());
 	FileClose(file_handle);
+}
+//---------------------------------------------------------------------------
+void __fastcall TTotalForm::ReadResultFile(int traypos)
+{
+	AnsiString filename;
+    AnsiString dir = (AnsiString)DATA_PATH + Now().FormatString("yyyymmdd") + "\\";
+    filename = dir + tray.trayid + "_TP" + IntToStr(traypos) + ".csv";
+
+    if (!FileExists(filename)) {
+        WritePLCLog("ReadResultFile","File is not exist: " + filename);
+        return;
+    }
+
+    TStringList *lines = new TStringList;
+    try {
+        lines->LoadFromFile(filename);
+
+        // CSV에서 데이터 시작 인덱스: 헤더는 6줄 (TRAY ID ~ CH,CELL...) 이후부터 데이터
+        int startLine = 6;
+        int idx = 0;
+        int channel;
+        for (int i = startLine; i < lines->Count; i++) {
+            AnsiString line = lines->Strings[i];
+            if (line.Trim().IsEmpty()) continue;
+
+            // CH,CELL,CELL_ID,IR,OCV,RESULT
+            TStringList *cols = new TStringList;
+            cols->Delimiter = ',';
+            cols->StrictDelimiter = true;
+            cols->DelimitedText = line;
+
+            channel = GetChMap(this->Tag, traypos, idx) - 1;
+            if (cols->Count >= 6) {
+                // IR, OCV는 3, 4번째 열
+                if(MeasureInfoForm->pocv[channel]->Caption.Pos("-") > 1){
+                	MeasureInfoForm->pir[channel]->Caption = cols->Strings[3].Trim();
+                	MeasureInfoForm->pocv[channel]->Caption = cols->Strings[4].Trim();
+                }
+                idx++;
+            }
+            delete cols;
+        }
+    }
+    __finally {
+        delete lines;
+    }
 }
 //---------------------------------------------------------------------------
 void __fastcall TTotalForm::ErrorLog()

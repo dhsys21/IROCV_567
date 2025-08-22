@@ -1829,7 +1829,8 @@ void __fastcall TTotalForm::AutoInspection_Wait()
                     DisplayProcess(sProbeDown, "AutoInspection_Wait", "[STEP 3] (Tray Pos 1) PROBE IS CLOSED ... ");
                 }else if(nTrayPos == 2){
                     tray.pos2_complete = false;
-
+                    //* pir, pocv 가 ir, ocv 값이 아니고 초기값 (채널 1-1) 이면 result 파일 읽어서 표시
+                    ReadResultFile(1);
                     DisplayTrayInfo(2);
 
                     DisplayProcess(sProbeDown, "AutoInspection_Wait", "[STEP 3] (Tray Pos 2) PROBE IS CLOSED ... ");
