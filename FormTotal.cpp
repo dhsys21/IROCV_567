@@ -199,8 +199,6 @@ void __fastcall TTotalForm::Initialization(int traypos)
 {
 	PLCInitialization(traypos);
 	this->InitTrayStruct(traypos);
-
-
 }
 //---------------------------------------------------------------------------
 void __fastcall TTotalForm::PLCInitialization(int traypos)
@@ -538,15 +536,14 @@ void __fastcall TTotalForm::RemeasureAllBtnClick(TObject *Sender)
 	//CmdAutoTest();     // 2017 09 11 herald
 	InitTrayStruct(nTrayPos);
 
-//	LoadTrayInfo(tray.trayid);
-
 	//* Cell 정보 가져오기. 1 => 셀있음, 0 => 셀없음
     //* Cell 정보는 tray pos 상관없이 전체를 가져옴.
-    for(int i = 0; i < LINECOUNT; i++)
+    //* 16bit * 36
+    for(int i = 0; i < 36; i++)
     {
-        for(int j = 0; j < LINECOUNT; j++)
+        for(int j = 0; j < 16; j++)
         {
-            tray.cell[i * LINECOUNT + j] = GetPlcData(PLC_D_IROCV_TRAY_CELL_DATA + (i * 2), j);
+            tray.cell[i * 16 + j] = GetPlcData(PLC_D_IROCV_TRAY_CELL_DATA + (i * 2), j);
         }
     }
 
@@ -895,6 +892,9 @@ void __fastcall TTotalForm::StatusTimerTimer(TObject *Sender)
 
     if(GetPlcValue(PLC_D_IROCV_PROB_CLOSE) == 1) ShowPLCSignal(pnlProbeClose, true);
     else ShowPLCSignal(pnlProbeClose, false);
+
+    nTrayPos = GetTrayPos();
+    pnlTrayPos->Caption->Text = IntToStr(nTrayPos);
 }
 //---------------------------------------------------------------------------
 
@@ -947,28 +947,6 @@ void __fastcall TTotalForm::pTrayidDblClick(TObject *Sender)
 	editTrayId->Text = "";
 	editTrayId->Visible = true;
 	editTrayId->SetFocus();
-}
-//---------------------------------------------------------------------------
-void __fastcall TTotalForm::editTrayIdKeyDown(TObject *Sender, WORD &Key,
-		TShiftState Shift)
-{
-//	UnicodeString str;
-//	if(Key == VK_RETURN){
-//		str = "[" + editTrayId->Text + "]" + " Are you sure you want inspection?";
-//		if(MessageBox(Handle, str.c_str(), L"", MB_YESNO|MB_ICONQUESTION) == ID_YES){
-//			send.tx_mode = 0;
-//			plc_Barcode();
-//			if(LoadTrayInfo(editTrayId->Text))
-//			{
-//				CmdBattHeight();
-//			}
-//			else ProcessError("Tray Information", "Error", "The tray information file does not exist.", "Check the barcode ID and file information.");
-//		}
-//		editTrayId->Visible = false;
-//	}
-//	if(Key == VK_ESCAPE){
-//		editTrayId->Visible = false;
-//	}
 }
 //---------------------------------------------------------------------------
 // Common_comm.h
@@ -1168,7 +1146,7 @@ void __fastcall TTotalForm::RemeasureExcute()
 	int ch = 0, boardch = 0;
 	for(;i < MAXCHANNEL;++i){
 		ch = i + 1;
-		boardch = chReverseMap[ch] - (nTrayPos * 288);
+		boardch = chReverseMap[ch] - (nTrayPos - 1) * 288;
 		switch(retest.cell[i]){
 			case 2:	// IR 불량
 				this->MakeData(3, "IR*", FormatFloat("000", boardch));
@@ -1180,40 +1158,6 @@ void __fastcall TTotalForm::RemeasureExcute()
 				return;
 			case 3:	// OCV 불량
 				this->MakeData(3, "OCV", FormatFloat("000", boardch));
-				if(tray.after_value[i] < config.ir_min || tray.after_value[i] > config.ir_max){
-					retest.cell[i] = 2;
-				}
-				retest.re_index = ++i;
-				return;
-			default:
-				break;
-		}
-	}
-	retest.re_excute = false;
-	SetRemeasureList(nTrayPos);
-	CmdForceStop();
-	WriteCommLog("IR/OCV STOP", "RemeasureExcute()");
-}
-//---------------------------------------------------------------------------
-//* 예전 버전
-void __fastcall TTotalForm::RemeasureExcute2()
-{
-	int i = retest.re_index;
-	int value = 0;
-	for(;i<MAXCHANNEL;++i){
-		value = i + 1;
-		value = chReverseMap[value];
-		switch(retest.cell[i]){
-			case 2:	// IR 불량
-				this->MakeData(3, "IR*", FormatFloat("000", value));
-				if(tray.ocv_value[i] < config.ocv_min || tray.ocv_value[i] > config.ocv_max){
-					retest.cell[i] = 3;
-				}else{
-					retest.re_index = ++i;
-				}
-				return;
-			case 3:	// OCV 불량
-				this->MakeData(3, "OCV", FormatFloat("000", value));
 				if(tray.after_value[i] < config.ir_min || tray.after_value[i] > config.ir_max){
 					retest.cell[i] = 2;
 				}
@@ -1299,80 +1243,10 @@ void __fastcall TTotalForm::EquipStatus(int cmd)
 	double temp;
 	switch(cmd)
 	{
-//		case ERR:
-//			MakeData(2,"ERR");
-//			break;
-//		case ARV:
-//			pb->Position = 0;
-//			//DisplayStatus(nIN);
-//			if(chkBypass->Checked == false){
-//				plc_Barcode();
-//				// tray id 확인    (PLC ) 추가
-//				// cell 유/무 확인 (PLC )  추가
-//				//LoadTrayInfo() 수정 필요
-//				CmdBattHeight();
-//				/*
-//				if(LoadTrayInfo(Mod_PLC->GetString(Mod_PLC->plc_Interface_Data, PLC_INTERFACE3_TRAY_ID + (this->Tag * 100), 10)))
-//				{
-//					CmdBattHeight();
-//				}
-//				else ProcessError("Tray Information", "Error", "The tray information file does not exist.", "Check the barcode ID and file information.");
-//				*/
-//			}else{
-//				CmdTrayOut();
-//			}
-//			break;
-//		case RDY:
-//			if(chkCycle->Checked == false)CmdTestMode();
-//			else CmdForceStop();
-//			break;
-//		case STB:
-//			if(chkCycle->Checked == true){
-//				CmdTrayOut();
-//			}
-//			else if(tray.trayid != "start"){
-//				// 1. 재측정이 발생했으면
-//				if(retest.cnt_error > 0){
-//					// 2. 자동 재측정을 사용하면 && 횟수가 지정 횟수 이하이면
-//					if(config.remeasure_use && retest.cnt_remeasure < config.remeasure_cnt){
-//						// 3.1 프로브 닫고
-//						if(retest.cnt_error > remLimit)retest.re_excute = false;
-//						else retest.re_excute = true;
-//
-//						CmdBattHeight();
-//					}
-//					else{
-//						// 3.2 재측정 후 리스트를 SHOW 하거나 트레이를 배출한다
-//						if(config.remeasure_bypass == false)AddRemeasureList();
-//						else
-//						{
-//							double ngLimit = tray.cell_count / 3.0;
-//							if(retest.cnt_error > ngLimit)
-//							{
-//								ProcessError("NG Cell", "Error", "There are more than 30% NG cells.", "Please check the specifications and cell status.");
-//							}
-//							else ims->WriteMsg_TrayFinish(m_Equip_Info, tray, retest);		// 수정
-////							CmdTrayOut();
-//						}
-//					}
-//				}else{
-////					ims->WriteMsg_TrayFinish(m_Equip_Info, tray, retest);		// 수정
-////					CmdTrayOut();
-//				}
-//			}
-//			break;
 		case HOM:
-//			DisplayStatus(nVacancy);
-//			VisibleBox(GrpMain);
 			break;
 
 		case MAN:
-//			if(GrpLocal->Visible == false){
-//				stage.arl = nLocal;
-//				VisibleBox(GrpLocal);
-//			}
-//			DisplayStatus(nManual);
-//			InitMeasureForm();
 			break;
 		case EMS:
 			//DisplayStatus(nEmergency);
@@ -1404,18 +1278,12 @@ void __fastcall TTotalForm::EquipStatus(int cmd)
 //---------------------------------------------------------------------------
 void __fastcall TTotalForm::InitEquipStatus(int cmd)
 {
-
 	switch(cmd)
 	{
 		case RDY:
-			//this->CmdForceStop();
-			//this->DisplayStatus(nIN);
-			//ProcessError("Tray In", "",  "Please select the following actions : ", "Inspection start or  eject tray");
 			break;
 		case ARV:
 		case STB:
-			//this->DisplayStatus(nIN);
-			//ProcessError("Tray In", "",  "Please select the following actions : ", "Inspection start or  eject tray");
 			break;
 		case MAN:
 			stage.alarm_status = nManual;
@@ -1503,104 +1371,6 @@ void __fastcall TTotalForm::btnAutoClick(TObject *Sender)
     MeasureInfoForm->pLocal->Visible = false;
 	this->CmdManualMod(false);
 	VisibleBox(GrpMain);
-}
-//---------------------------------------------------------------------------
-void __fastcall TTotalForm::SetRemeasureList_Avg(int traypos)
-{
-	bool brem = false;
-	int remeasure_cnt = 0;
-	double irMin, irMax, ocvMin, ocvMax;
-
-	if(stage.arl == nAuto){
-		retest.cnt_error = 0;
-
-		if(tray.ir_avgAll_count == 0) tray.ir_avg = (config.ir_min + config.ir_max) / 2;
-		else tray.ir_avg = tray.ir_avgAll / tray.ir_avgAll_count;
-
-		if(tray.ocv_avgAll_count == 0) tray.ocv_avg = (config.ocv_min + config.ocv_max) / 2;
-		else tray.ocv_avg = tray.ocv_avgAll / tray.ocv_avgAll_count;
-
-		editIrAvg->Text = FormatFloat("0.00", tray.ir_avg);
-		editOcvAvg->Text = FormatFloat("0.00", tray.ocv_avg);
-
-		config.ir_range = StringToDouble(editIrRange->Text, 3);
-		config.ocv_range = StringToDouble(editOcvRange->Text, 1000);
-
-		if(tray.ir_avgAll_count < 2) tray.ir_sigma = 1;
-		else tray.ir_sigma = GetSigma(tray.after_value, tray.ir_flag, tray.ir_avg, tray.ir_avgAll_count - 1);
-
-		if(tray.ocv_avgAll_count < 2) tray.ocv_sigma = 1;
-		else tray.ocv_sigma = GetSigma(tray.ocv_value, tray.ocv_flag, tray.ocv_avg, tray.ocv_avgAll_count - 1);
-
-		irMin = tray.ir_avg - config.ir_range * tray.ir_sigma;
-		irMax = tray.ir_avg + config.ir_range * tray.ir_sigma;
-
-		ocvMin = tray.ocv_avg - config.ocv_range * tray.ocv_sigma;
-		ocvMax = tray.ocv_avg + config.ocv_range * tray.ocv_sigma;
-		 //* 색상도 바꿔야 함....
-         int index;
-		for(int i = 0;i < CHANNELCOUNT;++i){
-            index = GetChMap(this->Tag, traypos, i) - 1;
-			if(tray.cell[index] == 1){
-
-				if(tray.after_value[index] < config.ir_min || tray.after_value[index] > config.ir_max)
-				{
-					retest.cell[index] = 2; // ir spec ng
-					SetProcessColor(index, AverageOver);
-					retest.cnt_error += 1;
-					remeasure_cnt += 1;
-					if(tray.first) acc_remeasure[index] += 1;
-				}
-				else if((tray.after_value[index] >= config.ir_min && tray.after_value[index] <= config.ir_max)
-					&& (tray.after_value[index] < irMin || tray.after_value[index] > irMax)){
-					retest.cell[index] = 5; // ir average ng
-					SetProcessColor(index, AverageOver);
-					retest.cnt_error += 1;
-					remeasure_cnt += 1;
-					if(tray.first) acc_remeasure[index] += 1;
-				}
-				else if(tray.ocv_value[index] < 100 || tray.ocv_value[index] > 4200)
-				{
-					if(retest.cell[index] != 2 || retest.cell[index] != 5){
-						retest.cell[index] = 3;  // ocv spec ng
-						retest.cnt_error += 1;
-						remeasure_cnt += 1;
-						if(tray.first) acc_remeasure[index] += 1;
-					}
-				}
-				else if((tray.ocv_value[index] >= 100 && tray.ocv_value[index] <= 4200)
-					&& (tray.ocv_value[index] < ocvMin || tray.ocv_value[index] > ocvMax)){
-					if(retest.cell[index] != 2 || retest.cell[index] != 5){
-						retest.cell[index] = 6; // ocv average ng
-						retest.cnt_error += 1;
-						remeasure_cnt += 1;
-						if(tray.first) acc_remeasure[index] += 1;
-					}
-				}else{
-					retest.cell[index] = 0;
-				}
-			}
-			else retest.cell[index] = 0;
-		}
-
-		tray.first = false;
-
-		if((remeasure_cnt < remLimit) && (remeasure_cnt > 0)) brem = true;
-		else brem= false;
-
-		if(brem == false){
-			CmdForceStop();     // Probe Open
-		}
-		else{
-			tray.rem_mode = 1;
-			retest.re_index = 0;
-			RemeasureExcute();
-		}
-	} else {
-		CmdForceStop();
-	}
-
-	WriteCommLog("IR/OCV STOP", "SetRemeasureList()");
 }
 //---------------------------------------------------------------------------
 double __fastcall TTotalForm::GetSigma(float values[], bool flags[], double avg, int ncount)
@@ -1744,14 +1514,12 @@ void __fastcall TTotalForm::WriteIROCVValue()
 	// ir value 1 Word => Max Value = 65535
 	for(int i = 0; i < MAXCHANNEL; i++)
 	{
-//		Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_IR_VALUE + i, FormatFloat("0000", (tray.after_value[i] * 100)) % (256 * 256));
         int32_t ir_int = static_cast<int32_t>(std::floor(tray.after_value[i] * 100.0 + 0.5));
         Mod_PLC->SetIrValue(PC_D_IROCV_IR_VALUE, i, ir_int);
 	}
 
 	for(int i = 0; i < MAXCHANNEL; i++)
 	{
-//		Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Ocv_Data, PC_D_IROCV_OCV_VALUE + i, FormatFloat("00000", (tray.ocv_value[i] * 10)) % (256 * 256));
         int32_t ocv_int = static_cast<int32_t>(std::floor(tray.ocv_value[i] * 10.0 + 0.5));
         Mod_PLC->SetOcvValue(PC_D_IROCV_OCV_VALUE, i, ocv_int);
 	}
@@ -1775,69 +1543,33 @@ void __fastcall TTotalForm::BadInfomation()
     int iCell = 0;
     int iRetest = 0;
     TColor clr;
-	for(int i = 0; i < LINECOUNT; ++i){
+    //* 16bit * 36
+	for(int i = 0; i < 36; ++i){
         int irocvNg = 0;
-		for(int j = 0; j < LINECOUNT; j++)
+		for(int j = 0; j < 16; j++)
 		{
-            iCell = tray.cell[i * LINECOUNT + j];
-            iRetest = retest.cell[i * LINECOUNT + j];
-            clr = panel[i * LINECOUNT + j]->Color;
-			if((tray.cell[(i * LINECOUNT) + j] == 1) && retest.cell[(i * LINECOUNT) + j] != 0)
+            iCell = tray.cell[i * 16 + j];
+            iRetest = retest.cell[i * 16 + j];
+            clr = panel[i * 16 + j]->Color;
+			if((tray.cell[(i * 16) + j] == 1) && retest.cell[(i * 16) + j] != 0)
 			{
-				//Mod_PLC->SetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + i, j, true);
                 //* ng -> true
                 irocvNg |= 1 << j;
 				ngCount++;
 				NgCount++;
 			}
-			else if((tray.cell[(i * LINECOUNT) + j] == 1) && retest.cell[(i * LINECOUNT) + j] == 0)
+			else if((tray.cell[(i * 16) + j] == 1) && retest.cell[(i * 16) + j] == 0)
 			{
                 //* ok -> false
-				//Mod_PLC->SetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + i, j, false);
 			}
 			else
 			{
                 //* ng -> true
                 irocvNg |= 1 << j;
-				//Mod_PLC->SetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + i, j, true);
 				ngCount++;
 			}
 		}
-        Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + (i * 2), irocvNg);
-	}
-
-	Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_NG_COUNT, ngCount);
-}
-//---------------------------------------------------------------------------
-// 트레이 위치 변경이 없을 때 버전
-void __fastcall TTotalForm::BadInfomation2()
-{
-	for(int i = 0; i < LINECOUNT; ++i){
-        int irocvNg = 0;
-		for(int j = 0; j < LINECOUNT; j++)
-		{
-			if((tray.cell[(i * LINECOUNT) + j] == 1) && (panel[(i * LINECOUNT) + j]->Color == clCellError))
-			{
-				//Mod_PLC->SetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + i, j, true);
-                //* ng -> true
-                irocvNg |= 1 << j;
-				ngCount++;
-				NgCount++;
-			}
-			else if((tray.cell[(i * LINECOUNT) + j] == 1) && retest.cell[(i * LINECOUNT) + j] == 0)
-			{
-                //* ok -> false
-				//Mod_PLC->SetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + i, j, false);
-			}
-			else
-			{
-                //* ng -> true
-                irocvNg |= 1 << j;
-				//Mod_PLC->SetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + i, j, true);
-				ngCount++;
-			}
-		}
-        Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + (i * 2), irocvNg);
+        Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + i, irocvNg);
 	}
 
 	Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_NG_COUNT, ngCount);
@@ -2038,29 +1770,27 @@ void __fastcall TTotalForm::AutoInspection_Wait()
             DisplayStatus(nREADY);
 			//* Cell 정보 가져오기. 1 => 셀있음, 0 => 셀없음
             //* Cell 정보는 tray pos 상관없이 전체를 가져옴.
-            for(int i = 0; i < LINECOUNT; i++)
+            //* 16bit * 36
+            for(int i = 0; i < 36; i++)
 			{
-				for(int j = 0; j < LINECOUNT; j++)
+				for(int j = 0; j < 16; j++)
 				{
-					tray.cell[i * LINECOUNT + j] = GetPlcData(PLC_D_IROCV_TRAY_CELL_DATA + (i * 2), j);
+					tray.cell[i * 16 + j] = GetPlcData(PLC_D_IROCV_TRAY_CELL_DATA + i, j);
 				}
 			}
-
-            //* Tray Info 저장
-            WriteTrayInfo();
 
             //* Cell 갯수. tray pos 별 갯수. 갯수가 0이면 바로 종료
             //* tray pos 1 => cell_count1, tray pos 2 => cell_count2
             tray.cell_count1 = 0;
             tray.cell_count2 = 0;
             for(int i = 0; i < CHANNELCOUNT; i++){
-                channel = GetChMap(this->Tag, nTrayPos, i);
-                if(nTrayPos == 1)
-                	tray.cell_count1 += tray.cell[channel];
-                else if(nTrayPos == 2)
-                    tray.cell_count2 += tray.cell[channel];
+                channel = GetChMap(this->Tag, 1, i);
+                tray.cell_count1 += tray.cell[channel - 1];
             }
-
+            for(int i = 0; i < CHANNELCOUNT; i++){
+                channel = GetChMap(this->Tag, 2, i);
+                tray.cell_count2 += tray.cell[channel - 1];
+            }
             DisplayProcess(sBarcode, "AutoInspection_Wait", "[STEP 2] Reading Cell info ... ");
 			nStep = 3;
 			break;
@@ -2321,13 +2051,6 @@ void __fastcall TTotalForm::AutoInspection_Finish()
 	}
 }
 //---------------------------------------------------------------------------
-void __fastcall TTotalForm::ResultReportToPLC()
-{
-	WriteResultFile();
-//    WriteOKNG();
-	DeleteFile((AnsiString)DATA_PATH + tray.trayid + ".Tray");
-}
-//---------------------------------------------------------------------------
 void __fastcall TTotalForm::ReadchannelMapping()
 {
 	AnsiString str, FileName;
@@ -2452,12 +2175,6 @@ void __fastcall TTotalForm::pReadyClick(TObject *Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TTotalForm::chkUseAverageClick(TObject *Sender)
-{
-    if(chkUseAverage->Checked == true) config.average_use = true;
-    else config.average_use = false;
-}
-//---------------------------------------------------------------------------
 void __fastcall TTotalForm::ShowPLCSignal(TAdvSmoothPanel *advPanel, bool bOn)
 {
     if(bOn)
@@ -2473,4 +2190,12 @@ void __fastcall TTotalForm::ShowPLCSignal(TAdvSmoothPanel *advPanel, bool bOn)
 		advPanel->Fill->ColorTo = BaseForm->poff->Color;
 	}
 }
+
+void __fastcall TTotalForm::btnDisConnectIROCVClick(TObject *Sender)
+{
+    Client->Active = false;
+    config.recontact = true;
+    this->ReContactTimerTimer(ReContactTimer);
+}
+//---------------------------------------------------------------------------
 

@@ -39,8 +39,16 @@ void __fastcall TTotalForm::CmdForceStop()
 {
 	// 검사종료	- Probe 해제 및 Tray 검사 대기
     MakeData(1, "STP");
+    //* 각 포지션별 결과 저장
+    WriteResultFile(nTrayPos);
 	Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_PROB_OPEN, 1);
-	WritePLCLog("CmdForceStop", "IROCV PROBE OPEN = 1");
+    if(nTrayPos == 1){
+        SetPcValue(PC_D_IROCV_COMPLETE1, 1);
+		WritePLCLog("CmdForceStop", "COMPLETE1 on, IROCV PROBE OPEN = 1");
+    }else if(nTrayPos == 2){
+        SetPcValue(PC_D_IROCV_COMPLETE2, 1);
+        WritePLCLog("CmdForceStop", "COMPLETE2 on, IROCV PROBE OPEN = 1");
+    }
 }
 //---------------------------------------------------------------------------
 void __fastcall TTotalForm::CmdForceStop_Original()
@@ -60,31 +68,24 @@ void __fastcall TTotalForm::CmdTrayOut()
 	{
 		BadInfomation();
 		WriteIROCVValue();
-		LoadTrayInfo(tray.trayid);
-//		ReadCellInfo();
 		WriteResultFile();
-
-		cell_serial_filename = (UnicodeString)TRAY_PATH2 + tray.trayid + ".Tray";
-		if(FileExists(cell_serial_filename)){
-			WritePLCLog("Delete CELL SERIAL Filename", cell_serial_filename);
-			DeleteFile(cell_serial_filename);
-		}
 	}
 
-	Sleep(2000);
-	//Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_TRAY_OUT, 1);
-	WritePLCLog("CmdTrayOut", "IROCV TRAY OUT = 1");
-    if((tray.cell_count1 + tray.cell_count2) > NgCount){
-		if(BaseForm->chkTest->Checked == false)
-			Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data,  PC_D_IROCV_TRAY_OUT, 1);
-        DisplayStatus(nFinish);
-		Panel_State->Caption = " IROCV Tray Out ... ";
-	}
-	else{
-		Form_Error->DisplayErrorMessage("IR/OCV NG ERROR",
+	Sleep(200);
+    if(/*(tray.cell_count1 + tray.cell_count2) == NgCount || */
+    	NgCount > editNgAlarmCount->Text.ToIntDef(20)){
+        Form_Error->Tag = this->Tag;
+        Form_Error->DisplayErrorMessage("IR/OCV NG ERROR",
 										"There is too many ng cells. Please check it.",
 										"Select [Tray Out] or [Restart]");
-		Form_Error->Tag = this->Tag;
+	}
+	else{
+        if(BaseForm->chkTest->Checked == false) {
+			Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data,  PC_D_IROCV_TRAY_OUT, 1);
+            WritePLCLog("CmdTrayOut", "IROCV TRAY OUT = 1");
+        }
+        DisplayStatus(nFinish);
+		Panel_State->Caption = " IROCV Tray Out ... ";
 	}
 }
 //---------------------------------------------------------------------------
@@ -92,13 +93,7 @@ void __fastcall TTotalForm::CmdTrayOut_Original()
 {
 	BadInfomation();
 	WriteIROCVValue();
-    LoadTrayInfo(tray.trayid);
 	WriteResultFile();
-//	WriteResultFile_MES2();
-//    WriteResultFile_MES();
-//	WriteOKNG();
-
-//	DeleteFile((AnsiString)DATA_PATH + tray.trayid + ".Tray");
 
 	// 자동검사 9(끝). 트레이 방출
 	MakeData(1,"FIN");
@@ -235,10 +230,6 @@ int __fastcall TTotalForm::SensorState(AnsiString cmd)
 //---------------------------------------------------------------------------
 void __fastcall TTotalForm::ResponseAutoTestFinish(int traypos)
 {
-//*
-//    if(config.average_use == true) SetRemeasureList();
-//	else SetRemeasureList2();
-
 	if(bLocal == true){
 		CmdForceStop();
         DisplayProcess(sFinish, "AutoInspection_Measure", " AMF - Measure finished ... ");
@@ -248,10 +239,8 @@ void __fastcall TTotalForm::ResponseAutoTestFinish(int traypos)
 	{
 //		SendData("AMF");    //kedison
 		SendData("SEN");
-//		CmdForceStop();
-		if(config.average_use == true) SetRemeasureList_Avg(traypos);
-		else SetRemeasureList(traypos);
-	}
+        SetRemeasureList(traypos);
+    }
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
@@ -393,7 +382,7 @@ void __fastcall TTotalForm::ProcessOcv(AnsiString param)
     //* 트레이 위치에 따라 맵핑 다르게 적용
     int boardchannel = StringToInt(param.SubString(1, 3), 0);
     if(boardchannel < 1) return;
-	channel = chMap[boardchannel + nTrayPos * 288];
+	channel = chMap[boardchannel + (nTrayPos - 1) * 288];
 
 	param.Delete(1,3);
 	int pos = param.Pos("E");

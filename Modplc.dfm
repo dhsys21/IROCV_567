@@ -1,7 +1,7 @@
 object Mod_PLC: TMod_PLC
   OldCreateOrder = False
-  Height = 194
-  Width = 498
+  Height = 382
+  Width = 695
   object Timer_Read: TTimer
     Interval = 500
     Left = 56
@@ -27,9 +27,9 @@ object Mod_PLC: TMod_PLC
   end
   object Timer_PC_WriteMsg: TTimer
     Enabled = False
-    Interval = 300
+    Interval = 200
     OnTimer = Timer_PC_WriteMsgTimer
-    Left = 368
+    Left = 376
     Top = 32
   end
   object ClientSocket_PLC: TClientSocket

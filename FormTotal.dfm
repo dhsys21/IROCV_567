@@ -993,7 +993,6 @@ object TotalForm: TTotalForm
           TabOrder = 0
           Text = 'EDIT1'
           Visible = False
-          OnKeyDown = editTrayIdKeyDown
           ExplicitHeight = 26
         end
       end
@@ -5622,10 +5621,10 @@ object TotalForm: TTotalForm
     end
   end
   object pnlConfig: TAdvSmoothPanel
-    Left = 723
-    Top = 31
+    Left = 729
+    Top = 28
     Width = 600
-    Height = 445
+    Height = 448
     Cursor = crDefault
     CanMove = True
     Caption.Location = plCenterCenter
@@ -5661,7 +5660,7 @@ object TotalForm: TTotalForm
     TMSStyle = 0
     object Label5: TLabel
       Left = 18
-      Top = 10
+      Top = 8
       Width = 111
       Height = 19
       Caption = 'Configuration'
@@ -5674,7 +5673,7 @@ object TotalForm: TTotalForm
     end
     object GroupBox4: TGroupBox
       Left = 10
-      Top = 47
+      Top = 28
       Width = 440
       Height = 107
       Caption = 'IR/OCV'
@@ -5755,7 +5754,7 @@ object TotalForm: TTotalForm
       end
       object btnConnectIROCV: TAdvSmoothButton
         Left = 323
-        Top = 43
+        Top = 14
         Width = 99
         Height = 38
         Appearance.Font.Charset = DEFAULT_CHARSET
@@ -5790,10 +5789,47 @@ object TotalForm: TTotalForm
         OnClick = btnConnectIROCVClick
         TMSStyle = 8
       end
+      object btnDisConnectIROCV: TAdvSmoothButton
+        Left = 323
+        Top = 58
+        Width = 99
+        Height = 38
+        Appearance.Font.Charset = DEFAULT_CHARSET
+        Appearance.Font.Color = clWindowText
+        Appearance.Font.Height = -13
+        Appearance.Font.Name = 'Tahoma'
+        Appearance.Font.Style = [fsBold]
+        Appearance.Spacing = 0
+        Appearance.Rounding = 3
+        Appearance.WordWrapping = False
+        Status.Caption = '0'
+        Status.Appearance.Fill.Color = clRed
+        Status.Appearance.Fill.ColorMirror = clNone
+        Status.Appearance.Fill.ColorMirrorTo = clNone
+        Status.Appearance.Fill.GradientType = gtSolid
+        Status.Appearance.Fill.GradientMirrorType = gtSolid
+        Status.Appearance.Fill.BorderColor = clGray
+        Status.Appearance.Fill.Rounding = 0
+        Status.Appearance.Fill.ShadowOffset = 0
+        Status.Appearance.Fill.Glow = gmNone
+        Status.Appearance.Font.Charset = DEFAULT_CHARSET
+        Status.Appearance.Font.Color = clWhite
+        Status.Appearance.Font.Height = -11
+        Status.Appearance.Font.Name = 'Tahoma'
+        Status.Appearance.Font.Style = []
+        BevelColor = clMedGray
+        Caption = 'Disconnect'
+        Color = clWhite
+        ParentFont = False
+        TabOrder = 5
+        Version = '2.1.1.5'
+        OnClick = btnDisConnectIROCVClick
+        TMSStyle = 8
+      end
     end
     object GroupBox5: TGroupBox
       Left = 10
-      Top = 165
+      Top = 135
       Width = 440
       Height = 138
       Caption = 'PLC CONNECTION'
@@ -6067,9 +6103,9 @@ object TotalForm: TTotalForm
     end
     object Panel4: TPanel
       Left = 10
-      Top = 319
+      Top = 335
       Width = 580
-      Height = 123
+      Height = 110
       BevelInner = bvRaised
       BiDiMode = bdLeftToRight
       BorderStyle = bsSingle
@@ -6278,13 +6314,13 @@ object TotalForm: TTotalForm
       end
       object Panel15: TPanel
         Left = 6
-        Top = 179
+        Top = 64
         Width = 195
         Height = 30
         Alignment = taLeftJustify
         BevelKind = bkFlat
         BevelOuter = bvNone
-        Caption = '     REMEASURE ALARM COUNT'
+        Caption = '     NG ALARM COUNT'
         Color = 15658734
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -6297,10 +6333,10 @@ object TotalForm: TTotalForm
         ShowHint = False
         TabOrder = 3
       end
-      object editRemeasureAlarmCount: TEdit
+      object editNgAlarmCount: TEdit
         Left = 201
-        Top = 179
-        Width = 53
+        Top = 64
+        Width = 84
         Height = 30
         Alignment = taCenter
         AutoSize = False
@@ -6314,7 +6350,7 @@ object TotalForm: TTotalForm
         NumbersOnly = True
         ParentFont = False
         TabOrder = 4
-        Text = '2'
+        Text = '20'
       end
       object RemeasureEdit: TEdit
         Left = 401
@@ -6337,7 +6373,7 @@ object TotalForm: TTotalForm
       end
       object grpIrAvg: TGroupBox
         Left = 5
-        Top = 64
+        Top = 111
         Width = 280
         Height = 50
         Caption = 'IR SPEC (m'#937')'
@@ -6397,7 +6433,7 @@ object TotalForm: TTotalForm
       end
       object grpOcvAvg: TGroupBox
         Left = 290
-        Top = 64
+        Top = 111
         Width = 280
         Height = 50
         Caption = 'OCV SPEC (mV)'
@@ -6455,26 +6491,76 @@ object TotalForm: TTotalForm
           Text = '2'
         end
       end
+      object Panel2: TPanel
+        Left = 291
+        Top = 64
+        Width = 195
+        Height = 30
+        Alignment = taLeftJustify
+        BevelKind = bkFlat
+        BevelOuter = bvNone
+        Caption = '     REMEASURE ALARM COUNT'
+        Color = 15658734
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentBackground = False
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = False
+        TabOrder = 8
+      end
+      object editRemeasureAlarmCount: TEdit
+        Left = 486
+        Top = 64
+        Width = 84
+        Height = 30
+        Alignment = taCenter
+        AutoSize = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Orientation = 5
+        Font.Style = [fsBold]
+        ImeName = 'Microsoft Office IME 2007'
+        NumbersOnly = True
+        ParentFont = False
+        TabOrder = 9
+        Text = '5'
+      end
     end
-    object chkUseAverage: TCheckBox
-      Left = 465
-      Top = 289
-      Width = 128
-      Height = 25
-      Caption = 'Use Average'
-      Checked = True
+    object GroupBox6: TGroupBox
+      Left = 10
+      Top = 274
+      Width = 440
+      Height = 58
+      Caption = 'MODEL NAME'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlue
-      Font.Height = -16
+      Font.Color = clWindowText
+      Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
-      ParentShowHint = False
-      ShowHint = False
-      State = cbChecked
       TabOrder = 6
-      OnClick = chkUseAverageClick
-      OnMouseUp = chkBypassMouseUp
+      object editModelName: TEdit
+        Left = 63
+        Top = 25
+        Width = 362
+        Height = 24
+        Alignment = taCenter
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ImeName = 'Microsoft Office IME 2007'
+        ParentFont = False
+        TabOrder = 0
+        Text = '20PQ'
+      end
     end
   end
   object Client: TClientSocket

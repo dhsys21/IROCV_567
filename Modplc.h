@@ -37,8 +37,8 @@ const int PC_INDEX_INTERFACE					=		11;
 const int PLC_D_INTERFACE_START_DEV_NUM	 			=	37000;
 const int PLC_D_INTERFACE_LEN 						= 	100;
 const int PLC_D_CELL_SERIAL_NUM                     =	{86000};
-const int PLC_D_CELL_SERIAL_LEN                     =   5760; //* 총 5760 word. 822 * 7번 읽어야 함
-const int PLC_D_CELL_SERIAL_READLEN                 =   822;  //* 길이 테스트 필요
+const int PLC_D_CELL_SERIAL_LEN                     =   5760; //* 총 5760 word. 720 * 8번 읽어야 함
+const int PLC_D_CELL_SERIAL_READLEN                 =   720;  //* 길이 테스트 필요
 //---------------------------------------------------------------------------
 const int PC_D_INTERFACE_START_DEV_NUM1				=	38000;
 const int PC_D_INTERFACE_LEN1	 					= 	100;
@@ -234,12 +234,13 @@ public:		// User declarations
 
 	bool PLC_Write_Result; //ir, current 값은 필요 시에만 쓰기를 한다.
     //* PLC DATA
-    int currentReadTask;
+    int currentPLCTask;
+    //int currentWriteTask;
     int CellSerialIndex;
 	unsigned char plc_Interface_Data[PLC_D_INTERFACE_LEN][2];
     unsigned char plc_Interface_Cell_Serial[PLC_D_CELL_SERIAL_LEN][2];
     //* PC DATA
-    int currentWriteTask;
+    int currentPCTask;
 	unsigned char pc_Interface_Data[PC_D_INTERFACE_LEN1][2];
     unsigned char pc_Interface_Ir_Data[PC_D_INTERFACE_IR_LEN][2];
 	unsigned char pc_Interface_Ocv_Data[PC_D_INTERFACE_OCV_LEN][2];

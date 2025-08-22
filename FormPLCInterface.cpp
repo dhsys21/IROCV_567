@@ -45,9 +45,10 @@ void __fastcall TForm_PLCInterface::SetListViewPLC()
 	AddListView(ListView_PLC, "D" + IntToStr(PLC_D_INTERFACE_START_DEV_NUM + PLC_D_IROCV_TRAY_ID), "IN TRAY BCR DATA");
 
 	// CELL INFO => 1 : YES, 0 : NO
-	for(int i = 0; i < LINECOUNT; i++)
+    //* 16 bit * 36
+	for(int i = 0; i < 36; i++)
 	{
-		AddListView(ListView_PLC, "D" + IntToStr(PLC_D_INTERFACE_START_DEV_NUM + PLC_D_IROCV_TRAY_CELL_DATA + (i * 2)), "TRAY CELL DATA #" + IntToStr(i + 1));
+		AddListView(ListView_PLC, "D" + IntToStr(PLC_D_INTERFACE_START_DEV_NUM + PLC_D_IROCV_TRAY_CELL_DATA + i), "TRAY CELL DATA #" + IntToStr(i + 1));
 	}
 
     for(int i = 0; i < LINECOUNT; i++)
@@ -76,7 +77,8 @@ void __fastcall TForm_PLCInterface::SetListViewPC()
 	AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_OCV_MAX), "IROCV OCV MAX.");
 	AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_NG_ALARM), "NG ALARM");
 
-	for(int i = 0; i < LINECOUNT; i++)
+    //* 16 bit * 36
+	for(int i = 0; i < 36; i++)
 		AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_MEASURE_OK_NG + (i * 2)), "IR/OCV OK/NG DATA #" + IntToStr(i + 1));
 
 //	for(int i = 0; i < MAXCHANNEL; i++)
@@ -85,10 +87,10 @@ void __fastcall TForm_PLCInterface::SetListViewPC()
 //	for(int i = 0; i < MAXCHANNEL; i++)
 //		AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM2 + PC_D_IROCV_OCV_VALUE + i), "OCV VALUE #" + IntToStr(i + 1));
     for(int i = 0; i < LINECOUNT; i++)
-		AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_IR + PC_D_IROCV_IR_VALUE + (i * 2 * LINECOUNT)), "IR VALUE #" + IntToStr(i * LINECOUNT + 1));
+		AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_IR + PC_D_IROCV_IR_VALUE + i * LINECOUNT), "IR VALUE #" + IntToStr(i * LINECOUNT + 1));
 
 	for(int i = 0; i < LINECOUNT; i++)
-		AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_OCV + PC_D_IROCV_OCV_VALUE + (i * 2 * LINECOUNT)), "OCV VALUE #" + IntToStr(i * LINECOUNT + 1));
+		AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_OCV + PC_D_IROCV_OCV_VALUE + i  * LINECOUNT), "OCV VALUE #" + IntToStr(i * LINECOUNT + 1));
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm_PLCInterface::AddListView(TListView *list, AnsiString address, AnsiString name)
@@ -129,15 +131,16 @@ void __fastcall TForm_PLCInterface::Timer_UpdateTimer(TObject *Sender)
 		ListView_PLC->Items->Item[index++]->SubItems->Strings[1] = Mod_PLC->GetString(Mod_PLC->plc_Interface_Data, PLC_D_IROCV_TRAY_ID, 10);
 
 		AnsiString cell_info;
-		for(int i = 0; i < LINECOUNT; i++)
+        //* 16 bit * 36
+		for(int i = 0; i < 36; i++)
 		{
 			cell_info = "";
-			for(int j = 0; j < LINECOUNT; j++)
+			for(int j = 0; j < 16; j++)
 			{
-				cell_info += Mod_PLC->GetData(Mod_PLC->plc_Interface_Data, PLC_D_IROCV_TRAY_CELL_DATA + (i * 2), j);
+				cell_info += Mod_PLC->GetData(Mod_PLC->plc_Interface_Data, PLC_D_IROCV_TRAY_CELL_DATA + i, j);
 			}
 			ListView_PLC->Items->Item[index++]->SubItems->Strings[1] = cell_info;
-			Label4->Caption += Mod_PLC->GetDouble(Mod_PLC->plc_Interface_Data, PLC_D_IROCV_TRAY_CELL_DATA + (i * 2));
+			Label4->Caption += Mod_PLC->GetDouble(Mod_PLC->plc_Interface_Data, PLC_D_IROCV_TRAY_CELL_DATA + i);
 		}
 
         for(int i = 0; i < LINECOUNT; i++)
@@ -167,11 +170,12 @@ void __fastcall TForm_PLCInterface::Timer_UpdateTimer(TObject *Sender)
 		ListView_PC->Items->Item[index++]->SubItems->Strings[1] = Mod_PLC->GetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_NG_ALARM);
 
 		AnsiString okng_bin;
-		for(int i = 0; i < LINECOUNT; i++)
+        //* 16 bit * 36
+		for(int i = 0; i < 36; i++)
 		{
 			okng_bin = "";
-			for(int j = 0; j < LINECOUNT; j++)
-				okng_bin += Mod_PLC->GetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + (i * 2), j);
+			for(int j = 0; j < 16; j++)
+				okng_bin += Mod_PLC->GetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + i, j);
 
 			ListView_PC->Items->Item[index++]->SubItems->Strings[1] = okng_bin;
 		}
@@ -208,7 +212,7 @@ void __fastcall TForm_PLCInterface::btnWriteValueClick(TObject *Sender)
 {
 	int address = cbAddress->Text.ToIntDef(45000);
 	int value = editValue->Text.ToIntDef(1);
-	Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, address - 45000, value);
+	Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, address - 38000, value);
 }
 //---------------------------------------------------------------------------
 
@@ -218,11 +222,12 @@ void __fastcall TForm_PLCInterface::btnWriteNgValueClick(TObject *Sender)
 	vector<int> ngchannels = BaseForm->StringToVector(strIrocvNg);
 
     int ngCount = 0;
-	for(int i = 0; i < LINECOUNT; ++i){
+    //* 16 bit * 36
+	for(int i = 0; i < 36; ++i){
         int irocvNg = 0;
-		for(int j = 0; j < LINECOUNT; j++)
+		for(int j = 0; j < 16; j++)
 		{
-			int nChannel = i * LINECOUNT + j + 1;
+			int nChannel = i * 16 + j + 1;
 			if(find(ngchannels.begin(), ngchannels.end(), nChannel) != ngchannels.end())
 			{
                 //* ng -> true
@@ -230,7 +235,7 @@ void __fastcall TForm_PLCInterface::btnWriteNgValueClick(TObject *Sender)
 				ngCount++;
 			}
 		}
-        Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + (i * 2), irocvNg);
+        Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + i, irocvNg);
 	}
 
 	Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_NG_COUNT, ngCount);
@@ -239,20 +244,22 @@ void __fastcall TForm_PLCInterface::btnWriteNgValueClick(TObject *Sender)
 
 void __fastcall TForm_PLCInterface::btnWriteIrOcvValueClick(TObject *Sender)
 {
+	Mod_PLC->PLC_Write_Result = true;
 	double ir_base = StringToDouble(editIR->Text, 1);
 	double ocv_base = StringToDouble(editOCV->Text, 1);
 
-	// ir value 1 Word
+	// ir value 2 Word
+	// 2 Word :  value / (65536 / 2) => 윗 주소에 쓰기, value % (65536 /2 ) => 아래 주소에 쓰기 // herald 2017 11 30
 	for(int i = 0; i < MAXCHANNEL; i++)
 	{
-		double ir = ir_base + (i / 100.0);
-		Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_IR_VALUE + i, ir);
+        int32_t ir_int = static_cast<int32_t>(ir_base * 100.0) + i;  // signed 32-bit int
+        Mod_PLC->SetIrValue(PC_D_IROCV_IR_VALUE, i, ir_int);
 	}
 
 	for(int i = 0; i < MAXCHANNEL; i++)
 	{
-		double ocv = ocv_base + (i / 10.0);
-		Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Ocv_Data, PC_D_IROCV_OCV_VALUE + i, ocv);
+		int32_t ocv_int = static_cast<int32_t>(ocv_base * 10.0) + i;  // signed 32-bit int
+        Mod_PLC->SetOcvValue(PC_D_IROCV_OCV_VALUE, i, ocv_int);
 	}
 }
 //---------------------------------------------------------------------------

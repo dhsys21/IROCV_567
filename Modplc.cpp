@@ -16,7 +16,7 @@ __fastcall TMod_PLC::TMod_PLC(TComponent* Owner)
 	plc_Data.SubHeader[0] = 0x50;
 	plc_Data.SubHeader[1] = 0x00;
 	plc_Data.NetNum = 0x03;
-	plc_Data.PlcNum = 0x03;
+	plc_Data.PlcNum = 0x01;
 	plc_Data.ReqIONum[0] = 0xff;
 	plc_Data.ReqIONum[1] = 0x03;
 	plc_Data.ReqOfficeNum = 0x00;
@@ -35,7 +35,7 @@ __fastcall TMod_PLC::TMod_PLC(TComponent* Owner)
 	pc_Data.SubHeader[0] = 0x50;
 	pc_Data.SubHeader[1] = 0x00;
 	pc_Data.NetNum = 0x03;
-	pc_Data.PlcNum = 0x03;
+	pc_Data.PlcNum = 0x01;
 	pc_Data.ReqIONum[0] = 0xff;
 	pc_Data.ReqIONum[1] = 0x03;
 	pc_Data.ReqOfficeNum = 0x00;
@@ -46,9 +46,7 @@ __fastcall TMod_PLC::TMod_PLC(TComponent* Owner)
 	pc_Data.Command[1] = 0x14;
 
 	pc_index = PC_INDEX_INTERFACE;
-
 	plc_Interface = "";
-
 	bClose = false;
 
 	//* PLC Data Init
@@ -61,8 +59,8 @@ __fastcall TMod_PLC::TMod_PLC(TComponent* Owner)
 
     PLC_Write_Result = false; //voltage, current 값은 필요 시에만 쓰기를 한다.
     CellSerialIndex = 0;
-    currentReadTask = nSTANDARD;
-    currentWriteTask = nPCDATA;
+    currentPLCTask = nPLCDATA;
+    currentPCTask = nPCDATA;
 }
 //---------------------------------------------------------------------------
 //	접속 & 해제
@@ -167,54 +165,46 @@ void __fastcall TMod_PLC::ClientSocket_PCRead(TObject *Sender, TCustomWinSocket 
 //---------------------------------------------------------------------------
 void __fastcall TMod_PLC::Timer_PC_WriteMsgTimer(TObject *Sender)
 {
+    bool flag = false;
     if(ClientSocket_PC->Active)
 	{
 		if(pc_ReadFlag)
 		{
 			if(pc_index == PC_INDEX_INTERFACE)
 			{
-				switch(currentWriteTask)
+				switch(currentPCTask)
                 {
                     case nPCDATA:
                         //* Heart Beat
-                        if(BaseForm->nForm[0]->Client->Active)
-                        {
-                            bool flag = GetData(pc_Interface_Data, PC_D_HEART_BEAT, 0);
-                            SetDouble(pc_Interface_Data, PC_D_HEART_BEAT, (int)!flag);
-                        }
-
-                        //* write ir, ocv 완료
-//                        if(GetPlcValue(PLC_D_IROCV_COMPLETE) == 1){
-//                            SetValue(PC_D_IROCV_COMPLETE1, 0);
-//                            SetValue(PC_D_IROCV_COMPLETE2, 0);
-//                        }
+                        flag = GetData(pc_Interface_Data, PC_D_HEART_BEAT, 0);
+                        SetDouble(pc_Interface_Data, PC_D_HEART_BEAT, (int)!flag);
 
                         //* General Data, Result Data, Min/Max Data, IR Data
                         PC_DataChange(0, PC_D_INTERFACE_START_DEV_NUM1, DEVCODE_D, PC_D_INTERFACE_LEN1);
                         ClientSocket_PC->Socket->SendBuf(&pc_Data, sizeof(pc_Data));        // should comment for emulator
                         ClientSocket_PC->Socket->SendBuf(&pc_Interface_Data, sizeof(pc_Interface_Data));
-                        currentWriteTask = nIR;
+                        currentPCTask = nIR;
                         break;
                     case nIR: //* 2word 씩 해야 하면 여기에 2번에 나눠서 쓰기. 사이에 sleep(50) 추가
                         PC_DataChange(0, PC_D_INTERFACE_IR, DEVCODE_D, PC_D_INTERFACE_IR_LEN);
                         ClientSocket_PC->Socket->SendBuf(&pc_Data, sizeof(pc_Data));
                         ClientSocket_PC->Socket->SendBuf(&pc_Interface_Ir_Data, sizeof(pc_Interface_Ir_Data));
-                        currentWriteTask = nOCV;
+                        currentPCTask = nOCV;
                         break;
                     case nOCV: //* 2word 씩 해야 하면 여기에 2번에 나눠서 쓰기. 사이에 sleep(50) 추가
                         PC_DataChange(0, PC_D_INTERFACE_OCV, DEVCODE_D, PC_D_INTERFACE_OCV_LEN);
                         ClientSocket_PC->Socket->SendBuf(&pc_Data, sizeof(pc_Data));
                         ClientSocket_PC->Socket->SendBuf(&pc_Interface_Ocv_Data, sizeof(pc_Interface_Ocv_Data));
-                        currentWriteTask = nPCDATA;
+                        currentPCTask = nPCDATA;
                         break;
                 }
 
 				pc_ReadFlag = false;
 			}
 		}
-		else if(pc_ReadCount > 10)
+		else if(pc_ReadCount > 20) 	//	200ms -> 10초동안 응답확인
 		{		//	3초동안 응답확인
-			ClientSocket_PC->Close();
+//			ClientSocket_PC->Close();
 		}
 
 		pc_ReadCount++;
@@ -301,21 +291,19 @@ void __fastcall TMod_PLC::ClientSocket_PLCRead(TObject *Sender, TCustomWinSocket
 
 			if(plc_Read.Length() >= length)
 			{
-                switch(currentReadTask)
+                switch(currentPLCTask)
                 {
-                    case nSTANDARD:
+                    case nPLCDATA:
                         PLC_Recv_Interface();
-//                        if(GetPlcValue(PLC_D_IROCV_CELL_SERIAL_START) == 1 && GetValue(PC_D_IROCV_CELL_SERIAL_COMP) == 0)
-//                        	currentReadTask = nCELLSERIAL;
-                        currentReadTask = nCELLSERIAL;
+                        currentPLCTask = nCELLSERIAL;
                         break;
-                    case nCELLSERIAL:  // 822워드를 7번에 나눠서 읽음
+                    case nCELLSERIAL:  // 720워드를 8번에 나눠서 읽음
                         int wordsRead = PLC_D_CELL_SERIAL_READLEN;
                         PLC_Recv_Interface_CellSerial(CellSerialIndex, wordsRead);
                         CellSerialIndex++;
 
-                        if(CellSerialIndex >= 7) CellSerialIndex = 0;
-                        currentReadTask = nSTANDARD;
+                        if(CellSerialIndex >= 8) CellSerialIndex = 0;
+                        currentPLCTask = nPLCDATA;
                         break;
                 }
 //				if(plc_index == PLC_INDEX_INTERFACE) PLC_Recv_Interface();
@@ -339,16 +327,14 @@ void __fastcall TMod_PLC::Timer_PLC_WriteMsgTimer(TObject *Sender)
 	{
 		if(plc_ReadFlag)
 		{
-            switch(currentReadTask)
+            switch(currentPLCTask)
             {
-                case nSTANDARD:
+                case nPLCDATA:
                     PLC_DataChange(0, PLC_D_INTERFACE_START_DEV_NUM, DEVCODE_D, PLC_D_INTERFACE_LEN);
-//                    currentReadTask = nCELLSERIAL;
                     break;
-                case nCELLSERIAL: // 한번에 822 word만 요청
+                case nCELLSERIAL: // 한번에 720 word만 요청 * 8
                     startAddress = PLC_D_CELL_SERIAL_NUM + (CellSerialIndex * PLC_D_CELL_SERIAL_READLEN);
                     PLC_DataChange(0, startAddress, DEVCODE_D, PLC_D_CELL_SERIAL_READLEN);
-//                    currentReadTask = nSTANDARD;
                     break;
                 default:
                 	break;
@@ -361,7 +347,7 @@ void __fastcall TMod_PLC::Timer_PLC_WriteMsgTimer(TObject *Sender)
 			plc_ReadFlag = false;
             plc_ReadCount = 0;
 		}
-		else if(plc_ReadCount > 10)		//	3초동안 응답확인
+		else if(plc_ReadCount > 20)		//	200ms -> 10초동안 응답확인
 			ClientSocket_PLC->Close();
 
 		plc_ReadCount++;
@@ -414,7 +400,7 @@ void __fastcall TMod_PLC::PLC_Recv_Interface_CellSerial(int index, int wordsToRe
     for(int i = 0; i < wordsToRead; i++)
     {
         int destIndex = i + (index * PLC_D_CELL_SERIAL_READLEN);
-        if(destIndex >= PLC_D_CELL_SERIAL_LEN) break; // 4200 이상이면 중단. overflow 방지
+        if(destIndex >= PLC_D_CELL_SERIAL_LEN) break; // 5760 이상이면 중단. overflow 방지
 
         plc_Interface_Cell_Serial[destIndex][0] = StrToInt("0x" + plc_Read.SubString(23 + num, 2));
         plc_Interface_Cell_Serial[destIndex][1] = StrToInt("0x" + plc_Read.SubString(23 + num + 2, 2));
@@ -547,33 +533,28 @@ void __fastcall TMod_PLC::SetValue(int pc_address, int value)
 void __fastcall TMod_PLC::SetSpecValue(int pc_address, int value)
 {
 	SetDouble(pc_Interface_Data, pc_address, static_cast<int16_t>(value));
-	SetDouble(pc_Interface_Data, pc_address + 1, static_cast<int16_t>(value >> 16));
 }
 //---------------------------------------------------------------------------
 void __fastcall TMod_PLC::SetIrValue(int pc_address, int index, int value)
 {
-	SetDouble(pc_Interface_Ir_Data, pc_address + (index * 2), static_cast<int16_t>(value));
-	SetDouble(pc_Interface_Ir_Data, pc_address + (index * 2) + 1, static_cast<int16_t>(value >> 16));
+	SetDouble(pc_Interface_Ir_Data, pc_address + index, static_cast<int16_t>(value));
 }
 //---------------------------------------------------------------------------
 void __fastcall TMod_PLC::SetOcvValue(int pc_address, int index, int value)
 {
-    SetDouble(pc_Interface_Ocv_Data, pc_address + (index * 2), static_cast<int16_t>(value));
-	SetDouble(pc_Interface_Ocv_Data, pc_address + (index * 2) + 1, static_cast<int16_t>(value >> 16));
+    SetDouble(pc_Interface_Ocv_Data, pc_address + index, static_cast<int16_t>(value));
 }
 //---------------------------------------------------------------------------
 int __fastcall TMod_PLC::GetIrValue(int pc_address, int index)
 {
-    int lowWord = GetDouble(pc_Interface_Ir_Data, pc_address + (index * 2));
-    int highWord = GetDouble(pc_Interface_Ir_Data, pc_address + (index * 2) + 1);
-    return (highWord << 16) | lowWord;
+    int lowWord = GetDouble(pc_Interface_Ir_Data, pc_address + index);
+    return lowWord;
 }
 //---------------------------------------------------------------------------
 int __fastcall TMod_PLC::GetOcvValue(int pc_address, int index)
 {
-    int lowWord = GetDouble(pc_Interface_Ocv_Data, pc_address + (index * 2));
-    int highWord = GetDouble(pc_Interface_Ocv_Data, pc_address + (index * 2) + 1);
-    return (highWord << 16) | lowWord;
+    int lowWord = GetDouble(pc_Interface_Ocv_Data, pc_address + index);
+    return lowWord;
 }
 //---------------------------------------------------------------------------
 // PLC 명령어

@@ -272,6 +272,29 @@ __published:	// IDE-managed Components
 	TTimer *Timer_PLCConnect;
 	TButton *Button1;
 	TGroupBox *GroupBox1;
+	TAdvSmoothButton *btnMeasureInfo;
+	TPanel *pBase;
+	TPanel *Panel1;
+	TPanel *cl_line;
+	TPanel *cl_ir;
+	TPanel *cl_ocv;
+	TPanel *cl_irocv;
+	TPanel *pocv;
+	TPanel *cl_avgover;
+	TPanel *cl_badir;
+	TPanel *cl_badocv;
+	TPanel *cl_no;
+	TPanel *cl_ce;
+	TTimer *TrayDownTimer;
+	TTimer *TrayUpTimer;
+	TPanel *pnlIRSpec;
+	TPanel *pnlOCVSpec;
+	TAdvSmoothPanel *pnlTrayIn;
+	TAdvSmoothPanel *pnlTrayOut;
+	TAdvSmoothPanel *pnlProbeOpen;
+	TAdvSmoothPanel *pnlProbeClose;
+	TAdvSmoothPanel *pnlTrayPosTitle;
+	TAdvSmoothPanel *pnlTrayPos;
 	TPanel *Panel4;
 	TGroupBox *grpIrSpec;
 	TLabel *Label1;
@@ -289,20 +312,8 @@ __published:	// IDE-managed Components
 	TCheckBox *RemeasureChk;
 	TCheckBox *chkRemBypass;
 	TPanel *Panel15;
-	TEdit *editRemeasureAlarmCount;
+	TEdit *editNgAlarmCount;
 	TEdit *RemeasureEdit;
-	TAdvSmoothButton *btnMeasureInfo;
-	TPanel *pBase;
-	TPanel *Panel1;
-	TPanel *cl_line;
-	TPanel *cl_ir;
-	TPanel *cl_ocv;
-	TPanel *cl_irocv;
-	TPanel *pocv;
-	TPanel *cl_avgover;
-	TPanel *cl_badir;
-	TPanel *cl_badocv;
-	TPanel *cl_no;
 	TGroupBox *grpIrAvg;
 	TLabel *Label6;
 	TLabel *Label10;
@@ -313,18 +324,11 @@ __published:	// IDE-managed Components
 	TLabel *Label12;
 	TEdit *editOcvAvg;
 	TEdit *editOcvRange;
-	TCheckBox *chkUseAverage;
-	TPanel *cl_ce;
-	TTimer *TrayDownTimer;
-	TTimer *TrayUpTimer;
-	TPanel *pnlIRSpec;
-	TPanel *pnlOCVSpec;
-	TAdvSmoothPanel *pnlTrayIn;
-	TAdvSmoothPanel *pnlTrayOut;
-	TAdvSmoothPanel *pnlProbeOpen;
-	TAdvSmoothPanel *pnlProbeClose;
-	TAdvSmoothPanel *pnlTrayPosTitle;
-	TAdvSmoothPanel *pnlTrayPos;
+	TPanel *Panel2;
+	TEdit *editRemeasureAlarmCount;
+	TGroupBox *GroupBox6;
+	TEdit *editModelName;
+	TAdvSmoothButton *btnDisConnectIROCV;
 	void __fastcall ClientConnect(TObject *Sender,
 		  TCustomWinSocket *Socket);
 	void __fastcall ClientDisconnect(TObject *Sender,
@@ -350,8 +354,6 @@ __published:	// IDE-managed Components
           TRect &Rect, TOwnerDrawState State);
 	void __fastcall StatusTimerTimer(TObject *Sender);
 	void __fastcall pTrayidDblClick(TObject *Sender);
-	void __fastcall editTrayIdKeyDown(TObject *Sender, WORD &Key,
-		  TShiftState Shift);
 	void __fastcall btnResetClick(TObject *Sender);
 	void __fastcall ChInfoMouseEnter(TObject *Sender);
 	void __fastcall ChInfoMouseLeave(TObject *Sender);
@@ -374,7 +376,7 @@ __published:	// IDE-managed Components
 	void __fastcall btnConnectIROCVClick(TObject *Sender);
 	void __fastcall Button1Click(TObject *Sender);
 	void __fastcall pReadyClick(TObject *Sender);
-	void __fastcall chkUseAverageClick(TObject *Sender);
+	void __fastcall btnDisConnectIROCVClick(TObject *Sender);
 
 private:	// User declarations
 //------------ 폼 관련 -------------------//
@@ -396,11 +398,8 @@ private:	// User declarations
 	// 로그 파일 관련 생성
 	void __fastcall WriteSystemInfo();
 	bool __fastcall ReadSystemInfo();
-	bool __fastcall ReadCellInfo();
-	bool __fastcall LoadTrayInfo(AnsiString trayID);
+    void __fastcall WriteResultFile(int traypos);
 	void __fastcall WriteResultFile();
-	void __fastcall WriteResultFile_MES();
-	void __fastcall WriteResultFile_MES2(); //210318
 	void __fastcall WriteOKNG();
 	void __fastcall ErrorLog();
 	void __fastcall ReadCaliboffset();           //20171202 개별보정을 위해 추가
@@ -476,7 +475,6 @@ public:		// User declarations
 	void __fastcall AutoInspection_Wait();
 	void __fastcall AutoInspection_Measure();
 	void __fastcall AutoInspection_Finish();
-	void __fastcall ResultReportToPLC();
 
 	void __fastcall OnInit();	// 초기화 요청
     void __fastcall OnInit(int traypos);
@@ -550,7 +548,6 @@ public:		// User declarations
 	queue<int> q_txMode;
 
 	void __fastcall RemeasureExcute();
-    void __fastcall RemeasureExcute2();
 	void __fastcall ReadRemeasureInfo();
 	void __fastcall WriteRemeasureInfo();
 
@@ -570,13 +567,10 @@ public:		// User declarations
 	int remLimit;
     void __fastcall VisibleSpec(bool bUseAverage);
 	void __fastcall SetRemeasureList(int traypos);
-	void __fastcall SetRemeasureList_Avg(int traypos);
 	void __fastcall AddRemeasureList();
 	void __fastcall ViewRemeasureList();
-    void __fastcall WriteTrayInfo();
 	void __fastcall SetTrayID(AnsiString str_id);
 	void __fastcall BadInfomation();
-    void __fastcall BadInfomation2();
 	void __fastcall WriteIROCVValue();
     void __fastcall WriteIROCVValue(int initValue);
 	void __fastcall WriteIRMINMAX();
