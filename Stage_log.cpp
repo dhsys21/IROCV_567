@@ -178,7 +178,6 @@ void __fastcall TTotalForm::ReadRemeasureInfo()
 	delete ini;
 }
 //---------------------------------------------------------------------------
-
 void __fastcall TTotalForm::WriteRemeasureInfo()	// Tray가 Vacancy 상태일때 기록
 {
 	TIniFile *ini;
@@ -386,41 +385,6 @@ void __fastcall TTotalForm::WriteResultFile(int traypos)
 	FileClose(file_handle);
 }
 //---------------------------------------------------------------------------
-void __fastcall TTotalForm::WriteOKNG()
-{
-	int file_handle;
-	AnsiString filename;
-	AnsiString dir;
-	AnsiString ok_ng;
-
-	dir = (AnsiString)DATA_PATH + Now().FormatString("yyyymmdd") + "\\" + lblTitle->Caption + "\\";
-	ForceDirectories((AnsiString)dir);
-
-	filename =  dir + tray.trayid +  "-" + Now().FormatString("yymmddhhnnss") + "-OKNG.csv";
-
-	if(FileExists(filename)){
-		DeleteFile(filename);
-	}
-
-	file_handle = FileCreate(filename);
-	FileSeek(file_handle, 0, 0);
-
-	AnsiString file;
-	file = "TRAY ID," + tray.trayid + "\r\n";
-	file += "CH,OK/NG\r\n";
-
-	for(int i = 0; i < MAXCHANNEL; ++i)
-	{
-		if((tray.cell[i] == 1) && retest.cell[i] == 0) ok_ng = "OK";
-		else ok_ng = "NG";
-		file = file + IntToStr(i+1) + "," + ok_ng + "\r\n";
-	}
-
-	FileWrite(file_handle, file.c_str(), file.Length());
-	FileClose(file_handle);
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TTotalForm::ErrorLog()
 {
 	AnsiString str, dir;
@@ -445,43 +409,6 @@ void __fastcall TTotalForm::ErrorLog()
 	FileClose(file_handle);
 }
 //---------------------------------------------------------------------------
-// 재측정 정보 읽고 쓰기
-void __fastcall TTotalForm::ReadPreChargerOKNG(AnsiString trayid)
-{
-	AnsiString dir = "C:\\PreCharge\\Data\\" + lblTitle->Caption + "\\";
-	AnsiString filename = dir + tray.trayid + "-OKNG.csv";
-	AnsiString str;
-	int file_handle, file_len;
-	char *txt;
-
-	if(FileExists(filename))
-		file_handle = FileOpen(filename, fmOpenRead);
-
-	file_len = FileSeek(file_handle, 0, 2);
-	FileSeek(file_handle, 0, 0);
-
-	txt = new char[file_len+1];
-	FileRead(file_handle, txt, file_len);
-	FileClose(file_handle);
-
-	// ir ocv value processing
-	str = txt;
-	delete []txt;
-
-	AnsiString tempStr, tempStr1;
-
-	str.Delete(1, str.Pos("\n"));  										// 첫째줄 tray id 삭제
-
-	for(int chCount = 0; chCount < MAXCHANNEL; chCount++){
-		tempStr1 = str.SubString(1, str.Pos("\n"));
-		str.Delete(1, tempStr1.Pos("\n"));                              // 읽은 줄 변수(tempStr1)에 넣고 삭제
-		tempStr1.Delete(1, tempStr1.Pos(","));       					// 채널 번호 삭제
-
-		tempStr = tempStr1.SubString(1, tempStr1.Pos("\n") - 1);       // OK/NG 값 - tempStr
-		precharger_okng[chCount] = tempStr.ToInt();
-	}
-}
-//---------------------------------------------------------------------------
 void __fastcall TTotalForm::ReadCaliboffset()                         //20171202 개별보정을 위해 추가
 {
 	TIniFile *ini;
@@ -492,5 +419,15 @@ void __fastcall TTotalForm::ReadCaliboffset()                         //20171202
 	}
 
 	delete ini;
+}
+//---------------------------------------------------------------------------
+int __fastcall TTotalForm::ReadCellSerial()
+{
+    int nCellSerial = 0;
+    for(int i = 0; i < MAXCHANNEL; i++){
+        tray.cell_serial[i] = Mod_PLC->GetCellSrial(PLC_D_IROCV_CELL_SERIAL, i, 10);
+        if(tray.cell_serial[i].IsEmpty() == false) nCellSerial++;
+    }
+    return nCellSerial;
 }
 //---------------------------------------------------------------------------

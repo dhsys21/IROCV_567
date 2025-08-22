@@ -400,7 +400,6 @@ private:	// User declarations
 	bool __fastcall ReadSystemInfo();
     void __fastcall WriteResultFile(int traypos);
 	void __fastcall WriteResultFile();
-	void __fastcall WriteOKNG();
 	void __fastcall ErrorLog();
 	void __fastcall ReadCaliboffset();           //20171202 개별보정을 위해 추가
 	double __fastcall GetSigma(float values[], bool flag[], double avg, int count);
@@ -562,7 +561,6 @@ public:		// User declarations
     void __fastcall RemeasureAlarm(int remeasure_alarm_count);
 	void __fastcall WriteCommLog(AnsiString Type, AnsiString Msg);
     void __fastcall WritePLCLog(AnsiString Type, AnsiString Msg);
-	void __fastcall ReadPreChargerOKNG(AnsiString trayid);
 
 	int remLimit;
     void __fastcall VisibleSpec(bool bUseAverage);
@@ -570,6 +568,7 @@ public:		// User declarations
 	void __fastcall AddRemeasureList();
 	void __fastcall ViewRemeasureList();
 	void __fastcall SetTrayID(AnsiString str_id);
+    int __fastcall ReadCellSerial();
 	void __fastcall BadInfomation();
 	void __fastcall WriteIROCVValue();
     void __fastcall WriteIROCVValue(int initValue);

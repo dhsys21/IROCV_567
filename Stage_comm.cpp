@@ -63,15 +63,20 @@ void __fastcall TTotalForm::CmdForceStop_Original()
 void __fastcall TTotalForm::CmdTrayOut()
 {
 	AnsiString cell_serial_filename;
-
+    int nCellSerial = 0;
 	if(chkBypass->Checked == false)
 	{
 		BadInfomation();
+        nCellSerial = ReadCellSerial();
+        if(nCellSerial != (tray.cell_count1 + tray.cell_count2))
+            WritePLCLog("CmdTrayOut",
+            	"Cell Serial Count Error. CellSerial : " + IntToStr(nCellSerial)
+                + ", CellCount : " + IntToStr(tray.cell_count1 + tray.cell_count2));
 		WriteIROCVValue();
 		WriteResultFile();
 	}
 
-	Sleep(200);
+	Sleep(100);
     if(/*(tray.cell_count1 + tray.cell_count2) == NgCount || */
     	NgCount > editNgAlarmCount->Text.ToIntDef(20)){
         Form_Error->Tag = this->Tag;
@@ -92,6 +97,7 @@ void __fastcall TTotalForm::CmdTrayOut()
 void __fastcall TTotalForm::CmdTrayOut_Original()
 {
 	BadInfomation();
+    ReadCellSerial();
 	WriteIROCVValue();
 	WriteResultFile();
 
