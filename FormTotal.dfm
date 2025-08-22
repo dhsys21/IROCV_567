@@ -514,7 +514,7 @@ object TotalForm: TTotalForm
       ParentBiDiMode = False
       ParentBackground = False
       TabOrder = 3
-      object Label7: TLabel
+      object lblProcessInfo: TLabel
         Left = 6
         Top = 2
         Width = 143
@@ -847,7 +847,7 @@ object TotalForm: TTotalForm
       ParentBiDiMode = False
       ParentBackground = False
       TabOrder = 8
-      object Label8: TLabel
+      object lblTrayInfo: TLabel
         Left = 6
         Top = 5
         Width = 84

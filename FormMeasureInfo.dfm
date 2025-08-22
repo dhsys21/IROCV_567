@@ -770,7 +770,7 @@ object MeasureInfoForm: TMeasureInfoForm
       Visible = False
     end
   end
-  object GroupBox5: TGroupBox
+  object grbChannelInfo: TGroupBox
     Left = 1048
     Top = 0
     Width = 197
@@ -784,7 +784,7 @@ object MeasureInfoForm: TMeasureInfoForm
     ParentFont = False
     TabOrder = 1
     Visible = False
-    object Panel1: TPanel
+    object pnlChannel: TPanel
       Left = 5
       Top = 24
       Width = 64
@@ -817,8 +817,8 @@ object MeasureInfoForm: TMeasureInfoForm
       ParentFont = False
       TabOrder = 1
     end
-    object Panel36: TPanel
-      Left = 5
+    object pnlPosition: TPanel
+      Left = 3
       Top = 55
       Width = 64
       Height = 30
@@ -1016,7 +1016,7 @@ object MeasureInfoForm: TMeasureInfoForm
     BevelOuter = bvNone
     Color = clWhite
     TabOrder = 2
-    object GroupBox4: TGroupBox
+    object grbEachChannel: TGroupBox
       Left = 5
       Top = 104
       Width = 180
@@ -1209,7 +1209,7 @@ object MeasureInfoForm: TMeasureInfoForm
         TMSStyle = 8
       end
     end
-    object GroupBox1: TGroupBox
+    object grbProbeSetting: TGroupBox
       Left = 5
       Top = 363
       Width = 180

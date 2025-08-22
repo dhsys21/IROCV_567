@@ -20,6 +20,7 @@ void __fastcall TForm_Language::LanguageChange(int LangIndex)
     TValueListEditor *vle;
     if(LangIndex == 0) vle = VLE_ENGLISH;
     else if(LangIndex == 1) vle = VLE_KOREAN;
+    else if(LangIndex == 2) vle = VLE_CHINESE;
 
 	//-------------------------------------------------------------------------
 	// 				COMPONENT
@@ -37,7 +38,43 @@ void __fastcall TForm_Language::LanguageChange(int LangIndex)
         BaseForm->nForm[i]->Panel9->Caption = vle->Values["CHANNEL"];
         BaseForm->nForm[i]->btnTrayOut->Caption = vle->Values["TRAYOUT"];
         BaseForm->nForm[i]->btnRemeasureInfo->Caption = vle->Values["REMEAINFO"];
+
+        BaseForm->nForm[i]->btnConnectIROCV->Caption = vle->Values["CONNECT"];
+        BaseForm->nForm[i]->btnDisConnectIROCV->Caption= vle->Values["DISCONNECT"];
+        BaseForm->nForm[i]->btnConnectPLC->Caption = vle->Values["CONNECT"];
+        BaseForm->nForm[i]->btnDisConnectPLC->Caption= vle->Values["DISCONNECT"];
+
+        BaseForm->nForm[i]->cl_line->Caption = vle->Values["READY"];
+        BaseForm->nForm[i]->cl_ir->Caption = vle->Values["IRCOMPLETE"];
+        BaseForm->nForm[i]->cl_ocv->Caption = vle->Values["OCVCOMPLETE"];
+        BaseForm->nForm[i]->cl_irocv->Caption = vle->Values["IROCV"];
+        BaseForm->nForm[i]->pocv->Caption = vle->Values["OCVFAIL"];
+        BaseForm->nForm[i]->cl_ce->Caption = vle->Values["IRFAIL"];
+        BaseForm->nForm[i]->cl_avgover->Caption = vle->Values["AVGFAIL"];
+        BaseForm->nForm[i]->cl_badir->Caption = vle->Values["FAIL"];
+        BaseForm->nForm[i]->cl_badocv->Caption = vle->Values["OUTFLOW"];
+        BaseForm->nForm[i]->cl_no->Caption = vle->Values["NOCELL"];
+
+        BaseForm->nForm[i]->localCali->Caption = vle->Values["CALIBRATION"];
+        BaseForm->nForm[i]->lblTrayInfo->Caption = vle->Values["TRAYINFO"];
+        BaseForm->nForm[i]->lblProcessInfo->Caption = vle->Values["PROCESSINFO"];
     }
+
+    MeasureInfoForm->btnProbeOpen->Caption = vle->Values["OPEN"];
+    MeasureInfoForm->btnProbeClose->Caption = vle->Values["CLOSE"];
+    MeasureInfoForm->btnAuto->Caption = vle->Values["START"];
+    MeasureInfoForm->advMSAStart->Caption = vle->Values["START"];
+	MeasureInfoForm->btnStop->Caption = vle->Values["STOP"];
+    MeasureInfoForm->advMSAStop->Caption = vle->Values["STOP"];
+    MeasureInfoForm->btnInit->Caption = vle->Values["INIT"];
+    MeasureInfoForm->btnSave->Caption = vle->Values["SAVE"];
+    MeasureInfoForm->grbChannelInfo->Caption = vle->Values["CHANNELINFO"];
+    MeasureInfoForm->pnlChannel->Caption = vle->Values["CHANNEL"];
+    MeasureInfoForm->pnlPosition->Caption = vle->Values["POSITION"];
+    MeasureInfoForm->grbEachChannel->Caption = vle->Values["EACHCHANNEL"];
+    MeasureInfoForm->grbProbeSetting->Caption = vle->Values["PROBESETTING"];
+    MeasureInfoForm->btnProbeOpen->Caption = vle->Values["OPEN"];
+    MeasureInfoForm->btnProbeClose->Caption = vle->Values["CLOSE"];
 
     //-------------------------------------------------------------------------
 	// 				MESSAGE

@@ -442,7 +442,7 @@ void __fastcall TTotalForm::InitMeasureForm()
 
 //	MeasureInfoForm->pLocal->Visible = false;
 //	MeasureInfoForm->grpRemeasure->Visible = false;
-	MeasureInfoForm->GroupBox5->Visible = true;
+	MeasureInfoForm->grbChannelInfo->Visible = true;
 	MeasureInfoForm->BringToFront();
 	MeasureInfoForm->Visible = true;
 }

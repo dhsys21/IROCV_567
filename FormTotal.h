@@ -233,7 +233,7 @@ __published:	// IDE-managed Components
 	TPanel *Panel63;
 	TPanel *pOcvValue;
 	TPanel *flowChart;
-	TLabel *Label7;
+	TLabel *lblProcessInfo;
 	TPanel *pReady;
 	TPanel *pTrayIn;
 	TPanel *pBarcode;
@@ -248,7 +248,7 @@ __published:	// IDE-managed Components
 	TLabel *lblRemeasureAlarmCheck;
 	TAdvSmoothButton *btnTrayOut;
 	TPanel *Panel16;
-	TLabel *Label8;
+	TLabel *lblTrayInfo;
 	TCheckBox *chkCycle;
 	TCheckBox *chkBypass;
 	TPanel *Panel6;
