@@ -8,7 +8,7 @@ object BaseForm: TBaseForm
   VertScrollBar.Range = 300
   VertScrollBar.Visible = False
   BorderIcons = [biSystemMenu, biMinimize]
-  Caption = 'IR/OCV (Ver.250822 004)'
+  Caption = 'IR/OCV (Ver.250822 005)'
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -6111,6 +6111,7 @@ object BaseForm: TBaseForm
       Height = 25
       Caption = 'Button1'
       TabOrder = 1
+      OnClick = Button5Click
     end
     object btnNgCountErr: TButton
       Left = 7

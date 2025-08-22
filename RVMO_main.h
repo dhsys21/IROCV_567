@@ -87,6 +87,7 @@ __published:	// IDE-managed Components
 	void __fastcall Label1Click(TObject *Sender);
 	void __fastcall btnViewLogClick(TObject *Sender);
 	void __fastcall btnViewDataClick(TObject *Sender);
+	void __fastcall Button5Click(TObject *Sender);
 
 
 private:	// User declarations

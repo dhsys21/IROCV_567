@@ -185,8 +185,6 @@ void __fastcall TTotalForm::CmdManualMod(bool Set)
 		if(Timer_AutoInspection->Enabled == false)
 			Timer_AutoInspection->Enabled = true;
 	}
-
-
 }
 //---------------------------------------------------------------------------
 void __fastcall TTotalForm::CmdRestart()
@@ -416,19 +414,8 @@ void __fastcall TTotalForm::ProcessOcv(AnsiString param)
 	if(value <= 10 || value > 7000) value = 0.0;
 
 	int index;
-
 	index = channel -1;
 	InsertOcvValue(channel, value);
-
-
-//	SetProcessColor(index, OcvCheck);
-
-//	if(tray.ocv_value[index] >= config.ocv_min && tray.ocv_value[index] <= config.ocv_max){
-//		SetProcessColor(index, OcvCheck);
-//	}else{
-//        SetProcessColor(index, BadOcv);
-//    }
-//	SetProcessColor(index, OcvCheck);
 
 	if(tray.rem_mode == 1){
 		send.tx_mode = 200;

@@ -181,6 +181,9 @@ void __fastcall TTotalForm::InitTrayStruct(int traypos)
 
 	pWork->Visible = false;
 	pWork->BringToFront();
+
+    if(traypos == 1) MeasureInfoForm->btnInit1Click(this);
+    else if(traypos == 2) MeasureInfoForm->btnInit2Click(this);
 }
 //---------------------------------------------------------------------------
 void __fastcall TTotalForm::Initialization()
@@ -1139,7 +1142,6 @@ void __fastcall TTotalForm::CmdTestMode()
 }
 //---------------------------------------------------------------------------
 // 개별 재측정
-//* 트레이 위치에 따라 맵핑 다르게 적용
 void __fastcall TTotalForm::RemeasureExcute()
 {
 	int i = retest.re_index;
@@ -1422,12 +1424,11 @@ void __fastcall TTotalForm::SetRemeasureList(int traypos)
 		}
 
         tray.first = false;
-
 		if((remeasure_cnt < remLimit) && (remeasure_cnt > 0)) brem = true;
 		else brem= false;
 
 		if(brem == false){
-			CmdForceStop();     // Probe Open
+			CmdForceStop(); // Probe Open
 		}
 		else{
 			tray.rem_mode = 1;
@@ -1462,7 +1463,6 @@ void __fastcall TTotalForm::ViewRemeasureList()
 	}
 	else
 		nStep = 3;
-
 }
 void __fastcall TTotalForm::AddRemeasureList()
 {
@@ -1812,6 +1812,7 @@ void __fastcall TTotalForm::AutoInspection_Wait()
                 nStep = 4;
             }
             else if(nTrayPos == 2 && tray.cell_count2 == 0){
+                //* tray position 2이고
                 DisplayTrayInfo(2);
 
                 DisplayProcess(sBarcode, "AutoInspection_Wait", "[STEP 3] TRAY POS 2 and CELL = 0 ... ");

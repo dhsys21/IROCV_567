@@ -296,12 +296,12 @@ void __fastcall TTotalForm::WriteResultFile()
 	file = file + "OCV Min.," + FormatFloat("0.0", config.ocv_min) + ",OCV Max.," + FormatFloat("0.0", config.ocv_max) + "\n";
 	file = file + "CH,CELL,CELL_ID,IR,OCV,RESULT\n";
 
-	for(int i=0; i<MAXCHANNEL; ++i){
+	for(int i = 0; i < MAXCHANNEL; ++i){
 		ch = IntToStr(i+1);
 
 		cell_id = tray.cell_serial[i];
 		ir = FormatFloat("0.00", tray.after_value[i]);
-		ocv = FormatFloat("0.00", tray.ocv_value[i]);
+		ocv = FormatFloat("0.0", tray.ocv_value[i]);
 
 		if(tray.cell[i] == 1)
 		{
@@ -355,11 +355,11 @@ void __fastcall TTotalForm::WriteResultFile(int traypos)
 	file = file + "OCV Min.," + FormatFloat("0.0", config.ocv_min) + ",OCV Max.," + FormatFloat("0.0", config.ocv_max) + "\n";
 	file = file + "CH,CELL,CELL_ID,IR,OCV,RESULT\n";
 
-	for(int i = 0; i < MAXCHANNEL; ++i){
+	for(int i = 0; i < CHANNELCOUNT; ++i){
         ch = GetChMap(this->Tag, traypos, i) - 1;
 		cell_id = tray.cell_serial[i];
 		ir = FormatFloat("0.00", tray.after_value[i]);
-		ocv = FormatFloat("0.00", tray.ocv_value[i]);
+		ocv = FormatFloat("0.0", tray.ocv_value[i]);
 
 		if(tray.cell[i] == 1)
 		{
