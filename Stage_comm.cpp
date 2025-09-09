@@ -124,8 +124,9 @@ void __fastcall TTotalForm::CmdIRCell(AnsiString pos)
 {
     int ch = pos.ToInt();
     int boardch = 0;
-
-    boardch = chReverseMap[ch] - (nTrayPos * 288);
+    //* for test
+    nTrayPos = 2;
+    boardch = chReverseMap[ch] - ((nTrayPos - 1) * 288);
 	pos = FormatFloat("000", boardch);
 	MakeData(2, "IR*", pos);
 }
@@ -135,7 +136,7 @@ void __fastcall TTotalForm::CmdOCVCell(AnsiString pos)
     int ch = pos.ToInt();
     int boardch = 0;
 
-	boardch = chReverseMap[ch] - (nTrayPos * 288);
+	boardch = chReverseMap[ch] - ((nTrayPos - 1) * 288);
 	pos = FormatFloat("000", boardch);
 	MakeData(2, "OCV", pos);
 }
