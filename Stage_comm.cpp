@@ -42,6 +42,8 @@ void __fastcall TTotalForm::CmdForceStop()
     //* 각 포지션별 결과 저장
     WriteResultFile(nTrayPos);
 	Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_PROB_OPEN, 1);
+    //* 20250909 추가
+    MeasureInfoForm->probetimer->Enabled = true;
     if(nTrayPos == 1){
         SetPcValue(PC_D_IROCV_COMPLETE1, 1);
 		WritePLCLog("CmdForceStop", "COMPLETE1 on, IROCV PROBE OPEN = 1");

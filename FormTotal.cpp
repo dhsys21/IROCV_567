@@ -615,6 +615,8 @@ void __fastcall TTotalForm::btnTrayOutClick(TObject *Sender)
 		for(int i = 0; i < MAXCHANNEL; i++) retest.cell[i] = '0';
         SetPcValue(PC_D_IROCV_PROB_CLOSE, 0);
         SetPcValue(PC_D_IROCV_PROB_OPEN, 1);
+        //* 20250909 Ãß°¡
+        MeasureInfoForm->probetimer->Enabled = true;
         SetPcValue(PC_D_IROCV_COMPLETE1, 1);
         SetPcValue(PC_D_IROCV_COMPLETE2, 1);
 		this->CmdTrayOut();
