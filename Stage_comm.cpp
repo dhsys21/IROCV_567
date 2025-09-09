@@ -124,8 +124,6 @@ void __fastcall TTotalForm::CmdIRCell(AnsiString pos)
 {
     int ch = pos.ToInt();
     int boardch = 0;
-    //* for test
-    nTrayPos = 2;
     boardch = chReverseMap[ch] - ((nTrayPos - 1) * 288);
 	pos = FormatFloat("000", boardch);
 	MakeData(2, "IR*", pos);

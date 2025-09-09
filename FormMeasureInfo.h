@@ -117,6 +117,7 @@ __published:	// IDE-managed Components
 	TLabel *MSA_COUNT_CHECK;
 	TAdvSmoothButton *btnInit1;
 	TAdvSmoothButton *btnInit2;
+	TLabel *lblMsaCount;
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall btnSaveClick(TObject *Sender);
 	void __fastcall btnIrClick(TObject *Sender);

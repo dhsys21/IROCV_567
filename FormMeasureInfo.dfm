@@ -1324,16 +1324,35 @@ object MeasureInfoForm: TMeasureInfoForm
         ParentFont = False
       end
       object MSA_COUNT_CHECK: TLabel
-        Left = 205
-        Top = 32
-        Width = 4
-        Height = 18
+        Left = 96
+        Top = 58
+        Width = 76
+        Height = 14
+        Alignment = taCenter
+        AutoSize = False
+        Caption = '-'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -15
+        Font.Height = -12
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         ParentFont = False
+      end
+      object lblMsaCount: TLabel
+        Left = 117
+        Top = 12
+        Width = 30
+        Height = 18
+        Alignment = taCenter
+        AutoSize = False
+        Caption = '0'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Visible = False
       end
       object advMSAStart: TAdvSmoothButton
         Left = 7
