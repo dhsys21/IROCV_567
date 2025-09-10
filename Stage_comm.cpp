@@ -45,10 +45,10 @@ void __fastcall TTotalForm::CmdForceStop()
     //* 20250909 추가
     MeasureInfoForm->probetimer->Enabled = true;
     if(nTrayPos == 1){
-        SetPcValue(PC_D_IROCV_COMPLETE1, 1);
+        Mod_PLC->SetPcValue(PC_D_IROCV_COMPLETE1, 1);
 		WritePLCLog("CmdForceStop", "COMPLETE1 on, IROCV PROBE OPEN = 1");
     }else if(nTrayPos == 2){
-        SetPcValue(PC_D_IROCV_COMPLETE2, 1);
+        Mod_PLC->SetPcValue(PC_D_IROCV_COMPLETE2, 1);
         WritePLCLog("CmdForceStop", "COMPLETE2 on, IROCV PROBE OPEN = 1");
     }
 }
@@ -585,39 +585,39 @@ void __fastcall TTotalForm::MakeData(int tx_mode, AnsiString cmd, AnsiString par
 //---------------------------------------------------------------------------
 // PLC 명령어
 //---------------------------------------------------------------------------
-int __fastcall TTotalForm::GetTrayPos()
-{
-    int value = GetPlcValue(PLC_D_IROCV_TRAY_POS);
-    return value;
-}
-double __fastcall TTotalForm::GetPlcValue(int plc_address)
-{
-    double value = Mod_PLC->GetDouble(Mod_PLC->plc_Interface_Data, plc_address);
-    return value;
-}
-//---------------------------------------------------------------------------
-int __fastcall TTotalForm::GetPlcData(int plc_address, int bit_num)
-{
-    int value = Mod_PLC->GetData(Mod_PLC->plc_Interface_Data, plc_address, bit_num);
-    return value;
-}
-//---------------------------------------------------------------------------
-AnsiString __fastcall TTotalForm::GetPlcValue(int plc_address, int size)
-{
-    AnsiString value = Mod_PLC->GetString(Mod_PLC->plc_Interface_Data, plc_address, size);
-    return value;
-}
-//---------------------------------------------------------------------------
-void __fastcall TTotalForm::SetPcValue(int pc_address, int value)
-{
-    Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data,  pc_address, value);
-}
-//---------------------------------------------------------------------------
-double __fastcall TTotalForm::GetPcValue(int pc_address)
-{
-    double value = Mod_PLC->GetDouble(Mod_PLC->pc_Interface_Data, pc_address);
-    return value;
-}
+//int __fastcall TTotalForm::GetTrayPos()
+//{
+//    int value = GetPlcValue(PLC_D_IROCV_TRAY_POS);
+//    return value;
+//}
+//double __fastcall TTotalForm::GetPlcValue(int plc_address)
+//{
+//    double value = Mod_PLC->GetDouble(Mod_PLC->plc_Interface_Data, plc_address);
+//    return value;
+//}
+////---------------------------------------------------------------------------
+//int __fastcall TTotalForm::GetPlcData(int plc_address, int bit_num)
+//{
+//    int value = Mod_PLC->GetData(Mod_PLC->plc_Interface_Data, plc_address, bit_num);
+//    return value;
+//}
+////---------------------------------------------------------------------------
+//AnsiString __fastcall TTotalForm::GetPlcValue(int plc_address, int size)
+//{
+//    AnsiString value = Mod_PLC->GetString(Mod_PLC->plc_Interface_Data, plc_address, size);
+//    return value;
+//}
+////---------------------------------------------------------------------------
+//void __fastcall TTotalForm::SetPcValue(int pc_address, int value)
+//{
+//    Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data,  pc_address, value);
+//}
+////---------------------------------------------------------------------------
+//double __fastcall TTotalForm::GetPcValue(int pc_address)
+//{
+//    double value = Mod_PLC->GetDouble(Mod_PLC->pc_Interface_Data, pc_address);
+//    return value;
+//}
 //---------------------------------------------------------------------------
 // PLC 명령어
 //---------------------------------------------------------------------------

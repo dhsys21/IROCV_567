@@ -79,7 +79,7 @@ void __fastcall TForm_PLCInterface::SetListViewPC()
 
     //* 16 bit * 36
 	for(int i = 0; i < 36; i++)
-		AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_MEASURE_OK_NG + (i * 2)), "IR/OCV OK/NG DATA #" + IntToStr(i + 1));
+		AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_MEASURE_OK_NG + i), "IR/OCV OK/NG DATA #" + IntToStr(i + 1));
 
 //	for(int i = 0; i < MAXCHANNEL; i++)
 //		AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_IR_VALUE + i), "IR VALUE #" + IntToStr(i + 1));

@@ -93,7 +93,7 @@ const int PC_D_IROCV_NG_ALARM                       =   19;
 // OK/NG - D38030
 const int PC_D_IROCV_MEASURE_OK_NG			   		=	30;
 // 38100
-const int PC_D_IROCV_IR_VALUE                   	=   100;
+const int PC_D_IROCV_IR_VALUE                   	=   0;//100;
 // 39000
 const int PC_D_IROCV_OCV_VALUE                   	=   0;
 //---------------------------------------------------------------------------
@@ -226,6 +226,7 @@ public:		// User declarations
     double __fastcall GetPlcValue(int plc_address);
     int __fastcall GetPlcData(int plc_address, int bit_num);
     double __fastcall GetPcValue(int pc_address);
+    void __fastcall SetPcData(int pc_address, int bit_num, bool bValue);
     void __fastcall SetPcValue(int pc_address, int value);
     void __fastcall SetSpecValue(int pc_address, int value);
     void __fastcall SetIrValue(int pc_address, int index, int value);

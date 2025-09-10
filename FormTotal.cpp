@@ -223,14 +223,13 @@ void __fastcall TTotalForm::PLCInitialization(int traypos)
     }
 
     int channel, index;
-	for(int i = 0; i < LINECOUNT / 2; i++)
+	for(int i = 0; i < 18; i++)
 	{
-		for(int j = 0; j < LINECOUNT; j++)
+		for(int j = 0; j < 16; j++)
 		{
-			//Mod_PLC->SetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + (i * 2), j, false);
-            index = (traypos - 1) * CHANNELCOUNT + (i * LINECOUNT + j) + 1;
+            index = (traypos - 1) * 288 + (i * 16 + j) + 1;
             channel = chMap[index];
-            Mod_PLC->SetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + (channel / LINECOUNT) * 2, channel % LINECOUNT, false);
+            Mod_PLC->SetData(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + (channel - 1) / 16, (channel - 1) % 16, false);
 		}
 	}
 
@@ -546,7 +545,7 @@ void __fastcall TTotalForm::RemeasureAllBtnClick(TObject *Sender)
     {
         for(int j = 0; j < 16; j++)
         {
-            tray.cell[i * 16 + j] = GetPlcData(PLC_D_IROCV_TRAY_CELL_DATA + (i * 2), j);
+            tray.cell[i * 16 + j] = Mod_PLC->GetPlcData(PLC_D_IROCV_TRAY_CELL_DATA + (i * 2), j);
         }
     }
 
@@ -613,12 +612,12 @@ void __fastcall TTotalForm::btnTrayOutClick(TObject *Sender)
 {
 	if(MessageBox(Handle, L"Are you sure you want to eject the tray?", L"", MB_YESNO|MB_ICONQUESTION) == ID_YES){
 		for(int i = 0; i < MAXCHANNEL; i++) retest.cell[i] = '0';
-        SetPcValue(PC_D_IROCV_PROB_CLOSE, 0);
-        SetPcValue(PC_D_IROCV_PROB_OPEN, 1);
+        Mod_PLC->SetPcValue(PC_D_IROCV_PROB_CLOSE, 0);
+        Mod_PLC->SetPcValue(PC_D_IROCV_PROB_OPEN, 1);
         //* 20250909 추가
         MeasureInfoForm->probetimer->Enabled = true;
-        SetPcValue(PC_D_IROCV_COMPLETE1, 1);
-        SetPcValue(PC_D_IROCV_COMPLETE2, 1);
+        Mod_PLC->SetPcValue(PC_D_IROCV_COMPLETE1, 1);
+        Mod_PLC->SetPcValue(PC_D_IROCV_COMPLETE2, 1);
 		this->CmdTrayOut();
 	}
 }
@@ -889,16 +888,16 @@ void __fastcall TTotalForm::StatusTimerTimer(TObject *Sender)
 			break;
 	}
 
-    if(GetPlcValue(PLC_D_IROCV_TRAY_IN) == 1) ShowPLCSignal(pnlTrayIn, true);
+    if(Mod_PLC->GetPlcValue(PLC_D_IROCV_TRAY_IN) == 1) ShowPLCSignal(pnlTrayIn, true);
     else ShowPLCSignal(pnlTrayIn, false);
 
-    if(GetPlcValue(PLC_D_IROCV_PROB_OPEN) == 1) ShowPLCSignal(pnlProbeOpen, true);
+    if(Mod_PLC->GetPlcValue(PLC_D_IROCV_PROB_OPEN) == 1) ShowPLCSignal(pnlProbeOpen, true);
     else ShowPLCSignal(pnlProbeOpen, false);
 
-    if(GetPlcValue(PLC_D_IROCV_PROB_CLOSE) == 1) ShowPLCSignal(pnlProbeClose, true);
+    if(Mod_PLC->GetPlcValue(PLC_D_IROCV_PROB_CLOSE) == 1) ShowPLCSignal(pnlProbeClose, true);
     else ShowPLCSignal(pnlProbeClose, false);
 
-    nTrayPos = GetTrayPos();
+    nTrayPos = Mod_PLC->GetTrayPos();
     pnlTrayPos->Caption->Text = IntToStr(nTrayPos);
 }
 //---------------------------------------------------------------------------
@@ -1361,7 +1360,8 @@ void __fastcall TTotalForm::btnManualClick(TObject *Sender)
 {
 	stage.arl_reserve = nLocal;
 	stage.arl = nLocal;
-//    Timer_AutoInspection->Enabled = false;
+    btnAuto->Color = clWhite;
+    btnManual->Color = (TColor)0x00FF8000;
 	this->CmdManualMod(true);
 	VisibleBox(GrpLocal);
 }
@@ -1370,8 +1370,9 @@ void __fastcall TTotalForm::btnAutoClick(TObject *Sender)
 {
 	stage.arl_reserve = nAuto;
 	stage.arl = nAuto;
+    btnAuto->Color = (TColor)0x00FF8000;
+    btnManual->Color = clWhite;
 	bLocal = false;
-//    Timer_AutoInspection->Enabled = false;
     MeasureInfoForm->pLocal->Visible = false;
 	this->CmdManualMod(false);
 	VisibleBox(GrpMain);
@@ -1630,13 +1631,13 @@ void __fastcall TTotalForm::btnMeasureInfoClick(TObject *Sender)
 void __fastcall TTotalForm::Timer_AutoInspectionTimer(TObject *Sender)
 {
     if(ErrorCheck()) return;
-	if(stage.arl == nAuto && GetPcValue(PC_D_IROCV_STAGE_AUTO_READY) == 0){
-        SetPcValue(PC_D_IROCV_STAGE_AUTO_READY, 1);
+	if(stage.arl == nAuto && Mod_PLC->GetPcValue(PC_D_IROCV_STAGE_AUTO_READY) == 0){
+        Mod_PLC->SetPcValue(PC_D_IROCV_STAGE_AUTO_READY, 1);
 		IROCVStage = "IROCV STAGE AUTO READY = 1";
 		WritePLCLog("IROCV STAGE AUTO/MANUAL", IROCVStage);
 	}
-	else if(stage.arl == nLocal && GetPcValue(PC_D_IROCV_STAGE_AUTO_READY) == 1){
-        SetPcValue(PC_D_IROCV_STAGE_AUTO_READY, 0);
+	else if(stage.arl == nLocal && Mod_PLC->GetPcValue(PC_D_IROCV_STAGE_AUTO_READY) == 1){
+        Mod_PLC->SetPcValue(PC_D_IROCV_STAGE_AUTO_READY, 0);
 		IROCVStage = "IROCV STAGE AUTO READY = 0";
 		WritePLCLog("IROCV STAGE AUTO/MANUAL", IROCVStage);
 	}
@@ -1654,7 +1655,7 @@ void __fastcall TTotalForm::Timer_AutoInspectionTimer(TObject *Sender)
 	}
 	*/
 
-    nTrayPos = GetTrayPos();
+    nTrayPos = Mod_PLC->GetTrayPos();
 	switch(nSection)
 	{
 		case STEP_WAIT:
@@ -1752,7 +1753,7 @@ void __fastcall TTotalForm::AutoInspection_Wait()
 			break;
 		case 1: //* BCR 리딩
 			m_dateTime = Now();
-            trayid = GetPlcValue(PLC_D_IROCV_TRAY_ID, 10);
+            trayid = Mod_PLC->GetPlcValue(PLC_D_IROCV_TRAY_ID, 10);
 			if(trayid != "")
 			{
 				DisplayProcess(sBarcode, "AutoInspection_Wait", "[STEP 1] BCR OK ...(" + trayid + ")");
@@ -1777,7 +1778,7 @@ void __fastcall TTotalForm::AutoInspection_Wait()
 			{
 				for(int j = 0; j < 16; j++)
 				{
-					tray.cell[i * 16 + j] = GetPlcData(PLC_D_IROCV_TRAY_CELL_DATA + i, j);
+					tray.cell[i * 16 + j] = Mod_PLC->GetPlcData(PLC_D_IROCV_TRAY_CELL_DATA + i, j);
 				}
 			}
 
@@ -1838,7 +1839,7 @@ void __fastcall TTotalForm::AutoInspection_Wait()
                     DisplayProcess(sProbeDown, "AutoInspection_Wait", "[STEP 3] (Tray Pos 2) PROBE IS CLOSED ... ");
                 }
 
-                SetPcValue(PC_D_IROCV_PROB_CLOSE, 1);
+                Mod_PLC->SetPcValue(PC_D_IROCV_PROB_CLOSE, 1);
 				WritePLCLog("AutoInspection_Wait", "[STEP 3] Tray Position : " + IntToStr(nTrayPos) + " -> PC_D_PRE_PROB_CLOSE = 1");
 
 				nSection = STEP_MEASURE;
@@ -1849,36 +1850,36 @@ void __fastcall TTotalForm::AutoInspection_Wait()
 		case 4: //* 해당 트레이 위치에서 셀이 없을 때 처리
             if(nTrayPos == 1){
                 tray.pos1_complete = true;
-                SetPcValue(PC_D_IROCV_COMPLETE1, 1);
-                SetPcValue(PC_D_IROCV_TRAY_POS_MOVE, 1);
+                Mod_PLC->SetPcValue(PC_D_IROCV_COMPLETE1, 1);
+                Mod_PLC->SetPcValue(PC_D_IROCV_TRAY_POS_MOVE, 1);
                 DisplayProcess(sBarcode, "AutoInspection_Wait", "[STEP 4] TRAY POS 1 CELL = 0, COMPLETE = 1, TRAY_POS_MOVE = 1 ... ");
 
                 nStep = 5;
             } else if(nTrayPos == 2){
                 tray.pos2_complete = true;
-                SetPcValue(PC_D_IROCV_COMPLETE2, 1);
+                Mod_PLC->SetPcValue(PC_D_IROCV_COMPLETE2, 1);
                 DisplayProcess(sBarcode, "AutoInspection_Wait", "[STEP 4] TRAY POS 2 CELL = 0, COMPLETE =1 ... ");
 
                 nStep = 6;
             }
         	break;
         case 5: //* 해당 트레이 위치에서 셀이 없을 때 처리 - 트레이 위치 1 : COMPLETE1, TRAY_POS_MOVE 신호 확인
-            if(GetPcValue(PC_D_IROCV_COMPLETE1) == 1 && GetPcValue(PC_D_IROCV_TRAY_POS_MOVE) == 1)
+            if(Mod_PLC->GetPcValue(PC_D_IROCV_COMPLETE1) == 1 && Mod_PLC->GetPcValue(PC_D_IROCV_TRAY_POS_MOVE) == 1)
                 nStep = 7;
             else{
-                SetPcValue(PC_D_IROCV_COMPLETE1, 1);
-                SetPcValue(PC_D_IROCV_TRAY_POS_MOVE, 1);
+                Mod_PLC->SetPcValue(PC_D_IROCV_COMPLETE1, 1);
+                Mod_PLC->SetPcValue(PC_D_IROCV_TRAY_POS_MOVE, 1);
             }
         	break;
         case 6: //* 해당 트레이 위치에서 셀이 없을 때 처리 - 트레이 위치 2 : COMPLETE2 신호 확인
-            if(GetPcValue(PC_D_IROCV_COMPLETE2) == 1) nStep = 8;
-            else SetPcValue(PC_D_IROCV_COMPLETE2, 1);
+            if(Mod_PLC->GetPcValue(PC_D_IROCV_COMPLETE2) == 1) nStep = 8;
+            else Mod_PLC->SetPcValue(PC_D_IROCV_COMPLETE2, 1);
             break;
         case 7:
             //* 해당 트레이 위치에서 셀이 없을 때 처리 -
             //* 트레이가 2번째 위치로 옮겨 졌으면 probe close 부터 다시 시작
             if(nTrayPos == 2){
-                SetPcValue(PC_D_IROCV_TRAY_POS_MOVE, 0);
+                Mod_PLC->SetPcValue(PC_D_IROCV_TRAY_POS_MOVE, 0);
                 DisplayProcess(sFinish, "AutoInspection_Wait", "[STEP 7] TRAY POS1 : PreCharger Finish ... ");
                 nSection = STEP_WAIT;
                 nStep = 3;
@@ -1905,11 +1906,11 @@ void __fastcall TTotalForm::AutoInspection_Measure()
 {
     //* Measuring
 	if(tray.ams == true && tray.amf == false){
-        SetPcValue(PC_D_IROCV_MEASURING, 1);
+        Mod_PLC->SetPcValue(PC_D_IROCV_MEASURING, 1);
         DisplayProcess(sMeasure, "AutoInspection_Measure", "[STEP -] Tray Position : " + IntToStr(nTrayPos) + " -> Start measuring ... ");
 	}
 	else{
-        SetPcValue(PC_D_IROCV_MEASURING, 0);
+        Mod_PLC->SetPcValue(PC_D_IROCV_MEASURING, 0);
         DisplayProcess(sMeasure, "AutoInspection_Measure", "[STEP -] Tray Position : " + IntToStr(nTrayPos) + " -> Ready to measuring ... ");
 	}
 
@@ -1917,15 +1918,15 @@ void __fastcall TTotalForm::AutoInspection_Measure()
 	switch(nStep)
 	{
 		case 0:
-			plc_probe_close = GetPlcValue(PLC_D_IROCV_PROB_CLOSE);
-			plc_tray_in = GetPlcValue(PLC_D_IROCV_TRAY_IN);
+			plc_probe_close = Mod_PLC->GetPlcValue(PLC_D_IROCV_PROB_CLOSE);
+			plc_tray_in = Mod_PLC->GetPlcValue(PLC_D_IROCV_TRAY_IN);
 			if(plc_probe_close == 1 && plc_tray_in == 1)
 			{
 				DisplayStatus(nRUN);
                 if(n_bMeasureStart == false)
 					DisplayProcess(sProbeDown, "AutoInspection_Measure", "[STEP 0] PLC - PROBE CLOSED");
 
-                SetPcValue(PC_D_IROCV_PROB_CLOSE, 0);
+                Mod_PLC->SetPcValue(PC_D_IROCV_PROB_CLOSE, 0);
 
 				if(n_bMeasureStart == false)
 				{
@@ -1939,7 +1940,7 @@ void __fastcall TTotalForm::AutoInspection_Measure()
 			break;
 		case 1:
 			n_bMeasureStart = false;
-			plc_probe_open = GetPlcValue(PLC_D_IROCV_PROB_OPEN);
+			plc_probe_open = Mod_PLC->GetPlcValue(PLC_D_IROCV_PROB_OPEN);
 			if(stage.arl == nAuto && plc_probe_open == 1){
 				ViewRemeasureList();
 			}
@@ -1948,15 +1949,15 @@ void __fastcall TTotalForm::AutoInspection_Measure()
 			PLCStatus = " IR/OCV Remeasure ... ";
 			Panel_State->Caption = PLCStatus;
 
-			plc_probe_close = GetPlcValue(PLC_D_IROCV_PROB_CLOSE);
-			plc_tray_in = GetPlcValue(PLC_D_IROCV_TRAY_IN);
+			plc_probe_close = Mod_PLC->GetPlcValue(PLC_D_IROCV_PROB_CLOSE);
+			plc_tray_in = Mod_PLC->GetPlcValue(PLC_D_IROCV_TRAY_IN);
 
 			DisplayStatus(nRUN);
 			if(plc_probe_close == 1 && plc_tray_in == 1)
 			{
 				DisplayProcess(sProbeDown, "AutoInspection_Measure", "[STEP 2] PLC - PROBE CLOSED");
 
-                SetPcValue(PC_D_IROCV_PROB_CLOSE, 0);
+                Mod_PLC->SetPcValue(PC_D_IROCV_PROB_CLOSE, 0);
 				DisplayProcess(sMeasure, "AutoInspection_Measure", "[STEP 2] IR/OCV Re-Measure Start");
 				if(retest.re_excute) RemeasureExcute();  // partly remeasure
 				else CmdAutoTest();       // all remeasure
@@ -1966,45 +1967,45 @@ void __fastcall TTotalForm::AutoInspection_Measure()
 			break;
 		case 3:
             n_bMeasureStart = false;
-			plc_probe_open = GetPlcValue(PLC_D_IROCV_PROB_OPEN);
+			plc_probe_open = Mod_PLC->GetPlcValue(PLC_D_IROCV_PROB_OPEN);
 			if(stage.arl == nAuto && plc_probe_open == 1)
 			{
 				DisplayProcess(sProbeOpen, "AutoInspection_Measure", " PLC - PROBE IS OPEN ... ");
                 WriteCommLog("AutoInspection_Measure",
                 	"IR/OCV Complete -> Tray Position : " + IntToStr(nTrayPos));
 
-                SetPcValue(PC_D_IROCV_PROB_OPEN, 0);
+                Mod_PLC->SetPcValue(PC_D_IROCV_PROB_OPEN, 0);
 				if(nTrayPos == 1) {
                 	tray.pos1_complete = true;
 
-                    SetPcValue(PC_D_IROCV_COMPLETE1, 1);
-                    SetPcValue(PC_D_IROCV_TRAY_POS_MOVE, 1);
+                    Mod_PLC->SetPcValue(PC_D_IROCV_COMPLETE1, 1);
+                    Mod_PLC->SetPcValue(PC_D_IROCV_TRAY_POS_MOVE, 1);
                     nStep = 4;
                 }
                 else if(nTrayPos == 2) {
                 	tray.pos2_complete = true;
 
-                    SetPcValue(PC_D_IROCV_COMPLETE2, 1);
+                    Mod_PLC->SetPcValue(PC_D_IROCV_COMPLETE2, 1);
                     nStep = 5;
                 }
 			}
 			break;
         case 4:
-            if(GetPcValue(PC_D_IROCV_COMPLETE1) == 1 && GetPcValue(PC_D_IROCV_TRAY_POS_MOVE) == 1)
+            if(Mod_PLC->GetPcValue(PC_D_IROCV_COMPLETE1) == 1 && Mod_PLC->GetPcValue(PC_D_IROCV_TRAY_POS_MOVE) == 1)
                 nStep = 6;
             else{
-                SetPcValue(PC_D_IROCV_COMPLETE1, 1);
-                SetPcValue(PC_D_IROCV_TRAY_POS_MOVE, 1);
+                Mod_PLC->SetPcValue(PC_D_IROCV_COMPLETE1, 1);
+                Mod_PLC->SetPcValue(PC_D_IROCV_TRAY_POS_MOVE, 1);
             }
         	break;
         case 5:
-            if(GetPcValue(PC_D_IROCV_COMPLETE2) == 1) nStep = 7;
-            else SetPcValue(PC_D_IROCV_COMPLETE2, 1);
+            if(Mod_PLC->GetPcValue(PC_D_IROCV_COMPLETE2) == 1) nStep = 7;
+            else Mod_PLC->SetPcValue(PC_D_IROCV_COMPLETE2, 1);
             break;
         case 6:
             //* 트레이가 2번째 위치로 옮겨 졌으면 probe close 부터 다시 시작
             if(nTrayPos == 2){
-                SetPcValue(PC_D_IROCV_TRAY_POS_MOVE, 0);
+                Mod_PLC->SetPcValue(PC_D_IROCV_TRAY_POS_MOVE, 0);
                 DisplayProcess(sFinish, "AutoInspection_Measure", "[STEP 6] MOVE TRAY to POSITION 2 ... ");
                 nSection = STEP_WAIT;
                 nStep = 3;

@@ -467,7 +467,6 @@ void __fastcall TMeasureInfoForm::btnStopClick(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TMeasureInfoForm::btnProbeClick(TObject *Sender)
 {
-	//BaseForm->nForm[stage]->CmdBattHeight(1);
 	Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_PROB_OPEN, 0);
 	Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_PROB_CLOSE, 1);
     probetimer->Enabled = true;

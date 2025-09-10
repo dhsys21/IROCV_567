@@ -531,9 +531,14 @@ double __fastcall TMod_PLC::GetCellSrialValue(int plc_address)
     return value;
 }
 //---------------------------------------------------------------------------
+void __fastcall TMod_PLC::SetPcData(int pc_address, int bit_num, bool bValue)
+{
+    SetData(pc_Interface_Data, pc_address, bit_num, bValue);
+}
+//---------------------------------------------------------------------------
 void __fastcall TMod_PLC::SetPcValue(int pc_address, int value)
 {
-    SetDouble(pc_Interface_Data,  pc_address, value);
+    SetDouble(pc_Interface_Data, pc_address, value);
 }
 //---------------------------------------------------------------------------
 void __fastcall TMod_PLC::SetSpecValue(int pc_address, int value)

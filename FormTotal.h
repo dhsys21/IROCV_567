@@ -437,7 +437,7 @@ private:	// User declarations
 	void __fastcall ProcessOcv(AnsiString param);
 	void __fastcall InsertOcvValue(int pos, float value);
 	int __fastcall GetReslut(AnsiString result);
-    int __fastcall GetTrayPos();
+    //int __fastcall GetTrayPos();
 
     TColor clAverageOver;
 	TColor clNoCell;
@@ -507,11 +507,11 @@ public:		// User declarations
 	AnsiString PLC_IPADDRESS;
 	int PLC_PCPORT;
 	int PLC_PLCPORT;
-    AnsiString __fastcall GetPlcValue(int plc_address, int size);
-    double __fastcall GetPlcValue(int plc_address);
-    int __fastcall GetPlcData(int plc_address, int bit_num);
-    void __fastcall SetPcValue(int pc_address, int value);
-    double __fastcall GetPcValue(int pc_address);
+//    AnsiString __fastcall GetPlcValue(int plc_address, int size);
+//    double __fastcall GetPlcValue(int plc_address);
+//    int __fastcall GetPlcData(int plc_address, int bit_num);
+//    void __fastcall SetPcValue(int pc_address, int value);
+//    double __fastcall GetPcValue(int pc_address);
 
 	STAGE_INFO stage;
 	CONFIG config;	// 환경 설정
