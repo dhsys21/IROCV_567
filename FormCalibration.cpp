@@ -50,11 +50,13 @@ void __fastcall TCaliForm::FormClose(TObject *Sender, TCloseAction &Action)
 //---------------------------------------------------------------------------
 void __fastcall TCaliForm::WriteCalibOffset()
 {
-	TIniFile *ini;
+	//TIniFile *ini;
+    TMemIniFile *ini;
 	AnsiString file;
 	file = (AnsiString)BIN_PATH + "Caliboffset_" + IntToStr(this->stage) + ".cali";
 
-	ini = new TIniFile(file);
+	//ini = new TIniFile(file);
+    ini = new TMemIniFile(file);
 
 	for(int index = 1; index <= MAXCHANNEL; ++index)
 	{
@@ -69,6 +71,7 @@ void __fastcall TCaliForm::WriteCalibOffset()
         }
 	}
 
+    ini->UpdateFile();
 	delete ini;
 }
 //---------------------------------------------------------------------------
@@ -146,18 +149,32 @@ void __fastcall TCaliForm::InitColor()
     }
 }
 //---------------------------------------------------------------------------
-void __fastcall TCaliForm::InsertValue(int channel, double value, TColor clr)
+void __fastcall TCaliForm::InsertValue(int pos1, int pos2, double value, TColor clr)
 {
-    //* 0(4) channel, 1(5) standard, 2(6) measure, 3(7) offset
+    //* 보정은 트레이 이동해서 할 필요 없음. 픽스쳐 보드 채널갯수가 288개. 1번 찍고 2개채널에 값 입력.
+    //* (0, 4) channel, (1,5) standard, (2,6) measure, (3,7) offset
+
+    int index1 = pos1;
+    int index2 = pos2;
 
     //* Measure
-    if(channel <= 288) StringGrid1->Cells[2][channel - 1] = FormatFloat("0.00", value);
-    else StringGrid1->Cells[6][channel - 1 - 288] = FormatFloat("0.00", value);
+    if(index1 <= 288) StringGrid1->Cells[2][index1] = FormatFloat("0.00", value);
+    else if(index1 > 288) StringGrid1->Cells[6][index1 - 288] = FormatFloat("0.00", value);
+
+    if(index2 <= 288) StringGrid1->Cells[2][index2] = FormatFloat("0.00", value);
+    else if(index2 > 288) StringGrid1->Cells[6][index2 - 288] = FormatFloat("0.00", value);
+
+
     //* Offset
-    if(channel <= 288) StringGrid1->Cells[3][channel - 1] = StringToDouble(StringGrid1->Cells[1][channel - 1], 0) - value;
-    else StringGrid1->Cells[7][channel - 1 - 288] = StringToDouble(StringGrid1->Cells[5][channel - 1 - 288], 0) - value;
+    if(index1 <= 288) StringGrid1->Cells[3][index1] = StringToDouble(StringGrid1->Cells[1][index1], 0) - value;
+    else if(index1 > 288) StringGrid1->Cells[7][index1 - 288] = StringToDouble(StringGrid1->Cells[5][index1 - 288], 0) - value;
+
+    if(index2 <= 288) StringGrid1->Cells[3][index2] = StringToDouble(StringGrid1->Cells[1][index2], 0) - value;
+    else if(index2 > 288) StringGrid1->Cells[7][index2 - 288] = StringToDouble(StringGrid1->Cells[5][index2 - 288], 0) - value;
+
     //* Color
-    clrMeasureArr[channel - 1] = clr;
+    clrMeasureArr[index1 - 1] = clr;
+    clrMeasureArr[index2 - 1] = clr;
 
     //* StringGrid Refresh
     StringGrid1->Invalidate();
@@ -176,6 +193,14 @@ void __fastcall TCaliForm::btnInitClick(TObject *Sender)
 	for(int pos = 0; pos <MAXCHANNEL; ++pos){
         clrMeasureArr[pos] = pnormal2->Color;
         clrOffsetArr[pos] = pnormal1->Color;
+
+        if(pos <= 288){
+            StringGrid1->Cells[2][pos] = "-";
+            StringGrid1->Cells[3][pos] = "-";
+        } else{
+            StringGrid1->Cells[6][pos - 288] = "-";
+            StringGrid1->Cells[7][pos - 288] = "-";
+        }
 	}
 
     //* StringGrid Refresh
@@ -432,7 +457,16 @@ void __fastcall TCaliForm::AdvSmoothButton1Click(TObject *Sender)
     }
     else clr = BaseForm->nForm[stage]->cl_ir->Color;;
 
-    InsertValue(channel, value, clr);
+    int boardch = 0, traypos = 0;;
+    if(channel % 4 == 1 || channel % 4 == 2) traypos = 1;
+    else if(channel % 4 == 3 || channel % 4 == 0) traypos = 2;
+    boardch = BaseForm->nForm[stage]->chReverseMap[channel];// - ((traypos - 1) * 288);
+
+    int pos1, pos2;
+    pos1 = BaseForm->nForm[stage]->chMap[boardch];
+    pos2 = BaseForm->nForm[stage]->chMap[boardch + 288];
+
+    InsertValue(pos1, pos2, value, clr);
 }
 //---------------------------------------------------------------------------
 

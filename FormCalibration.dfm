@@ -1,6 +1,7 @@
 object CaliForm: TCaliForm
   Left = 0
   Top = 0
+  BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'CaliForm'
   ClientHeight = 874
@@ -927,7 +928,7 @@ object CaliForm: TCaliForm
   object AdvSmoothButton1: TAdvSmoothButton
     Left = 1378
     Top = 633
-    Width = 71
+    Width = 111
     Height = 31
     Appearance.GlowPercentage = 50
     Appearance.PictureAlignment = taCenter

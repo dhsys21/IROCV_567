@@ -307,7 +307,11 @@ void __fastcall TTotalForm::ProcessIr(AnsiString param)
 			value = 0;
         }
 
-        CaliForm->InsertValue(channel, value, clr);  // 보정
+        int channel1, channel2;
+        channel1 = chMap[boardchannel];
+        channel2 = chMap[boardchannel + 288];
+
+        CaliForm->InsertValue(channel1, channel2, value, clr);  // 보정
 	}
 
     //* RemeasureExecute는 Tray position 고려해서 맵핑값 적용필요

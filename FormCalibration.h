@@ -95,7 +95,8 @@ public:		// User declarations
     void __fastcall WriteCaliFile(bool Data);
 	void __fastcall WriteCalibOffset();
 	void __fastcall ReadCaliboffset();
-    void __fastcall InsertValue(int channel, double value, TColor clr);
+//    void __fastcall InsertValue(int pos, double value, TColor clr);
+    void __fastcall InsertValue(int pos1, int pos2, double value, TColor clr);
 
     int stage;
 	double *measure;
