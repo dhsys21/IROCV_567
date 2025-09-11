@@ -37,7 +37,14 @@ void __fastcall TCaliForm::FormShow(TObject *Sender)
 	LowOffsetEdit->Text = BaseForm->DefaultLowOffset[stage];
 	OffsetEdit->Enabled = false;
 
+    //* 판넬 만들기
+    pBase->ControlStyle = pBase->ControlStyle << csOpaque; // 깜빡임 줄이기
+	pBase->DisableAlign();
+
     MakePanel(BaseForm->lblLineNo->Caption);
+
+    pBase->EnableAlign();
+    pBase->Repaint();
 }
 //---------------------------------------------------------------------------
 void __fastcall TCaliForm::FormClose(TObject *Sender, TCloseAction &Action)
@@ -49,9 +56,10 @@ void __fastcall TCaliForm::MakePanel(AnsiString type)
 {
 	int nx, ny, nw, nh;
 
+    //* type 4 외에 다른 것은 코드 수정해야 함
 	if(type == "4")
 	{
-		nx = 1450;
+		nx = 1462;
 		ny = 4;
 		nw = 30;
 		nh = 20;
@@ -65,15 +73,10 @@ void __fastcall TCaliForm::MakePanel(AnsiString type)
 			pch[index]->ParentBackground = false;
 
 			nx = nx + nw + 1;
-			pstandard[index] = new TEdit(this);
-			pstandard[index]->Parent = pBase;
-			pstandard[index]->Font->Size = 10;
-			pstandard[index]->Left =  nx;
-			pstandard[index]->Top = ny;
-			pstandard[index]->Width = nw + 1;
-			pstandard[index]->Height = nh + 5;
-			pstandard[index]->Tag = index;
-
+			pstandard[index] = new TPanel(this);
+            SetOption(pstandard[index], nx, ny, nw, nh, index);
+            pstandard[index]->Color = clWhite;
+            pstandard[index]->ParentBackground = false;
 
 			ny = ny + nh;
 			nx = pch[index]->Left;
@@ -87,20 +90,21 @@ void __fastcall TCaliForm::MakePanel(AnsiString type)
 			nx = nx + nw + 1;
 			pmeasure[index] = new TPanel(this);
 			SetOption(pmeasure[index], nx, ny, nw, nh, index);
-			pmeasure[index]->Color = pnormal2->Color;
+			pmeasure[index]->Color = pnormal3->Color;
 			pmeasure[index]->ParentBackground = false;
-			pmeasure[index]->Caption = "0.00";
+			pmeasure[index]->Caption = "0.0";
 			pmeasure[index]->ParentBackground = false;
 
             index += 1;
 			nx = nx - 3 * nw - 3;
 			ny = ny - nh;
-			if(index % 2 == 0) nx -= 2;
+			if(index % 4 == 0) nx -= 4;
+            if((index - 1) % 4 == 1) nx -= 2;
 
 			if(index % 24 == 0)
 			{
 				ny = ny + nh + nh + 1;
-				nx = 1450;
+				nx = 1462;
 				if( (index / 24) % 12 == 0) ny += 3;
 			}
 
@@ -126,14 +130,10 @@ void __fastcall TCaliForm::MakePanel(AnsiString type)
 			pch[index]->ParentBackground = false;
 
 			nx = nx + nw + 1;
-			pstandard[index] = new TEdit(this);
-			pstandard[index]->Parent = pBase;
-			pstandard[index]->Font->Size = 10;
-			pstandard[index]->Left =  nx;
-			pstandard[index]->Top = ny;
-			pstandard[index]->Width = nw + 1;
-			pstandard[index]->Height = nh + 5;
-			pstandard[index]->Tag = index;
+			pstandard[index] = new TPanel(this);
+            SetOption(pstandard[index], nx, ny, nw, nh, index);
+            pstandard[index]->Color = clWhite;
+            pstandard[index]->ParentBackground = false;
 
 
 			ny = ny + nh;
@@ -188,14 +188,10 @@ void __fastcall TCaliForm::MakePanel(AnsiString type)
 			pch[index]->ParentBackground = false;
 
 			nx = nx - nw - 1;
-			pstandard[index] = new TEdit(this);
-			pstandard[index]->Parent = pBase;
-			pstandard[index]->Font->Size = 10;
-			pstandard[index]->Left =  nx;
-			pstandard[index]->Top = ny;
-			pstandard[index]->Width = nw + 1;
-			pstandard[index]->Height = nh + 5;
-			pstandard[index]->Tag = index;
+			pstandard[index] = new TPanel(this);
+            SetOption(pstandard[index], nx, ny, nw, nh, index);
+            pstandard[index]->Color = clWhite;
+            pstandard[index]->ParentBackground = false;
 
 
 			ny = ny + nh;
@@ -244,14 +240,10 @@ void __fastcall TCaliForm::MakePanel(AnsiString type)
 			pch[index]->ParentBackground = false;
 
 			nx = nx + nw + 1;
-			pstandard[index] = new TEdit(this);
-			pstandard[index]->Parent = pBase;
-			pstandard[index]->Font->Size = 10;
-			pstandard[index]->Left =  nx;
-			pstandard[index]->Top = ny;
-			pstandard[index]->Width = nw + 1;
-			pstandard[index]->Height = nh + 5;
-			pstandard[index]->Tag = index;
+			pstandard[index] = new TPanel(this);
+            SetOption(pstandard[index], nx, ny, nw, nh, index);
+            pstandard[index]->Color = clWhite;
+            pstandard[index]->ParentBackground = false;
 
 
 			ny = ny + nh;
@@ -300,14 +292,10 @@ void __fastcall TCaliForm::MakePanel(AnsiString type)
 			pch[index]->ParentBackground = false;
 
 			nx = nx - nw - 1;
-			pstandard[index] = new TEdit(this);
-			pstandard[index]->Parent = pBase;
-			pstandard[index]->Font->Size = 10;
-			pstandard[index]->Left =  nx;
-			pstandard[index]->Top = ny;
-			pstandard[index]->Width = nw + 1;
-			pstandard[index]->Height = nh + 5;
-			pstandard[index]->Tag = index;
+			pstandard[index] = new TPanel(this);
+            SetOption(pstandard[index], nx, ny, nw, nh, index);
+            pstandard[index]->Color = clWhite;
+            pstandard[index]->ParentBackground = false;
 
 
 			ny = ny + nh;
@@ -359,7 +347,6 @@ void __fastcall TCaliForm::SetOption(TPanel *pnl, int nx, int ny, int nw, int nh
 	pnl->Font->Color = clBlack;
 	pnl->ParentBackground=false;
 	pnl->Color = clSkyBlue;
-//	pnl->OnDblClick = PanelIrDblClick;
 	pnl->OnClick = PanelDblClick;
 	pnl->BevelInner = bvNone;
 	pnl->BevelKind = bkNone;
@@ -434,6 +421,27 @@ void __fastcall TCaliForm::WriteCaliFile(bool Data)
 	FileSeek(file_handle, 0, 0);
 	str = "Channel,STANDARD,MEASURE,OFFSET\r\n";
 	FileWrite(file_handle, str.c_str(), str.Length());
+	for(int i = 0; i < MAXCHANNEL; ++i){
+        str = IntToStr(i) + "," + pstandard[i]->Caption + "," + pmeasure[i]->Caption + "," + poffset[i]->Caption + "\r\n";
+		FileWrite(file_handle, str.c_str(), str.Length());
+	}
+	FileClose(file_handle);
+}
+//---------------------------------------------------------------------------
+void __fastcall TCaliForm::WriteCaliFile2(bool Data)
+{
+	AnsiString str, FileName;
+	int file_handle;
+
+	if(SaveDialog->Execute() == false){
+		return;
+	}
+	FileName = SaveDialog->FileName ;
+	if(FileExists(FileName))DeleteFile(FileName);
+	file_handle = FileCreate(FileName);
+	FileSeek(file_handle, 0, 0);
+	str = "Channel,STANDARD,MEASURE,OFFSET\r\n";
+	FileWrite(file_handle, str.c_str(), str.Length());
 	for(int i = 1; i <= MAXCHANNEL; ++i){
         if(i <= 288)
         	str = IntToStr(i) + "," + StringGrid1->Cells[1][i] + "," + StringGrid1->Cells[2][i] + ","+ StringGrid1->Cells[3][i] + "\r\n";
@@ -472,6 +480,35 @@ void __fastcall TCaliForm::InitColor()
         clrMeasureArr[i] = pnormal2->Color;
         clrOffsetArr[i] = pnormal1->Color;
     }
+}
+//---------------------------------------------------------------------------
+void __fastcall TCaliForm::InsertValueToPanel(int pos1, int pos2, double value, TColor clr)
+{
+    //* 보정은 트레이 이동해서 할 필요 없음. 픽스쳐 보드 채널갯수가 288개. 1번 찍고 2개채널에 값 입력.
+    //* (0, 4) channel, (1,5) standard, (2,6) measure, (3,7) offset
+
+    int index1 = pos1 - 1;
+    int index2 = pos2 - 1;
+
+    //* Measure
+    pmeasure[index1]->Caption = FormatFloat("0.0", value);
+//    if(index1 <= 288) pmeasure[index1]->Caption = FormatFloat("0.00", value);
+//    else if(index1 > 288) pmeasure[index1 - 288]->Caption = FormatFloat("0.00", value);
+    pmeasure[index2]->Caption = FormatFloat("0.0", value);
+//    if(index2 <= 288) StringGrid1->Cells[2][index2] = FormatFloat("0.00", value);
+//    else if(index2 > 288) StringGrid1->Cells[6][index2 - 288] = FormatFloat("0.00", value);
+
+    //* Offset
+	double offset1, offset2;
+    offset1 = StringToDouble(pstandard[index1]->Caption, 0) - value;
+    offset2 = StringToDouble(pstandard[index2]->Caption, 0) - value;
+
+    poffset[index1]->Caption = FormatFloat("0.0", offset1);
+    poffset[index2]->Caption = FormatFloat("0.0", offset2);
+
+    //* Color
+    clrMeasureArr[index1] = clr;
+    clrMeasureArr[index2] = clr;
 }
 //---------------------------------------------------------------------------
 void __fastcall TCaliForm::InsertValue(int pos1, int pos2, double value, TColor clr)
@@ -529,7 +566,7 @@ void __fastcall TCaliForm::PanelDblClick(TObject *Sender)
 	chEdit->Text = IntToStr(pnl->Tag+1);
 	ManMeasureEdit->Text = pmeasure[pnl->Tag]->Caption;
 	ManOffsetEdit->Text = poffset[pnl->Tag]->Caption;
-	ManStandardEdit->Text = pstandard[pnl->Tag]->Text;
+	ManStandardEdit->Text = pstandard[pnl->Tag]->Caption;
 }
 //------------------------------------------------------------------
 //---------------------------------------------------------------------------
@@ -813,7 +850,7 @@ void __fastcall TCaliForm::AdvSmoothButton1Click(TObject *Sender)
     pos1 = BaseForm->nForm[stage]->chMap[boardch];
     pos2 = BaseForm->nForm[stage]->chMap[boardch + 288];
 
-    InsertValue(pos1, pos2, value, clr);
+    InsertValueToPanel(pos1, pos2, value, clr);
 }
 //---------------------------------------------------------------------------
 

@@ -62,6 +62,7 @@ __published:	// IDE-managed Components
 	TPanel *Panel42;
 	TEdit *LowOffsetEdit;
 	TAdvSmoothButton *ConfigBtn1;
+	TPanel *pnormal3;
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall btnStopClick(TObject *Sender);
@@ -91,7 +92,7 @@ private:	// User declarations
     void __fastcall InitColor();
 
     TPanel *pmeasure[MAXCHANNEL];
-	TEdit *pstandard[MAXCHANNEL];
+	TPanel *pstandard[MAXCHANNEL];
 	TPanel *pch[MAXCHANNEL];
 	TPanel *poffset[MAXCHANNEL];
 
@@ -100,10 +101,11 @@ private:	// User declarations
 public:		// User declarations
 	__fastcall TCaliForm(TComponent* Owner);
     void __fastcall WriteCaliFile(bool Data);
+    void __fastcall WriteCaliFile2(bool Data);
 	void __fastcall WriteCalibOffset();
 	void __fastcall ReadCaliboffset();
-//    void __fastcall InsertValue(int pos, double value, TColor clr);
     void __fastcall InsertValue(int pos1, int pos2, double value, TColor clr);
+    void __fastcall InsertValueToPanel(int pos1, int pos2, double value, TColor clr);
 
     int stage;
 	double *measure;

@@ -2124,6 +2124,8 @@ void __fastcall TTotalForm::localCaliClick(TObject *Sender)
 	CaliForm->stage = this->Tag;
 	CaliForm->pstage->Caption = lblTitle->Caption;
 	CaliForm->Visible = true;
+    //CaliForm->Position = poScreenCenter;
+    CaliForm->Top = 2;
     CaliForm->WindowState = wsNormal;
 	CaliForm->BringToFront();
 

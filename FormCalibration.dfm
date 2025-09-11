@@ -4,8 +4,8 @@ object CaliForm: TCaliForm
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'CaliForm'
-  ClientHeight = 996
-  ClientWidth = 1854
+  ClientHeight = 1001
+  ClientWidth = 1797
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,8 +21,8 @@ object CaliForm: TCaliForm
   PixelsPerInch = 96
   TextHeight = 13
   object pstage: TPanel
-    Left = 1595
-    Top = 6
+    Left = 1539
+    Top = 2
     Width = 108
     Height = 20
     BevelOuter = bvNone
@@ -39,8 +39,8 @@ object CaliForm: TCaliForm
     OnClick = pstageClick
   end
   object Panel20: TPanel
-    Left = 1595
-    Top = 32
+    Left = 1539
+    Top = 26
     Width = 249
     Height = 20
     BevelOuter = bvNone
@@ -58,12 +58,14 @@ object CaliForm: TCaliForm
   object pBase: TPanel
     Left = 2
     Top = 2
-    Width = 1514
-    Height = 995
+    Width = 1530
+    Height = 998
     BevelKind = bkFlat
-    Color = clWhite
+    Color = clBlack
+    DoubleBuffered = True
     DragKind = dkDock
     ParentBackground = False
+    ParentDoubleBuffered = False
     TabOrder = 2
     object pnormal1: TPanel
       Left = 1
@@ -100,8 +102,8 @@ object CaliForm: TCaliForm
       Visible = False
     end
     object StringGrid1: TStringGrid
-      Left = 1
-      Top = 1
+      Left = 33
+      Top = 36
       Width = 100
       Height = 100
       TabOrder = 2
@@ -121,16 +123,33 @@ object CaliForm: TCaliForm
         24
         24)
     end
+    object pnormal3: TPanel
+      Left = 108
+      Top = 2
+      Width = 41
+      Height = 19
+      Caption = #45824#44592
+      Color = 16580307
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 3
+      Visible = False
+    end
   end
   object GroupBox3: TGroupBox
-    Left = 1595
-    Top = 59
+    Left = 1539
+    Top = 50
     Width = 249
-    Height = 733
+    Height = 607
     TabOrder = 3
     object AdvSmoothButton1: TAdvSmoothButton
-      Left = 66
-      Top = 677
+      Left = 58
+      Top = 565
       Width = 111
       Height = 31
       Appearance.GlowPercentage = 50
@@ -169,7 +188,7 @@ object CaliForm: TCaliForm
     end
     object btnSave: TAdvSmoothButton
       Left = 10
-      Top = 20
+      Top = 5
       Width = 72
       Height = 28
       Appearance.GlowPercentage = 50
@@ -208,7 +227,7 @@ object CaliForm: TCaliForm
     end
     object btnLoad: TAdvSmoothButton
       Left = 88
-      Top = 20
+      Top = 5
       Width = 72
       Height = 28
       Appearance.GlowPercentage = 50
@@ -247,7 +266,7 @@ object CaliForm: TCaliForm
     end
     object btnApply: TAdvSmoothButton
       Left = 166
-      Top = 20
+      Top = 5
       Width = 72
       Height = 28
       Appearance.GlowPercentage = 50
@@ -286,7 +305,7 @@ object CaliForm: TCaliForm
     end
     object btnInit: TAdvSmoothButton
       Left = 134
-      Top = 53
+      Top = 38
       Width = 104
       Height = 28
       Appearance.GlowPercentage = 50
@@ -325,7 +344,7 @@ object CaliForm: TCaliForm
     end
     object GroupBox1: TGroupBox
       Left = 10
-      Top = 102
+      Top = 86
       Width = 228
       Height = 82
       Caption = 'Calib Start'
@@ -490,7 +509,7 @@ object CaliForm: TCaliForm
     end
     object GroupBox4: TGroupBox
       Left = 10
-      Top = 203
+      Top = 178
       Width = 228
       Height = 66
       Caption = 'Each Channel'
@@ -581,7 +600,7 @@ object CaliForm: TCaliForm
     end
     object GroupBox2: TGroupBox
       Left = 10
-      Top = 286
+      Top = 254
       Width = 228
       Height = 122
       Caption = 'Manual Input'
@@ -826,7 +845,7 @@ object CaliForm: TCaliForm
     end
     object Panel36: TPanel
       Left = 17
-      Top = 432
+      Top = 387
       Width = 75
       Height = 30
       BevelOuter = bvNone
@@ -843,7 +862,7 @@ object CaliForm: TCaliForm
     end
     object ppos: TPanel
       Left = 93
-      Top = 432
+      Top = 387
       Width = 140
       Height = 30
       BevelOuter = bvNone
@@ -859,7 +878,7 @@ object CaliForm: TCaliForm
     end
     object GroupBox6: TGroupBox
       Left = 10
-      Top = 493
+      Top = 429
       Width = 228
       Height = 123
       Caption = 'ALL_OFFSET'
@@ -1008,11 +1027,11 @@ object CaliForm: TCaliForm
   object SaveDialog: TSaveDialog
     DefaultExt = '*.csv'
     Filter = 'Save(*.csv)|*.csv'
-    Left = 1693
-    Top = 106
+    Left = 1637
+    Top = 90
   end
   object OpenDialog1: TOpenDialog
-    Left = 1629
-    Top = 114
+    Left = 1573
+    Top = 90
   end
 end
