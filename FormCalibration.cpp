@@ -164,13 +164,23 @@ void __fastcall TCaliForm::InsertValue(int pos1, int pos2, double value, TColor 
     if(index2 <= 288) StringGrid1->Cells[2][index2] = FormatFloat("0.00", value);
     else if(index2 > 288) StringGrid1->Cells[6][index2 - 288] = FormatFloat("0.00", value);
 
-
     //* Offset
-    if(index1 <= 288) StringGrid1->Cells[3][index1] = StringToDouble(StringGrid1->Cells[1][index1], 0) - value;
-    else if(index1 > 288) StringGrid1->Cells[7][index1 - 288] = StringToDouble(StringGrid1->Cells[5][index1 - 288], 0) - value;
+	double offset1, offset2;
+	if(index1 <= 288)  {
+		offset1 = StringToDouble(StringGrid1->Cells[1][index1], 0) - value;
+		StringGrid1->Cells[3][index1] = FormatFloat("0.0", offset1);
+	} else if(index1 > 288) {
+		offset2 = StringToDouble(StringGrid1->Cells[5][index1 - 288], 0) - value;
+		StringGrid1->Cells[7][index1 - 288] = FormatFloat("0.0", offset2);
+	}
 
-    if(index2 <= 288) StringGrid1->Cells[3][index2] = StringToDouble(StringGrid1->Cells[1][index2], 0) - value;
-    else if(index2 > 288) StringGrid1->Cells[7][index2 - 288] = StringToDouble(StringGrid1->Cells[5][index2 - 288], 0) - value;
+	if(index2 <= 288){
+		offset1 = StringToDouble(StringGrid1->Cells[1][index2], 0) - value;
+		StringGrid1->Cells[3][index2] = FormatFloat("0.0", offset1);
+	} else if(index2 > 288){
+		offset2 = StringToDouble(StringGrid1->Cells[5][index2 - 288], 0) - value;
+        StringGrid1->Cells[7][index2 - 288] = FormatFloat("0.0", offset2);
+	}
 
     //* Color
     clrMeasureArr[index1 - 1] = clr;
