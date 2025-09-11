@@ -25,9 +25,14 @@ __published:	// IDE-managed Components
 	TPanel *pBase;
 	TPanel *pnormal1;
 	TPanel *pnormal2;
-	TAdvSmoothButton *btnApply;
+	TSaveDialog *SaveDialog;
+	TOpenDialog *OpenDialog1;
+	TStringGrid *StringGrid1;
+	TGroupBox *GroupBox3;
+	TAdvSmoothButton *AdvSmoothButton1;
 	TAdvSmoothButton *btnSave;
 	TAdvSmoothButton *btnLoad;
+	TAdvSmoothButton *btnApply;
 	TAdvSmoothButton *btnInit;
 	TGroupBox *GroupBox1;
 	TPanel *Panel2;
@@ -45,6 +50,11 @@ __published:	// IDE-managed Components
 	TPanel *Panel46;
 	TAdvSmoothButton *btnMeasure;
 	TAdvSmoothButton *btnStandard;
+	TPanel *Panel1;
+	TEdit *ManOffsetEdit;
+	TAdvSmoothButton *btnOffset;
+	TPanel *Panel36;
+	TPanel *ppos;
 	TGroupBox *GroupBox6;
 	TLabel *Label4;
 	TPanel *Panel52;
@@ -52,15 +62,6 @@ __published:	// IDE-managed Components
 	TPanel *Panel42;
 	TEdit *LowOffsetEdit;
 	TAdvSmoothButton *ConfigBtn1;
-	TSaveDialog *SaveDialog;
-	TOpenDialog *OpenDialog1;
-	TPanel *Panel1;
-	TEdit *ManOffsetEdit;
-	TAdvSmoothButton *btnOffset;
-	TStringGrid *StringGrid1;
-	TAdvSmoothButton *AdvSmoothButton1;
-	TPanel *ppos;
-	TPanel *Panel36;
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall btnStopClick(TObject *Sender);
@@ -79,14 +80,20 @@ __published:	// IDE-managed Components
           TGridDrawState State);
 	void __fastcall StringGrid1SelectCell(TObject *Sender, int ACol, int ARow, bool &CanSelect);
 	void __fastcall AdvSmoothButton1Click(TObject *Sender);
-
+    void __fastcall PanelDblClick(TObject *Sender);
 
 private:	// User declarations
 	void __fastcall MakePanel(AnsiString type);
+    void __fastcall SetOption(TPanel *pnl, int nx, int ny, int nw, int nh, int index);
     void __fastcall MakeGrid();
     void __fastcall SetValues(int ch, int pos);
     int __fastcall GetChannel(int col, int row);
     void __fastcall InitColor();
+
+    TPanel *pmeasure[MAXCHANNEL];
+	TEdit *pstandard[MAXCHANNEL];
+	TPanel *pch[MAXCHANNEL];
+	TPanel *poffset[MAXCHANNEL];
 
     TColor clrMeasureArr[MAXCHANNEL];
     TColor clrOffsetArr[MAXCHANNEL];

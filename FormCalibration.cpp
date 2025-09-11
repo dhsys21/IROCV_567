@@ -26,7 +26,7 @@ __fastcall TCaliForm::TCaliForm(TComponent* Owner)
 void __fastcall TCaliForm::FormCreate(TObject *Sender)
 {
     InitColor();
-    MakeGrid();
+    //MakeGrid();
 }
 //---------------------------------------------------------------------------
 void __fastcall TCaliForm::FormShow(TObject *Sender)
@@ -36,6 +36,8 @@ void __fastcall TCaliForm::FormShow(TObject *Sender)
 	OffsetEdit->Text = BaseForm->DefaultOffset[stage];
 	LowOffsetEdit->Text = BaseForm->DefaultLowOffset[stage];
 	OffsetEdit->Enabled = false;
+
+    MakePanel(BaseForm->lblLineNo->Caption);
 }
 //---------------------------------------------------------------------------
 void __fastcall TCaliForm::FormClose(TObject *Sender, TCloseAction &Action)
@@ -43,7 +45,330 @@ void __fastcall TCaliForm::FormClose(TObject *Sender, TCloseAction &Action)
     this->stage = -1;
 }
 //---------------------------------------------------------------------------
+void __fastcall TCaliForm::MakePanel(AnsiString type)
+{
+	int nx, ny, nw, nh;
 
+	if(type == "4")
+	{
+		nx = 1450;
+		ny = 4;
+		nw = 30;
+		nh = 20;
+
+		int cnt = 0;
+		for(int index = 0; index < MAXCHANNEL;){
+			pch[index] = new TPanel(this);
+			SetOption(pch[index], nx, ny, nw, nh-1, index);
+			pch[index]->Caption = pch[index]->Hint;
+			pch[index]->Color = clSkyBlue;
+			pch[index]->ParentBackground = false;
+
+			nx = nx + nw + 1;
+			pstandard[index] = new TEdit(this);
+			pstandard[index]->Parent = pBase;
+			pstandard[index]->Font->Size = 10;
+			pstandard[index]->Left =  nx;
+			pstandard[index]->Top = ny;
+			pstandard[index]->Width = nw + 1;
+			pstandard[index]->Height = nh + 5;
+			pstandard[index]->Tag = index;
+
+
+			ny = ny + nh;
+			nx = pch[index]->Left;
+			poffset[index] = new TPanel(this);
+			SetOption(poffset[index], nx, ny, nw, nh, index);
+			poffset[index]->Color = pnormal2->Color;
+			poffset[index]->ParentBackground = false;
+			poffset[index]->Caption = "0";
+			poffset[index]->ParentBackground = false;
+
+			nx = nx + nw + 1;
+			pmeasure[index] = new TPanel(this);
+			SetOption(pmeasure[index], nx, ny, nw, nh, index);
+			pmeasure[index]->Color = pnormal2->Color;
+			pmeasure[index]->ParentBackground = false;
+			pmeasure[index]->Caption = "0.00";
+			pmeasure[index]->ParentBackground = false;
+
+            index += 1;
+			nx = nx - 3 * nw - 3;
+			ny = ny - nh;
+			if(index % 2 == 0) nx -= 2;
+
+			if(index % 24 == 0)
+			{
+				ny = ny + nh + nh + 1;
+				nx = 1450;
+				if( (index / 24) % 12 == 0) ny += 3;
+			}
+
+		}
+	}
+    else if(type == "3")
+	{
+		nx = 4;
+//		nx = 1300;
+		ny = 600;
+//		ny = 4;
+//		nw = 37;
+		nw = 30;
+//		nh = 25;
+		nh = 20;
+
+		int cnt = 0;
+		for(int index = MAXCHANNEL; index >= 0;){
+			pch[index] = new TPanel(this);
+			SetOption(pch[index], nx, ny, nw, nh-1, index);
+			pch[index]->Caption = pch[index]->Hint;
+			pch[index]->Color = clSkyBlue;
+			pch[index]->ParentBackground = false;
+
+			nx = nx + nw + 1;
+			pstandard[index] = new TEdit(this);
+			pstandard[index]->Parent = pBase;
+			pstandard[index]->Font->Size = 10;
+			pstandard[index]->Left =  nx;
+			pstandard[index]->Top = ny;
+			pstandard[index]->Width = nw + 1;
+			pstandard[index]->Height = nh + 5;
+			pstandard[index]->Tag = index;
+
+
+			ny = ny + nh;
+			nx = pch[index]->Left;
+			poffset[index] = new TPanel(this);
+			SetOption(poffset[index], nx, ny, nw, nh, index);
+			poffset[index]->Color = pnormal2->Color;
+			poffset[index]->ParentBackground = false;
+			poffset[index]->Caption = "0";
+			poffset[index]->ParentBackground = false;
+
+			nx = nx + nw + 1;
+			pmeasure[index] = new TPanel(this);
+			SetOption(pmeasure[index], nx, ny, nw, nh, index);
+			pmeasure[index]->Color = pnormal2->Color;
+			pmeasure[index]->ParentBackground = false;
+			pmeasure[index]->Caption = "0.00";
+			pmeasure[index]->ParentBackground = false;
+
+
+			nx = nx + nw + 3;
+//			nx = nx - nw - 3;
+			ny = ny - nh;
+//			ny = ny + nh;
+			if(index % 2 == 0) nx += 2;
+//			if(index % 2 == 0) nx -= 2;
+			if(index % 20 == 0)
+			{
+				ny = ny - nh - nh  - 1;
+//				ny = ny + nh + nh + 1;
+				nx = 4;
+//				nx = 1300;
+				if( (index / 20) % 10 == 0) ny -= 3;
+//				if( (index / 20) % 10 == 0) ny += 3;
+			}
+			index -= 1;
+		}
+	}
+	else if(type == "6")
+	{
+		nx = 1200;
+		ny = 600;
+		nw = 30;
+		nh = 20;
+
+		int cnt = 0;
+		for(int index = 0; index < MAXCHANNEL;){
+			pch[index] = new TPanel(this);
+			SetOption(pch[index], nx, ny, nw, nh-1, index);
+			pch[index]->Caption = pch[index]->Hint;
+			pch[index]->Color = clSkyBlue;
+			pch[index]->ParentBackground = false;
+
+			nx = nx - nw - 1;
+			pstandard[index] = new TEdit(this);
+			pstandard[index]->Parent = pBase;
+			pstandard[index]->Font->Size = 10;
+			pstandard[index]->Left =  nx;
+			pstandard[index]->Top = ny;
+			pstandard[index]->Width = nw + 1;
+			pstandard[index]->Height = nh + 5;
+			pstandard[index]->Tag = index;
+
+
+			ny = ny + nh;
+			nx = pch[index]->Left;
+			poffset[index] = new TPanel(this);
+			SetOption(poffset[index], nx, ny, nw, nh, index);
+			poffset[index]->Color = pnormal2->Color;
+			poffset[index]->ParentBackground = false;
+			poffset[index]->Caption = "0";
+			poffset[index]->ParentBackground = false;
+
+			nx = nx - nw - 1;
+			pmeasure[index] = new TPanel(this);
+			SetOption(pmeasure[index], nx, ny, nw, nh, index);
+			pmeasure[index]->Color = pnormal2->Color;
+			pmeasure[index]->ParentBackground = false;
+			pmeasure[index]->Caption = "0.00";
+			pmeasure[index]->ParentBackground = false;
+
+
+			index += 1;
+			nx = nx - nw - 3;
+			ny = ny - nh;
+			if(index % 2 == 0) nx -= 2;
+			if(index % 20 == 0)
+			{
+				ny = ny - nh - nh  - 1;
+				nx = 1200;
+				if( (index / 20) % 4 == 0) ny -= 3;
+			}
+		}
+	}
+    else if(type == "1" || type == "2")
+	{
+		nx = 4;
+		ny = 600;
+		nw = 30;
+		nh = 20;
+
+		int cnt = 0;
+		for(int index = 0; index < MAXCHANNEL;){
+			pch[index] = new TPanel(this);
+			SetOption(pch[index], nx, ny, nw, nh-1, index);
+			pch[index]->Caption = pch[index]->Hint;
+			pch[index]->Color = clSkyBlue;
+			pch[index]->ParentBackground = false;
+
+			nx = nx + nw + 1;
+			pstandard[index] = new TEdit(this);
+			pstandard[index]->Parent = pBase;
+			pstandard[index]->Font->Size = 10;
+			pstandard[index]->Left =  nx;
+			pstandard[index]->Top = ny;
+			pstandard[index]->Width = nw + 1;
+			pstandard[index]->Height = nh + 5;
+			pstandard[index]->Tag = index;
+
+
+			ny = ny + nh;
+			nx = pch[index]->Left;
+			poffset[index] = new TPanel(this);
+			SetOption(poffset[index], nx, ny, nw, nh, index);
+			poffset[index]->Color = pnormal2->Color;
+			poffset[index]->ParentBackground = false;
+			poffset[index]->Caption = "0";
+			poffset[index]->ParentBackground = false;
+
+			nx = nx + nw + 1;
+			pmeasure[index] = new TPanel(this);
+			SetOption(pmeasure[index], nx, ny, nw, nh, index);
+			pmeasure[index]->Color = pnormal2->Color;
+			pmeasure[index]->ParentBackground = false;
+			pmeasure[index]->Caption = "0.00";
+			pmeasure[index]->ParentBackground = false;
+
+
+			index += 1;
+			nx = nx + nw + 3;
+			ny = ny - nh;
+			if(index % 2 == 0) nx += 2;
+			if(index % 20 == 0)
+			{
+				ny = ny - nh - nh  - 1;
+				nx = 4;
+				if( (index / 20) % 4 == 0) ny -= 3;
+			}
+		}
+	}
+    else if(type == "5")
+	{
+		nx = 1200;
+		ny = 600;
+		nw = 30;
+		nh = 20;
+
+		int cnt = 0;
+		for(int index = 0; index < MAXCHANNEL;){
+			pch[index] = new TPanel(this);
+			SetOption(pch[index], nx, ny, nw, nh-1, index);
+			pch[index]->Caption = pch[index]->Hint;
+			pch[index]->Color = clSkyBlue;
+			pch[index]->ParentBackground = false;
+
+			nx = nx - nw - 1;
+			pstandard[index] = new TEdit(this);
+			pstandard[index]->Parent = pBase;
+			pstandard[index]->Font->Size = 10;
+			pstandard[index]->Left =  nx;
+			pstandard[index]->Top = ny;
+			pstandard[index]->Width = nw + 1;
+			pstandard[index]->Height = nh + 5;
+			pstandard[index]->Tag = index;
+
+
+			ny = ny + nh;
+			nx = pch[index]->Left;
+			poffset[index] = new TPanel(this);
+			SetOption(poffset[index], nx, ny, nw, nh, index);
+			poffset[index]->Color = pnormal2->Color;
+			poffset[index]->ParentBackground = false;
+			poffset[index]->Caption = "0";
+			poffset[index]->ParentBackground = false;
+
+			nx = nx - nw - 1;
+			pmeasure[index] = new TPanel(this);
+			SetOption(pmeasure[index], nx, ny, nw, nh, index);
+			pmeasure[index]->Color = pnormal2->Color;
+			pmeasure[index]->ParentBackground = false;
+			pmeasure[index]->Caption = "0.00";
+			pmeasure[index]->ParentBackground = false;
+
+
+			index += 1;
+            nx = pch[index-1]->Left;
+            ny = ny - 3 * nh - 1;
+            //ny = ny - nh - nh  - 1;
+			//nx = nx + nw + 3;
+			//ny = ny - nh;
+			//if(index % 2 == 0) nx += 2;
+			if(index % 20 == 0)
+			{
+                nx = nx - 2 * nw - 3;
+                ny = 600;
+                //nx = nx + nw + 3;
+				//nx = 4;
+				//if( (index / 20) % 4 == 0) ny -= 3;
+			}
+		}
+	}
+}
+//---------------------------------------------------------------------------
+void __fastcall TCaliForm::SetOption(TPanel *pnl, int nx, int ny, int nw, int nh, int index)
+{
+	pnl->Parent = pBase;
+	pnl->Left =  nx;
+	pnl->Top = ny;
+	pnl->Width = nw;
+	pnl->Height = nh;
+	pnl->Alignment = taCenter;
+	pnl->Font->Size = 8;
+	pnl->Font->Color = clBlack;
+	pnl->ParentBackground=false;
+	pnl->Color = clSkyBlue;
+//	pnl->OnDblClick = PanelIrDblClick;
+	pnl->OnClick = PanelDblClick;
+	pnl->BevelInner = bvNone;
+	pnl->BevelKind = bkNone;
+	pnl->BevelOuter = bvNone;
+	pnl->Tag = index;
+	pnl->Hint = IntToStr((index/24)+1) + "-" + IntToStr((index+24) % 24 + 1);
+	pnl->ShowHint = false;
+}
+//---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
 // Method
@@ -194,7 +519,19 @@ void __fastcall TCaliForm::InsertValue(int pos1, int pos2, double value, TColor 
 //---------------------------------------------------------------------------
 
 
-
+//---------------------------------------------------------------------------
+// Panel Event
+//---------------------------------------------------------------------------
+void __fastcall TCaliForm::PanelDblClick(TObject *Sender)
+{
+	TPanel *pnl;
+	pnl = (TPanel*)Sender;
+	chEdit->Text = IntToStr(pnl->Tag+1);
+	ManMeasureEdit->Text = pmeasure[pnl->Tag]->Caption;
+	ManOffsetEdit->Text = poffset[pnl->Tag]->Caption;
+	ManStandardEdit->Text = pstandard[pnl->Tag]->Text;
+}
+//------------------------------------------------------------------
 //---------------------------------------------------------------------------
 // Button Event
 //---------------------------------------------------------------------------
@@ -479,4 +816,5 @@ void __fastcall TCaliForm::AdvSmoothButton1Click(TObject *Sender)
     InsertValue(pos1, pos2, value, clr);
 }
 //---------------------------------------------------------------------------
+
 
