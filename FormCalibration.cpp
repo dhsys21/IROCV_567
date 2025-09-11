@@ -362,6 +362,28 @@ void __fastcall TCaliForm::SetOption(TPanel *pnl, int nx, int ny, int nw, int nh
 //---------------------------------------------------------------------------
 void __fastcall TCaliForm::WriteCalibOffset()
 {
+    TMemIniFile *ini;
+	AnsiString file;
+	file = (AnsiString)BIN_PATH + "Caliboffset_" + IntToStr(this->stage) + ".cali";
+    if(FileExists(file)){
+		DeleteFile(file);
+	}
+
+    ini = new TMemIniFile(file);
+
+	for(int index = 0; index < MAXCHANNEL; ++index)
+	{
+        ini->WriteFloat("STANDARD", IntToStr(index + 1), StringToDouble(pstandard[index]->Caption, 0));
+        ini->WriteFloat("MEASURE", IntToStr(index + 1), StringToDouble(pmeasure[index]->Caption, 0));
+        ini->WriteFloat("IR OFFSET", IntToStr(index + 1), StringToDouble(poffset[index]->Caption, 0));
+	}
+
+    ini->UpdateFile();
+	delete ini;
+}
+//---------------------------------------------------------------------------
+void __fastcall TCaliForm::WriteCalibOffset2()
+{
 	//TIniFile *ini;
     TMemIniFile *ini;
 	AnsiString file;
@@ -393,6 +415,20 @@ void __fastcall TCaliForm::ReadCaliboffset()
 	ini = new TIniFile((AnsiString)BIN_PATH + "Caliboffset_" + IntToStr(this->stage) + ".cali");
 
 	for(int index = 1; index <= MAXCHANNEL; ++index){
+        pstandard[index - 1]->Caption = ini->ReadFloat("STANDARD", IntToStr(index), 0.0);
+        pmeasure[index - 1]->Caption = ini->ReadFloat("MEASURE", IntToStr(index), 0.0);
+        poffset[index - 1]->Caption = ini->ReadFloat("IR OFFSET", IntToStr(index), 0.0);
+	}
+
+	delete ini;
+}
+//---------------------------------------------------------------------------
+void __fastcall TCaliForm::ReadCaliboffset2()
+{
+	TIniFile *ini;
+	ini = new TIniFile((AnsiString)BIN_PATH + "Caliboffset_" + IntToStr(this->stage) + ".cali");
+
+	for(int index = 1; index <= MAXCHANNEL; ++index){
         if(index <= 288){
             StringGrid1->Cells[1][index] = ini->ReadFloat("STANDARD", IntToStr(index), 0.0);
             StringGrid1->Cells[2][index] = ini->ReadFloat("MEASURE", IntToStr(index), 0.0);
@@ -405,6 +441,69 @@ void __fastcall TCaliForm::ReadCaliboffset()
 	}
 
 	delete ini;
+}
+//---------------------------------------------------------------------------
+void __fastcall TCaliForm::LoadCaliFile()
+{
+    AnsiString str;
+	TStringList *list = new TStringList;
+	if(OpenDialog1->Execute()){
+		list->LoadFromFile(OpenDialog1->FileName);
+		try{
+            for(int index = 0; index < MAXCHANNEL; ++index){
+
+                str = list->Strings[index + 1];
+                str.Delete(1, str.Pos(","));
+
+                //* Standard
+                pstandard[index - 1]->Caption = str.SubString(1, str.Pos(",")-1);
+                str.Delete(1, str.Pos(","));
+
+                //* Measure
+                pmeasure[index - 1]->Caption = str.SubString(1, str.Pos(",")-1);
+                str.Delete(1, str.Pos(","));
+
+                //* Offset
+                poffset[index - 1]->Caption = str.Trim();
+            }
+        }
+		catch(...){
+			MessageBox(Handle, L"Is the wrong type of file.", L"", MB_OK|MB_ICONERROR);
+		}
+	}
+}
+//---------------------------------------------------------------------------
+void __fastcall TCaliForm::LoadCaliFile2()
+{
+    AnsiString str;
+	TStringList *list = new TStringList;
+	if(OpenDialog1->Execute()){
+		list->LoadFromFile(OpenDialog1->FileName);
+		try{
+            for(int index = 1; index <= MAXCHANNEL; ++index){
+
+                str = list->Strings[index];
+                str.Delete(1, str.Pos(","));
+
+                //* Standard
+                if(index <= 288) StringGrid1->Cells[1][index] = str.SubString(1, str.Pos(",")-1);
+                else StringGrid1->Cells[5][index - 288] = str.SubString(1, str.Pos(",")-1);
+                str.Delete(1, str.Pos(","));
+
+                //* Measure
+                if(index <= 288) StringGrid1->Cells[2][index] = str.SubString(1, str.Pos(",")-1);
+                else StringGrid1->Cells[6][index - 288] = str.SubString(1, str.Pos(",")-1);
+                str.Delete(1, str.Pos(","));
+
+                //* Offset
+                if(index <= 288) StringGrid1->Cells[3][index] = str.Trim();
+                else StringGrid1->Cells[7][index - 288] = str.Trim();
+            }
+        }
+		catch(...){
+			MessageBox(Handle, L"Is the wrong type of file.", L"", MB_OK|MB_ICONERROR);
+		}
+	}
 }
 //---------------------------------------------------------------------------
 void __fastcall TCaliForm::WriteCaliFile(bool Data)
@@ -422,7 +521,7 @@ void __fastcall TCaliForm::WriteCaliFile(bool Data)
 	str = "Channel,STANDARD,MEASURE,OFFSET\r\n";
 	FileWrite(file_handle, str.c_str(), str.Length());
 	for(int i = 0; i < MAXCHANNEL; ++i){
-        str = IntToStr(i) + "," + pstandard[i]->Caption + "," + pmeasure[i]->Caption + "," + poffset[i]->Caption + "\r\n";
+        str = IntToStr(i + 1) + "," + pstandard[i]->Caption + "," + pmeasure[i]->Caption + "," + poffset[i]->Caption + "\r\n";
 		FileWrite(file_handle, str.c_str(), str.Length());
 	}
 	FileClose(file_handle);
@@ -450,6 +549,71 @@ void __fastcall TCaliForm::WriteCaliFile2(bool Data)
 		FileWrite(file_handle, str.c_str(), str.Length());
 	}
 	FileClose(file_handle);
+}
+//---------------------------------------------------------------------------
+void __fastcall TCaliForm::ApplyClick(int nTag)
+{
+    int channel = StringToInt(chEdit->Text, 1);
+    int boardch = 0;
+    boardch = BaseForm->nForm[stage]->chReverseMap[channel];// - ((traypos - 1) * 288);
+
+    int pos1, pos2;
+    pos1 = BaseForm->nForm[stage]->chMap[boardch];
+    pos2 = BaseForm->nForm[stage]->chMap[boardch + 288];
+	switch(nTag){
+		case 1:
+            pstandard[pos1 - 1]->Caption = ManStandardEdit->Text;
+            pstandard[pos2 - 1]->Caption = ManStandardEdit->Text;
+			break;
+		case 2:
+            pmeasure[pos1 - 1]->Caption = ManMeasureEdit->Text;
+            pmeasure[pos2 - 1]->Caption = ManMeasureEdit->Text;
+			break;
+		case 3:
+            poffset[pos1 - 1]->Caption = ManOffsetEdit->Text;
+            poffset[pos2 - 1]->Caption = ManOffsetEdit->Text;
+			break;
+		default: break;
+	}
+}
+void __fastcall TCaliForm::ApplyClick2(int nTag)
+{
+    int channel = StringToInt(chEdit->Text, 1);
+    if(channel > 288) channel = channel - 288;
+	switch(nTag){
+		case 1:
+            StringGrid1->Cells[1][channel] = ManStandardEdit->Text;
+            StringGrid1->Cells[5][channel] = ManStandardEdit->Text;
+			break;
+		case 2:
+			StringGrid1->Cells[2][channel] = ManMeasureEdit->Text;
+            StringGrid1->Cells[6][channel] = ManMeasureEdit->Text;
+			break;
+		case 3:
+			StringGrid1->Cells[3][channel] = ManOffsetEdit->Text;
+            StringGrid1->Cells[7][channel] = ManOffsetEdit->Text;
+			break;
+		default: break;
+	}
+}
+void __fastcall TCaliForm::ApplyFile()
+{
+    for(int i = 0; i < MAXCHANNEL; i++)
+	{
+        BaseForm->nForm[stage]->stage.ir_offset[i] = StringToDouble(poffset[i]->Caption, 0);
+	}
+
+	WriteCalibOffset();
+}
+//---------------------------------------------------------------------------
+void __fastcall TCaliForm::ApplyFile2()
+{
+    for(int i = 1; i <= MAXCHANNEL; i++)
+	{
+        if(i <= 288) BaseForm->nForm[stage]->stage.ir_offset[i - 1] =  StringToDouble(StringGrid1->Cells[3][i], 0);
+        else BaseForm->nForm[stage]->stage.ir_offset[i - 1] =  StringToDouble(StringGrid1->Cells[7][i - 288], 0);
+	}
+	WriteCalibOffset();
 }
 //---------------------------------------------------------------------------
 void __fastcall TCaliForm::SetValues(int ch, int pos)
@@ -492,12 +656,7 @@ void __fastcall TCaliForm::InsertValueToPanel(int pos1, int pos2, double value, 
 
     //* Measure
     pmeasure[index1]->Caption = FormatFloat("0.0", value);
-//    if(index1 <= 288) pmeasure[index1]->Caption = FormatFloat("0.00", value);
-//    else if(index1 > 288) pmeasure[index1 - 288]->Caption = FormatFloat("0.00", value);
     pmeasure[index2]->Caption = FormatFloat("0.0", value);
-//    if(index2 <= 288) StringGrid1->Cells[2][index2] = FormatFloat("0.00", value);
-//    else if(index2 > 288) StringGrid1->Cells[6][index2 - 288] = FormatFloat("0.00", value);
-
     //* Offset
 	double offset1, offset2;
     offset1 = StringToDouble(pstandard[index1]->Caption, 0) - value;
@@ -628,23 +787,7 @@ void __fastcall TCaliForm::btnStandardClick(TObject *Sender)
 	TAdvSmoothToggleButton *btn;
 	btn = (TAdvSmoothToggleButton*)Sender;
 
-	int channel = StringToInt(chEdit->Text, 1);
-    if(channel > 288) channel = channel - 288;
-	switch(btn->Tag){
-		case 1:
-            StringGrid1->Cells[1][channel] = ManStandardEdit->Text;
-            StringGrid1->Cells[5][channel] = ManStandardEdit->Text;
-			break;
-		case 2:
-			StringGrid1->Cells[2][channel] = ManMeasureEdit->Text;
-            StringGrid1->Cells[6][channel] = ManMeasureEdit->Text;
-			break;
-		case 3:
-			StringGrid1->Cells[3][channel] = ManOffsetEdit->Text;
-            StringGrid1->Cells[7][channel] = ManOffsetEdit->Text;
-			break;
-		default: break;
-	}
+    ApplyClick(btn->Tag);
 }
 //---------------------------------------------------------------------------
 void __fastcall TCaliForm::btnSaveClick(TObject *Sender)
@@ -654,45 +797,12 @@ void __fastcall TCaliForm::btnSaveClick(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TCaliForm::btnLoadClick(TObject *Sender)
 {
-	AnsiString str;
-	TStringList *list = new TStringList;
-	if(OpenDialog1->Execute()){
-		list->LoadFromFile(OpenDialog1->FileName);
-		try{
-            for(int index = 1; index <= MAXCHANNEL; ++index){
-
-                str = list->Strings[index];
-                str.Delete(1, str.Pos(","));
-
-                //* Standard
-                if(index <= 288) StringGrid1->Cells[1][index] = str.SubString(1, str.Pos(",")-1);
-                else StringGrid1->Cells[5][index - 288] = str.SubString(1, str.Pos(",")-1);
-                str.Delete(1, str.Pos(","));
-
-                //* Measure
-                if(index <= 288) StringGrid1->Cells[2][index] = str.SubString(1, str.Pos(",")-1);
-                else StringGrid1->Cells[6][index - 288] = str.SubString(1, str.Pos(",")-1);
-                str.Delete(1, str.Pos(","));
-
-                //* Offset
-                if(index <= 288) StringGrid1->Cells[3][index] = str.Trim();
-                else StringGrid1->Cells[7][index - 288] = str.Trim();
-            }
-        }
-		catch(...){
-			MessageBox(Handle, L"Is the wrong type of file.", L"", MB_OK|MB_ICONERROR);
-		}
-	}
+	LoadCaliFile();
 }
 //---------------------------------------------------------------------------
 void __fastcall TCaliForm::btnApplyClick(TObject *Sender)
 {
-	for(int i = 1; i <= MAXCHANNEL; i++)
-	{
-        if(i <= 288) BaseForm->nForm[stage]->stage.ir_offset[i] =  StringToDouble(StringGrid1->Cells[3][i], 0);
-        else BaseForm->nForm[stage]->stage.ir_offset[i] =  StringToDouble(StringGrid1->Cells[7][i - 288], 0);
-	}
-	WriteCalibOffset();
+	ApplyFile();
 }
 //---------------------------------------------------------------------------
 void __fastcall TCaliForm::ConfigBtn1Click(TObject *Sender)
@@ -720,8 +830,6 @@ void __fastcall TCaliForm::pstageClick(TObject *Sender)
 //---------------------------------------------------------------------------
 // Button Event
 //---------------------------------------------------------------------------
-
-
 
 
 
@@ -824,7 +932,6 @@ void __fastcall TCaliForm::StringGrid1SelectCell(TObject *Sender, int ACol, int 
         else SetValues(ARow, 0);
     }
 }
-
 //---------------------------------------------------------------------------
 // String Grid
 //---------------------------------------------------------------------------
@@ -841,9 +948,7 @@ void __fastcall TCaliForm::AdvSmoothButton1Click(TObject *Sender)
     }
     else clr = BaseForm->nForm[stage]->cl_ir->Color;;
 
-    int boardch = 0, traypos = 0;;
-    if(channel % 4 == 1 || channel % 4 == 2) traypos = 1;
-    else if(channel % 4 == 3 || channel % 4 == 0) traypos = 2;
+    int boardch = 0;
     boardch = BaseForm->nForm[stage]->chReverseMap[channel];// - ((traypos - 1) * 288);
 
     int pos1, pos2;

@@ -91,6 +91,9 @@ private:	// User declarations
     int __fastcall GetChannel(int col, int row);
     void __fastcall InitColor();
 
+    void __fastcall ApplyClick(int nTag);
+    void __fastcall ApplyClick2(int nTag);
+
     TPanel *pmeasure[MAXCHANNEL];
 	TPanel *pstandard[MAXCHANNEL];
 	TPanel *pch[MAXCHANNEL];
@@ -102,8 +105,14 @@ public:		// User declarations
 	__fastcall TCaliForm(TComponent* Owner);
     void __fastcall WriteCaliFile(bool Data);
     void __fastcall WriteCaliFile2(bool Data);
+    void __fastcall LoadCaliFile();
+    void __fastcall LoadCaliFile2();
+    void __fastcall ApplyFile();
+    void __fastcall ApplyFile2();
 	void __fastcall WriteCalibOffset();
+    void __fastcall WriteCalibOffset2();
 	void __fastcall ReadCaliboffset();
+    void __fastcall ReadCaliboffset2();
     void __fastcall InsertValue(int pos1, int pos2, double value, TColor clr);
     void __fastcall InsertValueToPanel(int pos1, int pos2, double value, TColor clr);
 
