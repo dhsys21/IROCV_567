@@ -786,13 +786,12 @@ void __fastcall TTotalForm::MakePanel(AnsiString type)
     AnsiString hint = "";
     for(int index = 0; index < MAXCHANNEL;)
     {
-        hint = SetChannelHint(index);
+        int channel = chReverseMap[index + 1];
+        hint = SetChannelHint(channel);
         if(panel[index] != NULL)
             panel[index]->Hint = hint;
 
         index += 1;
-//            panel[index]->Hint = IntToStr(index + 1) + " : "
-//            	+ GetChPosF(index) + "-" + GetChPosR(index);
     }
 }
 //---------------------------------------------------------------------------

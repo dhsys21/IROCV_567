@@ -337,6 +337,18 @@ void __fastcall TCaliForm::MakePanel(AnsiString type)
 //---------------------------------------------------------------------------
 void __fastcall TCaliForm::SetOption(TPanel *pnl, int nx, int ny, int nw, int nh, int index)
 {
+//    int group = (index % 24) + 1;
+//    int channel_no = index / 24 + 1;
+//
+//    int board_no;
+//    if (group % 4 == 3 || group % 4 == 0)
+//        board_no = group / 2;
+//    else if(group % 4 == 1)
+//        board_no = (group + 1) / 2;
+//    else if(group % 4 == 2)
+//        board_no = (group + 1) / 2 + 1;
+    int ch = BaseForm->nForm[stage]->chReverseMap[index + 1];
+
 	pnl->Parent = pBase;
 	pnl->Left =  nx;
 	pnl->Top = ny;
@@ -352,7 +364,7 @@ void __fastcall TCaliForm::SetOption(TPanel *pnl, int nx, int ny, int nw, int nh
 	pnl->BevelKind = bkNone;
 	pnl->BevelOuter = bvNone;
 	pnl->Tag = index;
-	pnl->Hint = IntToStr((index/24)+1) + "-" + IntToStr((index+24) % 24 + 1);
+	pnl->Hint = SetChannelHint(ch);
 	pnl->ShowHint = false;
 }
 //---------------------------------------------------------------------------
@@ -726,6 +738,9 @@ void __fastcall TCaliForm::PanelDblClick(TObject *Sender)
 	ManMeasureEdit->Text = pmeasure[pnl->Tag]->Caption;
 	ManOffsetEdit->Text = poffset[pnl->Tag]->Caption;
 	ManStandardEdit->Text = pstandard[pnl->Tag]->Caption;
+
+    int channel = BaseForm->nForm[stage]->chReverseMap[pnl->Tag + 1];
+    ppos->Caption = SetChannelHint(channel);
 }
 //------------------------------------------------------------------
 //---------------------------------------------------------------------------

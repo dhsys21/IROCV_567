@@ -362,7 +362,6 @@ void __fastcall TRemeasureForm::SetOption(TPanel *pnl, int nx, int ny, int nw, i
 	pnl->BevelKind = bkNone;
 	pnl->BevelOuter = bvNone;
 	pnl->Tag = index; // index + 16
-	//pnl->Hint = "POS : " + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1);
     //* 채널 위치 -> 릴레이가 12줄이므로 위치를 계산해야 함
     int ch = BaseForm->nForm[stage]->chReverseMap[index + 1];
     if(ch >= 289) ch  = ch - 288;
@@ -443,9 +442,9 @@ void __fastcall TRemeasureForm::ChInfoMouseEnter(TObject *Sender)
 	pnlCh->Caption = index + 1;
 
     int ch = BaseForm->nForm[stage]->chReverseMap[index + 1];
-    if(ch >= 289) ch  = ch - 288;
-	//pnlPos->Caption = IntToStr((index+LINECOUNT)/LINECOUNT) + "-" + IntToStr((index%LINECOUNT)+1);
-    pnlPos->Caption = IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
+    //if(ch >= 289) ch  = ch - 288;
+    //pnlPos->Caption = IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
+    pnlPos->Caption = SetChannelHint(ch);
 }
 //---------------------------------------------------------------------------
 

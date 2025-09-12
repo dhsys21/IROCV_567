@@ -202,8 +202,9 @@ void __fastcall TMeasureInfoForm::SetChannelInfo(int traypos)
         pir[channel]->Caption = IntToStr(channel + 1);
         pir[channel]->Color = pnormal1->Color;
 
-        pocv[channel]->Caption = SetChannelHint(channel);
-        pocv[channel]->Hint = "CH " + SetChannelHint(channel);
+        int ch = BaseForm->nForm[stage]->chReverseMap[channel + 1];
+        pocv[channel]->Caption = SetChannelHint(ch);
+        pocv[channel]->Hint = "CH " + SetChannelHint(ch);
         pocv[channel]->Color = pnormal2->Color;
         pocv[channel]->Refresh();
     }
@@ -486,7 +487,8 @@ void __fastcall TMeasureInfoForm::ChInfoMouseEnter(TObject *Sender)
 	int index;
 	index = pnl->Tag;
 	pch->Caption = index + 1;
-    ppos->Caption = SetChannelHint(index);
+    int ch = BaseForm->nForm[stage]->chReverseMap[index + 1];
+    ppos->Caption = SetChannelHint(ch);
 }
 //---------------------------------------------------------------------------
 void __fastcall TMeasureInfoForm::ChInfoMouseLeave(TObject *Sender)

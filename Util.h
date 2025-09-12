@@ -19,5 +19,6 @@ AnsiString GetChPosF(int* chReverseMap, int index, AnsiString lineno);
 AnsiString GetChPosR(int stage, int index, AnsiString lineno);
 AnsiString GetChPosR(int* chReverseMap, int index, AnsiString lineno);
 void OpenFolder(UnicodeString path);
-AnsiString SetChannelHint(int channel);
+AnsiString SetChannelHint2(int channel);
+AnsiString SetChannelHint(int reversechannel);
 int GetChannel(int trayPos, int index);
