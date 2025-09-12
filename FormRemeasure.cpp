@@ -93,14 +93,6 @@ void __fastcall TRemeasureForm::MakePanel(AnsiString type)
 			pre[index]->Color = pcolor1->Color;
 			pre[index]->ParentBackground = false;
 
-            //* 채널 위치 표시
-//            pch[index]->Hint = "POS : " + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1);
-//            pch[index]->OnMouseEnter = ChInfoMouseEnter;
-//			pch[index]->OnMouseLeave = ChInfoMouseLeave;
-//            pre[index]->Hint = "POS : " + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1);
-//            pre[index]->OnMouseEnter = ChInfoMouseEnter;
-//			pre[index]->OnMouseLeave = ChInfoMouseLeave;
-
 			index += 1;
 			nx += (nw + 1);
 			if(index % 2 == 0) nx += 1;
@@ -135,18 +127,10 @@ void __fastcall TRemeasureForm::MakePanel(AnsiString type)
 			pre[index]->Color = pcolor1->Color;
 			pre[index]->ParentBackground = false;
 
-            //* 채널 위치 표시
-//            pch[index]->Hint = "POS : " + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1);
-//            pch[index]->OnMouseEnter = ChInfoMouseEnter;
-//			pch[index]->OnMouseLeave = ChInfoMouseLeave;
-//            pre[index]->Hint = "POS : " + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1);
-//            pre[index]->OnMouseEnter = ChInfoMouseEnter;
-//			pre[index]->OnMouseLeave = ChInfoMouseLeave;
-
 			index += 1;
 			nx -= (nw + 1);
 			if(index % 2 == 0) nx -= 1;
-			if(index % (LINECOUNT / 4) == 0) nx -= 1;
+			if(index % (LINECOUNT / 6) == 0) nx -= 1;
 			if(index % LINECOUNT == 0)
 			{
 				ny += nh * 2 + 2;
@@ -178,14 +162,6 @@ void __fastcall TRemeasureForm::MakePanel(AnsiString type)
 			SetOption(pre[index], nx, ny+nh+1, nw, nh, index);
 			pre[index]->Color = pcolor1->Color;
 			pre[index]->ParentBackground = false;
-
-            //* 채널 위치 표시
-//            pch[index]->Hint = "POS : " + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1);
-//            pch[index]->OnMouseEnter = ChInfoMouseEnter;
-//			pch[index]->OnMouseLeave = ChInfoMouseLeave;
-//            pre[index]->Hint = "POS : " + IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index%LINECOUNT)+1);
-//            pre[index]->OnMouseEnter = ChInfoMouseEnter;
-//			pre[index]->OnMouseLeave = ChInfoMouseLeave;
 
 			index += 1;
 			nx = nx + (nw + 1);
@@ -222,16 +198,6 @@ void __fastcall TRemeasureForm::MakePanel(AnsiString type)
 			SetOption(pre[index], nx, ny+nh+1, nw, nh, index);
 			pre[index]->Color = pcolor1->Color;
 			pre[index]->ParentBackground = false;
-
-            //* 채널 위치 표시
-//            ch = BaseForm->nForm[stage]->chReverseMap[index + 1];
-//            if(ch >= 289) ch  = ch - 288;
-//            pch[index]->Hint = "POS : " + IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
-//            pch[index]->OnMouseEnter = ChInfoMouseEnter;
-//			pch[index]->OnMouseLeave = ChInfoMouseLeave;
-//            pre[index]->Hint = "POS : " + IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
-//            pre[index]->OnMouseEnter = ChInfoMouseEnter;
-//			pre[index]->OnMouseLeave = ChInfoMouseLeave;
 
 			index += 1;
 			nx = nx - (nw + 1);
@@ -339,7 +305,7 @@ void __fastcall TRemeasureForm::MakeUIPanel(AnsiString type)
             index ++;
             nx -= (nw+1);
             if(index % 2 == 0) nx -= 1;
-            if(index % (LINECOUNT / 4) == 0) nx -= 1;
+            if(index % (LINECOUNT / 6) == 0) nx -= 1;
             ny += (nh+1);
             if( index % (LINECOUNT / 4) == 0) ny += 2;
         }

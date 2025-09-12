@@ -145,7 +145,7 @@ object MeasureInfoForm: TMeasureInfoForm
       end
     end
     object pnormal2: TPanel
-      Left = 192
+      Left = 2
       Top = 120
       Width = 41
       Height = 19
@@ -156,12 +156,13 @@ object MeasureInfoForm: TMeasureInfoForm
       Font.Height = -11
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
+      ParentBackground = False
       ParentFont = False
       TabOrder = 4
       Visible = False
     end
     object pnormal1: TPanel
-      Left = 89
+      Left = 2
       Top = 94
       Width = 54
       Height = 15
@@ -172,6 +173,7 @@ object MeasureInfoForm: TMeasureInfoForm
       Font.Height = -11
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
+      ParentBackground = False
       ParentFont = False
       TabOrder = 5
       Visible = False
@@ -767,6 +769,74 @@ object MeasureInfoForm: TMeasureInfoForm
       ParentBackground = False
       ParentFont = False
       TabOrder = 38
+      Visible = False
+    end
+    object pnormal3: TPanel
+      Left = 10
+      Top = 154
+      Width = 54
+      Height = 15
+      Caption = '??1'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 39
+      Visible = False
+    end
+    object pnormal4: TPanel
+      Left = 10
+      Top = 197
+      Width = 41
+      Height = 19
+      Caption = '??'
+      Color = 12369084
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 40
+      Visible = False
+    end
+    object pnormal31: TPanel
+      Left = 10
+      Top = 175
+      Width = 54
+      Height = 15
+      Caption = '??1'
+      Color = 15461355
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 41
+      Visible = False
+    end
+    object pnormal41: TPanel
+      Left = 11
+      Top = 222
+      Width = 41
+      Height = 19
+      Caption = '??'
+      Color = 13421772
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 42
       Visible = False
     end
   end

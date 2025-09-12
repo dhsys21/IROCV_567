@@ -363,7 +363,7 @@ object RemeasureForm: TRemeasureForm
     Top = 23
     Width = 1044
     Height = 912
-    Color = 12353126
+    Color = clGray
     ParentBackground = False
     TabOrder = 2
     object cl_line: TPanel

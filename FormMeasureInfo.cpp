@@ -107,7 +107,7 @@ void __fastcall TMeasureInfoForm::MakePanel(AnsiString type)
 
 			SetOption(pir[index], nx, ny, nw, nh-1, index);
 			SetOption(pocv[index], nx, ny+nh, nw, nh, index);
-			pocv[index]->Caption = IntToStr((index/LINECOUNT)+1) + "-" + IntToStr((index+LINECOUNT)%LINECOUNT);
+
 			pocv[index]->Color = pnormal2->Color;
 			pocv[index]->ParentBackground = false;
 			pir[index]->ParentBackground = false;
@@ -115,7 +115,7 @@ void __fastcall TMeasureInfoForm::MakePanel(AnsiString type)
 			index += 1;
 			nx -= (nw + 1);
 			if(index % 2 == 0) nx -= 1;
-			if(index % (LINECOUNT / 4) == 0) nx -= 1;
+			if(index % (LINECOUNT / 6) == 0) nx -= 1;
 			if(index % LINECOUNT == 0)
 			{
 				ny += nh * 2 + 2;
@@ -197,16 +197,24 @@ void __fastcall TMeasureInfoForm::SetChannelInfo(int traypos)
     int channel, rchannel;
     for(int index = 0; index < MAXCHANNEL / 2; index++){
         channel = GetChMap(stage, traypos, index) - 1;
-        //channel = GetChannel(traypos, index) - 1;
 
         pir[channel]->Caption = IntToStr(channel + 1);
-        pir[channel]->Color = pnormal1->Color;
+        //pir[channel]->Color = pnormal1->Color;
 
         int ch = BaseForm->nForm[stage]->chReverseMap[channel + 1];
         pocv[channel]->Caption = SetChannelHint(ch);
         pocv[channel]->Hint = "CH " + SetChannelHint(ch);
-        pocv[channel]->Color = pnormal2->Color;
+        //pocv[channel]->Color = pnormal2->Color;
         pocv[channel]->Refresh();
+
+        if(channel % 4 == 0 || channel % 4 == 1) {
+            pir[channel]->Color = pnormal3->Color;
+        	pocv[channel]->Color = pnormal31->Color;
+        }
+        else {
+            pir[channel]->Color = pnormal4->Color;
+        	pocv[channel]->Color = pnormal41->Color;
+        }
     }
 }
 //---------------------------------------------------------------------------
@@ -243,7 +251,7 @@ void __fastcall TMeasureInfoForm::MakeUIPanel(AnsiString type)
             index ++;
             nx += (nw+1);
             if(index % 2 == 0) nx += 1;
-            if(index % (LINECOUNT / 4) == 0) nx += 1;
+            if(index % (LINECOUNT / 6) == 0) nx += 1;
             ny -= (nh+1);
             if( index % (LINECOUNT / 4) == 0) ny -= 2;
         }
@@ -307,7 +315,7 @@ void __fastcall TMeasureInfoForm::MakeUIPanel(AnsiString type)
             index ++;
             nx -= (nw+1);
             if(index % 2 == 0) nx -= 1;
-            if(index % (LINECOUNT / 4) == 0) nx -= 1;
+            if(index % (LINECOUNT / 6) == 0) nx -= 1;
             ny += (nh+1);
             if( index % (LINECOUNT / 4) == 0) ny += 2;
         }
@@ -376,8 +384,13 @@ void __fastcall TMeasureInfoForm::DisplayIrValue(int index, TColor clr, AnsiStri
 		IrChart->Series[0]->YValue[index] = 0;
 	else IrChart->Series[0]->YValue[index] = caption.ToDouble();
 
-	if(clr == cl_line->Color)pir[index]->Color = pnormal1->Color;
-	else pir[index]->Color = clr;
+//	if(clr == cl_line->Color)pir[index]->Color = pnormal1->Color;
+//	else pir[index]->Color = clr;
+
+    if(clr == cl_line->Color){
+        if(index % 4 == 0 || index % 4 == 1) pir[index]->Color = pnormal3->Color;
+        else pir[index]->Color = pnormal4->Color;
+    } else pir[index]->Color = clr;
 }
 //---------------------------------------------------------------------------
 void __fastcall TMeasureInfoForm::DisplayIrValue(int index, AnsiString caption)
@@ -393,8 +406,12 @@ void __fastcall TMeasureInfoForm::DisplayOcvValue(int index, TColor clr, AnsiStr
 		OcvChart->Series[0]->YValue[index] = 0;
 	else OcvChart->Series[0]->YValue[index] = caption.ToDouble();
 
-	if(clr == cl_line->Color)pocv[index]->Color = pnormal2->Color;
-	else pocv[index]->Color = clr;
+//	if(clr == cl_line->Color)pocv[index]->Color = pnormal2->Color;
+//	else pocv[index]->Color = clr;
+    if(clr == cl_line->Color){
+        if(index % 4 == 0 || index % 4 == 1) pocv[index]->Color = pnormal31->Color;
+        else pocv[index]->Color = pnormal41->Color;
+    } else pocv[index]->Color = clr;
 }
 //---------------------------------------------------------------------------
 void __fastcall TMeasureInfoForm::btnSaveClick(TObject *Sender)
@@ -843,4 +860,5 @@ void __fastcall TMeasureInfoForm::btnInit2Click(TObject *Sender)
     BaseForm->nForm[stage]->OnInit(2);
 }
 //---------------------------------------------------------------------------
+
 

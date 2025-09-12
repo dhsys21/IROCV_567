@@ -118,6 +118,10 @@ __published:	// IDE-managed Components
 	TAdvSmoothButton *btnInit1;
 	TAdvSmoothButton *btnInit2;
 	TLabel *lblMsaCount;
+	TPanel *pnormal3;
+	TPanel *pnormal4;
+	TPanel *pnormal31;
+	TPanel *pnormal41;
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall btnSaveClick(TObject *Sender);
 	void __fastcall btnIrClick(TObject *Sender);
