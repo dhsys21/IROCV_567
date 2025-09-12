@@ -1037,7 +1037,7 @@ object TotalForm: TTotalForm
     object pBase: TPanel
       Left = 10
       Top = 331
-      Width = 448
+      Width = 450
       Height = 320
       BevelOuter = bvNone
       Color = clBlack

@@ -696,7 +696,7 @@ void __fastcall TTotalForm::MakePanel(AnsiString type)
 			index += 1;
 			nx = nx - nw - 1;
 			if(index % 2 == 0) nx -= 1;
-			if(index % (LINECOUNT / 4) == 0) nx -= 1;
+			if(index % (LINECOUNT / 6) == 0) nx -= 1;
 			if(index % LINECOUNT == 0)
 			{
 				ny = ny + nh + 1;
