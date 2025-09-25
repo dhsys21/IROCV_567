@@ -521,12 +521,14 @@ public:		// User declarations
 	TPanel *panel[MAXCHANNEL];
 	TPanel *pdev[8];
 
-	int acc_remeasure[MAXCHANNEL];
-	int remeasure_info[MAXCHANNEL];
-	int precharger_okng[MAXCHANNEL];
+//	int remeasure_info[MAXCHANNEL];
+//	int precharger_okng[MAXCHANNEL];
 	int chMap[MAXCHANNEL+1];
 	int chReverseMap[MAXCHANNEL+1];
 
+    int acc_remeasure[MAXCHANNEL]; // ng count
+    int acc_totaluse[MAXCHANNEL]; // total count
+    int acc_consng[MAXCHANNEL]; //consecutive ng count
 	int acc_cnt;
 	AnsiString acc_init;
     TDateTime m_dateTime;

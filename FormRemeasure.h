@@ -101,8 +101,9 @@ private:	// User declarations
     int pnl_nh;
 public:		// User declarations
 	int *acc_remeasure;
+    int *acc_totaluse;
+    int *acc_consng;
 	AnsiString *acc_init;
-
 	int *acc_cnt;
 
 	TPanel *pre[MAXCHANNEL];

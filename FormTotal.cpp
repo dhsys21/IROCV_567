@@ -492,6 +492,7 @@ void __fastcall TTotalForm::btnRemeasureInfoClick(TObject *Sender)
 
 	RemeasureForm->pstage->Caption	= lblTitle->Caption;
 	RemeasureForm->Visible = true;
+    RemeasureForm->Left = 200;
     RemeasureForm->Top = 50;
 }
 //---------------------------------------------------------------------------
@@ -1516,7 +1517,9 @@ void __fastcall TTotalForm::WriteIROCVValue()
 	// ir value 1 Word => Max Value = 65535
 	for(int i = 0; i < MAXCHANNEL; i++)
 	{
-        int32_t ir_int = static_cast<int32_t>(std::floor(tray.after_value[i] * 100.0 + 0.5));
+        int32_t ir_int;
+        if(tray.after_value[i] == 999) ir_int = static_cast<int32_t>(std::floor(tray.after_value[i] * 10));
+        else ir_int = static_cast<int32_t>(std::floor(tray.after_value[i] * 100.0 + 0.5));
         Mod_PLC->SetIrValue(PC_D_IROCV_IR_VALUE, i, ir_int);
 	}
 

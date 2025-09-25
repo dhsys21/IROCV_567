@@ -252,7 +252,9 @@ void __fastcall TForm_PLCInterface::btnWriteIrOcvValueClick(TObject *Sender)
 	// 2 Word :  value / (65536 / 2) => 윗 주소에 쓰기, value % (65536 /2 ) => 아래 주소에 쓰기 // herald 2017 11 30
 	for(int i = 0; i < MAXCHANNEL; i++)
 	{
-        int32_t ir_int = static_cast<int32_t>(ir_base * 100.0) + i;  // signed 32-bit int
+        int32_t ir_int;
+        if(ir_base == 999) ir_int = static_cast<int32_t>(ir_base * 10) + i;  // signed 32-bit int
+        else ir_int = static_cast<int32_t>(ir_base * 100.0) + i;  // signed 32-bit int
         Mod_PLC->SetIrValue(PC_D_IROCV_IR_VALUE, i, ir_int);
 	}
 

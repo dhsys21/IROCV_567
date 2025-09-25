@@ -794,7 +794,7 @@ object MeasureInfoForm: TMeasureInfoForm
       Width = 41
       Height = 19
       Caption = '??'
-      Color = 12369084
+      Color = 16771289
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -828,7 +828,7 @@ object MeasureInfoForm: TMeasureInfoForm
       Width = 41
       Height = 19
       Caption = '??'
-      Color = 13421772
+      Color = 16770815
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11

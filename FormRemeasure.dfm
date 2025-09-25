@@ -5,7 +5,7 @@ object RemeasureForm: TRemeasureForm
   BorderStyle = bsSingle
   Caption = 'Remeasure Info'
   ClientHeight = 941
-  ClientWidth = 1245
+  ClientWidth = 1634
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -87,7 +87,7 @@ object RemeasureForm: TRemeasureForm
     ParentFont = False
   end
   object GroupBox2: TGroupBox
-    Left = 1058
+    Left = 1440
     Top = 23
     Width = 180
     Height = 220
@@ -360,8 +360,8 @@ object RemeasureForm: TRemeasureForm
   end
   object Panel2: TPanel
     Left = 8
-    Top = 23
-    Width = 1044
+    Top = 21
+    Width = 1394
     Height = 912
     Color = clGray
     ParentBackground = False
@@ -436,7 +436,7 @@ object RemeasureForm: TRemeasureForm
       Visible = False
     end
     object Panel19: TPanel
-      Left = 43
+      Left = 87
       Top = 3
       Width = 55
       Height = 48
@@ -453,7 +453,7 @@ object RemeasureForm: TRemeasureForm
       Visible = False
     end
     object Panel21: TPanel
-      Left = 99
+      Left = 143
       Top = 3
       Width = 55
       Height = 48
@@ -471,7 +471,7 @@ object RemeasureForm: TRemeasureForm
       Visible = False
     end
     object Panel22: TPanel
-      Left = 157
+      Left = 201
       Top = 3
       Width = 55
       Height = 48
@@ -489,7 +489,7 @@ object RemeasureForm: TRemeasureForm
       Visible = False
     end
     object Panel23: TPanel
-      Left = 841
+      Left = 885
       Top = 3
       Width = 55
       Height = 48
@@ -507,7 +507,7 @@ object RemeasureForm: TRemeasureForm
       Visible = False
     end
     object Panel24: TPanel
-      Left = 213
+      Left = 257
       Top = 3
       Width = 55
       Height = 48
@@ -525,7 +525,7 @@ object RemeasureForm: TRemeasureForm
       Visible = False
     end
     object Panel25: TPanel
-      Left = 271
+      Left = 315
       Top = 3
       Width = 55
       Height = 48
@@ -543,7 +543,7 @@ object RemeasureForm: TRemeasureForm
       Visible = False
     end
     object Panel26: TPanel
-      Left = 327
+      Left = 371
       Top = 3
       Width = 55
       Height = 48
@@ -561,7 +561,7 @@ object RemeasureForm: TRemeasureForm
       Visible = False
     end
     object Panel27: TPanel
-      Left = 385
+      Left = 429
       Top = 3
       Width = 55
       Height = 48
@@ -579,7 +579,7 @@ object RemeasureForm: TRemeasureForm
       Visible = False
     end
     object Panel28: TPanel
-      Left = 441
+      Left = 485
       Top = 3
       Width = 55
       Height = 48
@@ -597,7 +597,7 @@ object RemeasureForm: TRemeasureForm
       Visible = False
     end
     object Panel29: TPanel
-      Left = 499
+      Left = 543
       Top = 3
       Width = 55
       Height = 48
@@ -615,7 +615,7 @@ object RemeasureForm: TRemeasureForm
       Visible = False
     end
     object Panel30: TPanel
-      Left = 555
+      Left = 599
       Top = 3
       Width = 55
       Height = 48
@@ -633,7 +633,7 @@ object RemeasureForm: TRemeasureForm
       Visible = False
     end
     object Panel31: TPanel
-      Left = 613
+      Left = 657
       Top = 3
       Width = 55
       Height = 48
@@ -651,7 +651,7 @@ object RemeasureForm: TRemeasureForm
       Visible = False
     end
     object Panel32: TPanel
-      Left = 669
+      Left = 713
       Top = 3
       Width = 55
       Height = 48
@@ -669,7 +669,7 @@ object RemeasureForm: TRemeasureForm
       Visible = False
     end
     object Panel33: TPanel
-      Left = 727
+      Left = 771
       Top = 3
       Width = 55
       Height = 48
@@ -687,7 +687,7 @@ object RemeasureForm: TRemeasureForm
       Visible = False
     end
     object Panel34: TPanel
-      Left = 783
+      Left = 827
       Top = 3
       Width = 55
       Height = 48
@@ -705,7 +705,7 @@ object RemeasureForm: TRemeasureForm
       Visible = False
     end
     object Panel35: TPanel
-      Left = 897
+      Left = 941
       Top = 3
       Width = 55
       Height = 48
@@ -995,7 +995,7 @@ object RemeasureForm: TRemeasureForm
     object Panel1: TPanel
       Left = 2
       Top = 3
-      Width = 40
+      Width = 54
       Height = 34
       BevelOuter = bvNone
       Color = 12829635
