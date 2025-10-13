@@ -1410,6 +1410,9 @@ void __fastcall TTotalForm::SetRemeasureList(int traypos)
 					remeasure_cnt += 1;
 					if(tray.first){
 						acc_remeasure[index] += 1;
+                        //* 연속 불량 확인 2025 10 13
+                        if(acc_prevng[index] == 1) acc_consng[index] += 1;
+                        acc_prevng[index] = 1;
 					}
 				}
 				else if(tray.ocv_value[index] < config.ocv_min || tray.ocv_value[index] > config.ocv_max){
@@ -1418,9 +1421,13 @@ void __fastcall TTotalForm::SetRemeasureList(int traypos)
 						retest.cnt_error += 1;
 						remeasure_cnt += 1;
 						if(tray.first)acc_remeasure[index] += 1;
+                        //* 연속 불량 확인 2025 10 13
+                        if(acc_prevng[index] == 1) acc_consng[index] += 1;
+                        acc_prevng[index] = 1;
 					}
 				}else{
 					retest.cell[index] = 0;
+                    acc_prevng[index] = 0;
 				}
 			}
 			else retest.cell[index] = 0;
