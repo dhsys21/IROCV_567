@@ -790,7 +790,7 @@ object MeasureInfoForm: TMeasureInfoForm
     end
     object pnormal4: TPanel
       Left = 10
-      Top = 197
+      Top = 196
       Width = 41
       Height = 19
       Caption = '??'
@@ -811,7 +811,7 @@ object MeasureInfoForm: TMeasureInfoForm
       Width = 54
       Height = 15
       Caption = '??1'
-      Color = 15461355
+      Color = clWhite
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -11
@@ -828,7 +828,7 @@ object MeasureInfoForm: TMeasureInfoForm
       Width = 41
       Height = 19
       Caption = '??'
-      Color = 16770815
+      Color = 16771289
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11

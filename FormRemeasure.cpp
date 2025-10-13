@@ -22,7 +22,6 @@ __fastcall TRemeasureForm::TRemeasureForm(TComponent* Owner)
 //---------------------------------------------------------------------------
 void __fastcall TRemeasureForm::RefreshForm()
 {
-
 	for(int i = 0; i < MAXCHANNEL; ++i){
 		pre[i]->Caption = acc_remeasure[i];
 		if(acc_remeasure[i] < pcolor2->Caption.ToIntDef(3)){
@@ -33,10 +32,6 @@ void __fastcall TRemeasureForm::RefreshForm()
 			pre[i]->Color = pcolor2->Color;
 			pre[i]->ParentBackground = false;
 		}
-//		if(acc_remeasure[i] >= 10){
-//			pre[i]->Color = pcolor4->Color;  // 마지막 측정  채널
-//			pre[i]->ParentBackground = false;
-//		}
 	}
 	pAccCnt->Caption = IntToStr(*acc_cnt);
 	pAccDate->Caption = *acc_init;
@@ -86,7 +81,13 @@ void __fastcall TRemeasureForm::MakePanel(AnsiString type)
 			SetOption(pch[index], nx, ny, nw, nh-1, index);
 			pch[index]->Font->Color = clWhite;
 			pch[index]->Caption = index+1;
-			pch[index]->Color = clSkyBlue;
+			//pch[index]->Color = clSkyBlue;
+            if(index % 4 == 0 || index % 4 == 1) {
+                pch[index]->Color = pnormal1->Color;
+            }
+            else {
+                pch[index]->Color = pnormal2->Color;
+            }
 			pch[index]->ParentBackground = false;
 
 			SetOption(pre[index], nx, ny+nh, nw, nh, index);
@@ -120,7 +121,13 @@ void __fastcall TRemeasureForm::MakePanel(AnsiString type)
 			SetOption(pch[index], nx, ny, nw, nh-1, index);
 			pch[index]->Font->Color = clWhite;
 			pch[index]->Caption = index+1;
-			pch[index]->Color = clSkyBlue;
+			//pch[index]->Color = clSkyBlue;
+            if(index % 4 == 0 || index % 4 == 1) {
+                pch[index]->Color = pnormal1->Color;
+            }
+            else {
+                pch[index]->Color = pnormal2->Color;
+            }
 			pch[index]->ParentBackground = false;
 
 			SetOption(pre[index], nx, ny+nh, nw, nh, index);
@@ -374,9 +381,11 @@ void __fastcall TRemeasureForm::chInitdblClick(TObject *Sender)
 	str = "Do you want to initialize the channel " + IntToStr(ch+1) +" record??";
    if(MessageBox(Handle, str.c_str(), L"", MB_YESNO|MB_ICONQUESTION) == ID_YES){
 		acc_remeasure[ch] = 0;
+        acc_totaluse[ch] = 0;
+        acc_consng[ch] = 0;
 
 		for(int index = 0; index < MAXCHANNEL; ++index){
-			if(acc_remeasure[index] >= pcolor2->Caption.ToIntDef(3))
+			if(acc_consng[index] >= pcolor2->Caption.ToIntDef(3))
 				nRemeasureAlarmCount++;
 		}
 		BaseForm->nForm[stage]->RemeasureAlarm(nRemeasureAlarmCount);

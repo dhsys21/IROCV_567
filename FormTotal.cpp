@@ -1619,14 +1619,8 @@ void __fastcall TTotalForm::btnMeasureInfoClick(TObject *Sender)
         MeasureInfoForm->pir[i]->ParentBackground = false;
         MeasureInfoForm->pocv[i]->Caption = "-";
         MeasureInfoForm->pocv[i]->Color = pnormal2->Color;
-
-        //* 채널 위치 -> 릴레이가 12줄이므로 위치를 계산해야 함
-//        ch = chReverseMap[i + 1];
-//        if(ch >= 289) ch  = ch - 288;
-//        MeasureInfoForm->pir[i]->Hint = "POS : " + IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
-//        MeasureInfoForm->pocv[i]->Hint = "POS : " + IntToStr((ch - 1)/LINECOUNT + 1) + "-" + IntToStr((ch - 1)%LINECOUNT + 1);
 	}	// 모두 초기화
-    MeasureInfoForm->SetChannelInfo();
+//    MeasureInfoForm->SetChannelInfo();
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------

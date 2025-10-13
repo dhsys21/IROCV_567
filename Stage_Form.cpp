@@ -47,7 +47,6 @@ void __fastcall TTotalForm::DisplayTrayInfo(int traypos)
 void __fastcall TTotalForm::SetProcessColor(int index, int clr, AnsiString result)
 {
 	TColor basic;
-
 	TColor irColor = cl_line->Color;
 	TColor ocvColor = cl_line->Color;
 
