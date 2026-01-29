@@ -152,6 +152,22 @@ int __fastcall TTotalForm::GetColorIndex(TColor clr)
 	return 100;
 }
 //---------------------------------------------------------------------------
+void __fastcall TTotalForm::DisplayError(AnsiString msg, bool bError)
+{
+    Panel_State->Caption = msg;
+
+	if(bError == true)
+	{
+        Panel_State->Color = clRed;
+		Panel_State->Font->Color = clWhite;
+	}
+	else
+	{
+        Panel_State->Color = clWhite;
+		Panel_State->Font->Color = clBlack;
+    }
+}
+//---------------------------------------------------------------------------
 void __fastcall TTotalForm::DisplayProcess(int status, AnsiString Status_Step, AnsiString msg, bool bError)
 {
 	for(int i = 0; i < 8; i++)
@@ -306,7 +322,7 @@ void __fastcall TTotalForm::ErrorMsg(int err)
 		ErrorLog();
 		//* 2023 06 14 ¼³ºñ°¡ ¸ØÃèÀ» °æ¿ì ¿¡·¯
         DisplayProcess(nstatus, err1, err3, true);
-		Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_ERROR, 1);
+		//Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_ERROR, 1);
 		//VisibleBox(GrpError);
 	}
 }

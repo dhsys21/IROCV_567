@@ -389,7 +389,9 @@ private:	// User declarations
 
 	void __fastcall MakePanel(AnsiString type);
 	bool __fastcall ErrorCheck();
+    bool __fastcall ErrorCheck_Manual();
 	//void __fastcall DisplayStatus(int status);
+    void __fastcall DisplayError(AnsiString msg, bool bError = false);
     void __fastcall DisplayProcess(int status, AnsiString Status_Step, AnsiString msg, bool bError = false);
 	//void __fastcall DisplaySensorInfo();
 	void __fastcall SetProcessColor(int index, int clr, AnsiString result ="");
@@ -401,6 +403,7 @@ private:	// User declarations
     void __fastcall WriteResultFile(int traypos);
 	void __fastcall WriteResultFile();
 	void __fastcall ErrorLog();
+    void __fastcall ErrorLog(AnsiString msg);
 	void __fastcall ReadCaliboffset();           //20171202 개별보정을 위해 추가
 	double __fastcall GetSigma(float values[], bool flag[], double avg, int count);
 

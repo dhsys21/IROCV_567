@@ -1368,6 +1368,8 @@ void __fastcall TTotalForm::btnManualClick(TObject *Sender)
     btnManual->Color = (TColor)0x00FF8000;
 	this->CmdManualMod(true);
 	VisibleBox(GrpLocal);
+
+    ErrorCheck_Manual();
 }
 //---------------------------------------------------------------------------
 void __fastcall TTotalForm::btnAutoClick(TObject *Sender)
@@ -1681,39 +1683,49 @@ void __fastcall TTotalForm::Timer_AutoInspectionTimer(TObject *Sender)
 //---------------------------------------------------------------------------
 bool __fastcall TTotalForm::ErrorCheck()
 {
+	DisplayError("");
+
     if(!Client->Active)
 	{
-	  Panel_State->Caption = "IR/OCV Connection Fail.";
-	   return true;
+        ErrorCheckStatus = "IR/OCV Connection Fail.";
+    	DisplayError(ErrorCheckStatus, true);
+        if(OldErrorCheckStatus != ErrorCheckStatus) {
+			OldErrorCheckStatus = ErrorCheckStatus;
+			WritePLCLog("ErrorCheck", ErrorCheckStatus);
+            ErrorLog(ErrorCheckStatus);
+		}
+    	return true;
 	}
     else {
-        Panel_State->Caption = "";
+        DisplayError("");
 		if(stage.alarm_status == nNoAnswer){
 			DisplayStatus(nVacancy);
 			DisplayProcess(sReady, "AutoInspection_Wait", " IR/OCV is ready... ");
 		}
     }
 
-
 	if(!Mod_PLC->ClientSocket_PC->Active && !Mod_PLC->ClientSocket_PLC->Active)
 	{
 		ErrorCheckStatus = "PLC - PC Connection Fail.";
-		Panel_State->Caption = ErrorCheckStatus;
+		DisplayError(ErrorCheckStatus, true);
 		if(OldErrorCheckStatus != ErrorCheckStatus) {
 			OldErrorCheckStatus = ErrorCheckStatus;
 			WritePLCLog("ErrorCheck", ErrorCheckStatus);
+            ErrorLog(ErrorCheckStatus);
 		}
+
 		return true;
 	}
 
 	if(Mod_PLC->GetDouble(Mod_PLC->plc_Interface_Data, PLC_D_IROCV_ERROR))
 	{
 		ErrorCheckStatus = "PLC - Error!!";
-		Panel_State->Caption = ErrorCheckStatus;
+		DisplayError(ErrorCheckStatus, true);
 		if(OldErrorCheckStatus != ErrorCheckStatus) {
 			OldErrorCheckStatus = ErrorCheckStatus;
 			WritePLCLog("ErrorCheck", ErrorCheckStatus);
 		}
+        ErrorLog(ErrorCheckStatus);
 
         //* 2025 04 08 plc 연결이 안되면 아래 코드 때문에 수동측정도 못함.
 //		CmdForceStop_Original();
@@ -1723,8 +1735,40 @@ bool __fastcall TTotalForm::ErrorCheck()
 
 	if(bLocal == true && Mod_PLC->GetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_STAGE_AUTO_READY) == 0)
 	{
-		Panel_State->Caption = "IR/OCV is not in AutoMode";
+		//Panel_State->Caption = "IR/OCV is not in AutoMode";
+        DisplayError("IR/OCV is not in AutoMode", true);
 		return true;
+	}
+
+    if(Mod_PLC->GetPcValue(PC_D_IROCV_ERROR) == 1)
+    	Mod_PLC->SetPcValue(PC_D_IROCV_ERROR, 0);
+	return false;
+}
+//---------------------------------------------------------------------------
+bool __fastcall TTotalForm::ErrorCheck_Manual()
+{
+    DisplayError("");
+    if(!Client->Active)
+	{
+        ErrorCheckStatus = "IR/OCV Connection Fail.";
+    	DisplayError(ErrorCheckStatus, true);
+	}
+
+	if(!Mod_PLC->ClientSocket_PC->Active && !Mod_PLC->ClientSocket_PLC->Active)
+	{
+		ErrorCheckStatus = "PLC - PC Connection Fail.";
+		DisplayError(ErrorCheckStatus, true);
+	}
+
+	if(Mod_PLC->GetDouble(Mod_PLC->plc_Interface_Data, PLC_D_IROCV_ERROR))
+	{
+		ErrorCheckStatus = "PLC - Error!!";
+		DisplayError(ErrorCheckStatus, true);
+	}
+
+	if(bLocal == true && Mod_PLC->GetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_STAGE_AUTO_READY) == 0)
+	{
+		DisplayError("IR/OCV is not in AutoMode", true);
 	}
 
 	return false;

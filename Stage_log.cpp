@@ -519,6 +519,30 @@ void __fastcall TTotalForm::ErrorLog()
 	FileClose(file_handle);
 }
 //---------------------------------------------------------------------------
+void __fastcall TTotalForm::ErrorLog(AnsiString msg)
+{
+	AnsiString str, dir;
+	int file_handle;
+
+	dir = (AnsiString)LOG_PATH + Now().FormatString("yyyymmdd") + "\\";
+	ForceDirectories((AnsiString)dir);
+
+	str = dir + "ERROR" + FormatFloat("000", this->Tag+1) + "_" + Now().FormatString("yymmdd") + ".log";
+
+	if(FileExists(str))
+		file_handle = FileOpen(str, fmOpenWrite);
+	else{
+		file_handle = FileCreate(str);
+	}
+
+	FileSeek(file_handle, 0, 2);
+
+	str = Now().FormatString("yyyy-mm-dd hh:nn:ss ") + msg + "\n";
+	FileWrite(file_handle, str.c_str(), str.Length());
+
+	FileClose(file_handle);
+}
+//---------------------------------------------------------------------------
 void __fastcall TTotalForm::ReadCaliboffset()                         //20171202 개별보정을 위해 추가
 {
 	TIniFile *ini;
