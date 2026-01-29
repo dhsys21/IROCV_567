@@ -468,15 +468,15 @@ void __fastcall TCaliForm::LoadCaliFile()
                 str.Delete(1, str.Pos(","));
 
                 //* Standard
-                pstandard[index - 1]->Caption = str.SubString(1, str.Pos(",")-1);
+                pstandard[index]->Caption = str.SubString(1, str.Pos(",")-1);
                 str.Delete(1, str.Pos(","));
 
                 //* Measure
-                pmeasure[index - 1]->Caption = str.SubString(1, str.Pos(",")-1);
+                pmeasure[index]->Caption = str.SubString(1, str.Pos(",")-1);
                 str.Delete(1, str.Pos(","));
 
                 //* Offset
-                poffset[index - 1]->Caption = str.Trim();
+                poffset[index]->Caption = str.Trim();
             }
         }
 		catch(...){
@@ -682,7 +682,7 @@ void __fastcall TCaliForm::InsertValueToPanel(int pos1, int pos2, double value, 
     clrMeasureArr[index2] = clr;
 }
 //---------------------------------------------------------------------------
-void __fastcall TCaliForm::InsertValue(int pos1, int pos2, double value, TColor clr)
+void __fastcall TCaliForm::InsertValueToGrid(int pos1, int pos2, double value, TColor clr)
 {
     //* 보정은 트레이 이동해서 할 필요 없음. 픽스쳐 보드 채널갯수가 288개. 1번 찍고 2개채널에 값 입력.
     //* (0, 4) channel, (1,5) standard, (2,6) measure, (3,7) offset
@@ -774,15 +774,10 @@ void __fastcall TCaliForm::btnAuto1Click(TObject *Sender)
 {
 	BaseForm->nForm[stage]->InitTrayStruct(1);
     BaseForm->nForm[stage]->InitTrayStruct(2);
-	for(int i = 1; i <= MAXCHANNEL; i++)
+	for(int i = 0; i < MAXCHANNEL; i++)
 	{
-        if(i <= 288){
-            StringGrid1->Cells[2][i] = "-";
-            StringGrid1->Cells[3][i] = "-";
-        } else{
-            StringGrid1->Cells[6][i - 288] = "-";
-            StringGrid1->Cells[7][i - 288] = "-";
-        }
+        poffset[i]->Caption = "0";
+        pmeasure[i]->Caption = "0";
 	}
 
 	BaseForm->nForm[stage]->CmdAutoTest();
@@ -835,7 +830,9 @@ void __fastcall TCaliForm::ConfigBtn1Click(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TCaliForm::btnProbeCloseClick(TObject *Sender)
 {
-    Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_PROB_CLOSE, 1);
+    Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_PROB_OPEN, 0);
+	Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_PROB_CLOSE, 1);
+    probetimer->Enabled = true;
 }
 //---------------------------------------------------------------------------
 void __fastcall TCaliForm::pstageClick(TObject *Sender)
@@ -974,4 +971,18 @@ void __fastcall TCaliForm::AdvSmoothButton1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+
+void __fastcall TCaliForm::probetimerTimer(TObject *Sender)
+{
+    if(Mod_PLC->GetDouble(Mod_PLC->plc_Interface_Data, PLC_D_IROCV_PROB_CLOSE)){
+		Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_PROB_CLOSE, 0);
+		probetimer->Enabled = false;
+	}
+
+	if(Mod_PLC->GetDouble(Mod_PLC->plc_Interface_Data, PLC_D_IROCV_PROB_OPEN)){
+		Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_PROB_OPEN, 0);
+        probetimer->Enabled = false;
+	}
+}
+//---------------------------------------------------------------------------
 

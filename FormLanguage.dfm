@@ -19,6 +19,8 @@ object Form_Language: TForm_Language
     Top = 24
     Width = 321
     Height = 265
+    BiDiMode = bdLeftToRight
+    ParentBiDiMode = False
     Strings.Strings = (
       'SAVE='#51200#51109
       'CANCEL='#52712#49548
@@ -59,12 +61,22 @@ object Form_Language: TForm_Language
       'PROBESETTING='#54532#47196#48652#49444#51221
       'OPEN='#50676#44592
       'CLOSE='#45803#44592
-      'msgTooManyNG=NG '#49472#51060' '#45320#47924' '#47566#49845#45768#45796'. '#54869#51064#54644#51452#49464#50836)
+      'msgTooManyNG=NG '#49472#51060' '#45320#47924' '#47566#49845#45768#45796'. '#54869#51064#54644#51452#49464#50836
+      'msgPLCConnFail=PLC - PC '#50672#44208' '#49892#54056'.'
+      'msgPREConnFail=IR/OCV '#50672#44208' '#49892#54056'.'
+      'msgDelEachChRecord='#54644#45817' '#52292#45328' '#44592#47197#51012' '#49325#51228' '#54624#44620#50836'?'
+      'msgDelAllChRecord='#47784#46304' '#52292#45328' '#44592#47197#51012' '#52488#44592#54868' '#54624#44620#50836'?'
+      'msgSave='#51200#51109' '#54616#49884#44192#49845#45768#44620'?')
     TabOrder = 0
     ColWidths = (
       150
       148)
     RowHeights = (
+      18
+      18
+      18
+      18
+      18
       18
       18
       18
@@ -152,12 +164,22 @@ object Form_Language: TForm_Language
       'PROBESETTING=PROBE SETTING'
       'OPEN=OPEN'
       'CLOSE=CLOSE'
-      'msgTooManyNG=Too many NG cells. Please check it.')
+      'msgTooManyNG=Too many NG cells. Please check it.'
+      'msgPLCConnFail=PLC - PC Connection Fail.'
+      'msgPREConnFail=IR/OCV Connection Fail.'
+      'msgDelEachChRecord=Do you want to initialize the channel record?'
+      'msgDelAllChRecord=Do you want to initialize all channels?'
+      'msgSave=Are you sure want to save?')
     TabOrder = 1
     ColWidths = (
       150
       148)
     RowHeights = (
+      18
+      18
+      18
+      18
+      18
       18
       18
       18
@@ -291,12 +313,22 @@ object Form_Language: TForm_Language
       'PROBESETTING='#25506#22836#35774#32622
       'OPEN='#25171#24320
       'CLOSE='#20851#38381
-      'msgTooManyNG= '#19981#33391#21697#36807#22810#65292#35831#26816#26597#12290)
+      'msgTooManyNG= '#19981#33391#21697#36807#22810#65292#35831#26816#26597#12290
+      'msgPLCConnFail=PLC '#19982' PC '#36830#25509#22833#36133#12290
+      'msgPREConnFail=IR/OCV '#36830#25509#22833#36133#12290
+      'msgDelEachChRecord='#26159#21542#35201#21021#22987#21270#35813#36890#36947#30340#35760#24405#65311
+      'msgDelAllChRecord='#26159#21542#35201#21021#22987#21270#25152#26377#36890#36947#65311
+      'msgSave='#30830#23450#35201#20445#23384#21527#65311)
     TabOrder = 3
     ColWidths = (
       150
       148)
     RowHeights = (
+      18
+      18
+      18
+      18
+      18
       18
       18
       18

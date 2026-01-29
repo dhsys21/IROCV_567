@@ -487,6 +487,8 @@ void __fastcall TTotalForm::btnRemeasureInfoClick(TObject *Sender)
 {
 	RemeasureForm->stage            = this->Tag;
 	RemeasureForm->acc_remeasure 	= acc_remeasure;
+    RemeasureForm->acc_totaluse     = acc_totaluse;
+    RemeasureForm->acc_consng       = acc_consng;
 	RemeasureForm->acc_init 		= &acc_init;
 	RemeasureForm->acc_cnt			= &acc_cnt;
 
@@ -494,6 +496,8 @@ void __fastcall TTotalForm::btnRemeasureInfoClick(TObject *Sender)
 	RemeasureForm->Visible = true;
     RemeasureForm->Left = 200;
     RemeasureForm->Top = 50;
+    RemeasureForm->WindowState = wsNormal;
+    RemeasureForm->BringToFront();
 }
 //---------------------------------------------------------------------------
 // 센서 정보 보기
@@ -1434,8 +1438,10 @@ void __fastcall TTotalForm::SetRemeasureList(int traypos)
 		}
 
         tray.first = false;
-		if((remeasure_cnt < remLimit) && (remeasure_cnt > 0)) brem = true;
-		else brem= false;
+        //* 트레이 위치 이동후에 측정시 에러발생함. 일단 주석처리하고 모니터링 필요
+        //* 20260128
+//		if((remeasure_cnt < remLimit) && (remeasure_cnt > 0)) brem = true;
+//		else brem= false;
 
 		if(brem == false){
 			CmdForceStop(); // Probe Open
@@ -1731,7 +1737,8 @@ void __fastcall TTotalForm::AutoInspection_Wait()
 	switch(nStep)
 	{
 		case 0: //* Tray In 확인
-			if(Mod_PLC->GetDouble(Mod_PLC->plc_Interface_Data, PLC_D_IROCV_TRAY_IN))
+			if(Mod_PLC->GetDouble(Mod_PLC->plc_Interface_Data, PLC_D_IROCV_TRAY_IN)
+            	&& Mod_PLC->GetDouble(Mod_PLC->plc_Interface_Data, PLC_D_IROCV_PLC_AUTOMODE))
 			{
 				if(chkBypass->Checked == true)
 				{
@@ -1836,7 +1843,10 @@ void __fastcall TTotalForm::AutoInspection_Wait()
                 }else if(nTrayPos == 2){
                     tray.pos2_complete = false;
                     //* pir, pocv 가 ir, ocv 값이 아니고 초기값 (채널 1-1) 이면 result 파일 읽어서 표시
-                    ReadResultFile(1);
+                    if(ReadResultFile(1) == true){
+                        tray.pos1_complete = true;
+                        Mod_PLC->SetPcValue(PC_D_IROCV_COMPLETE1, 1);
+                    }
                     DisplayTrayInfo(2);
 
                     DisplayProcess(sProbeDown, "AutoInspection_Wait", "[STEP 3] (Tray Pos 2) PROBE IS CLOSED ... ");
@@ -2015,7 +2025,8 @@ void __fastcall TTotalForm::AutoInspection_Measure()
             }
         	break;
         case 7:
-            if(tray.pos1_complete == true && tray.pos2_complete == true){
+            //if(tray.pos1_complete == true && tray.pos2_complete == true){
+            if(Mod_PLC->GetPcValue(PC_D_IROCV_COMPLETE1) == 1 && Mod_PLC->GetPcValue(PC_D_IROCV_COMPLETE2) == 1){
                 //* NG count 후 셋팅값(20개) 이상이면 에러창
                 DisplayProcess(sFinish, "AutoInspection_Measure", "[STEP 6] PreCharger Finish ... ");
 				CmdTrayOut();

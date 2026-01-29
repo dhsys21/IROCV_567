@@ -28,6 +28,12 @@ public:		// User declarations
 	UnicodeString msgRst;
     UnicodeString msgRbt;
     UnicodeString msgTooManyNG;
+
+    UnicodeString msgPLCConnFail;
+	UnicodeString msgIROCVConnFail;
+	UnicodeString msgDelEachChRecord;
+	UnicodeString msgDelAllChRecord;
+	UnicodeString msgSave;
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TForm_Language *Form_Language;

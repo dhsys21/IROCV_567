@@ -82,5 +82,11 @@ void __fastcall TForm_Language::LanguageChange(int LangIndex)
 	msgRbt = vle->Values["msgRBT"];
     msgRst = vle->Values["msgRST"];
     msgTooManyNG = vle->Values["msgTooManyNG"];
+
+    msgPLCConnFail = vle->Values["msgPLCConnFail"];
+    msgIROCVConnFail = vle->Values["msgPREConnFail"];
+    msgDelEachChRecord = vle->Values["msgDelEachChRecord"];
+    msgDelAllChRecord = vle->Values["msgDelAllChRecord"];
+    msgSave = vle->Values["msgSave"];
 }
 //---------------------------------------------------------------------------

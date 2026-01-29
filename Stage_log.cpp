@@ -400,46 +400,50 @@ void __fastcall TTotalForm::WriteResultFile(int traypos)
 	file = file + "OCV Min.," + FormatFloat("0.0", config.ocv_min) + ",OCV Max.," + FormatFloat("0.0", config.ocv_max) + "\n";
 	file = file + "CH,CELL,CELL_ID,IR,OCV,RESULT\n";
 
-	for(int i = 0; i < CHANNELCOUNT; ++i){
-        ch = GetChMap(this->Tag, traypos, i) - 1;
+    int channel;
+	for(int i = 0; i < MAXCHANNEL; ++i){
+        channel = i;
 		cell_id = tray.cell_serial[i];
-		ir = FormatFloat("0.00", tray.after_value[i]);
-		ocv = FormatFloat("0.0", tray.ocv_value[i]);
+		ir = FormatFloat("0.00", tray.after_value[channel]);
+		ocv = FormatFloat("0.0", tray.ocv_value[channel]);
 
-		if(tray.cell[i] == 1)
+		if(tray.cell[channel] == 1)
 		{
-			if(retest.cell[i] == 0) ok_ng = "OK";
-			else if(retest.cell[i] == 2) ok_ng = "IR SPEC NG";
-            else if(retest.cell[i] == 5) ok_ng = "IR Avg. NG";
-			else if(retest.cell[i] == 3) ok_ng = "OCV SPEC NG";
-            else if(retest.cell[i] == 6) ok_ng = "OCV Avg. NG";
+			if(retest.cell[channel] == 0) ok_ng = "OK";
+			else if(retest.cell[channel] == 2) ok_ng = "IR SPEC NG";
+            else if(retest.cell[channel] == 5) ok_ng = "IR Avg. NG";
+			else if(retest.cell[channel] == 3) ok_ng = "OCV SPEC NG";
+            else if(retest.cell[channel] == 6) ok_ng = "OCV Avg. NG";
 
 			cell = "O";
 		}
-		else if(tray.cell[i] == 0)
+		else if(tray.cell[channel] == 0)
 		{
-			if(panel[i]->Color == clCellError) ok_ng = "NG(No Cell)";
+			if(panel[channel]->Color == clCellError) ok_ng = "NG(No Cell)";
 			else ok_ng = "No Cell";
 
 			cell = "X";
 		}
 
-		file = file + ch + "," + cell + "," + cell_id + ", " + ir + "," + ocv + "," + ok_ng +"\n";
+		file = file + IntToStr(channel + 1) + "," + cell + "," + cell_id + ", " + ir + "," + ocv + "," + ok_ng +"\n";
 	}
 	FileWrite(file_handle, file.c_str(), file.Length());
 	FileClose(file_handle);
 }
 //---------------------------------------------------------------------------
-void __fastcall TTotalForm::ReadResultFile(int traypos)
+bool __fastcall TTotalForm::ReadResultFile(int traypos)
 {
+    bool bExistFile = false;
 	AnsiString filename;
     AnsiString dir = (AnsiString)DATA_PATH + Now().FormatString("yyyymmdd") + "\\";
     filename = dir + tray.trayid + "_TP" + IntToStr(traypos) + ".csv";
 
     if (!FileExists(filename)) {
         WritePLCLog("ReadResultFile","File is not exist: " + filename);
-        return;
+        return false;
     }
+    else
+        bExistFile = true;
 
     TStringList *lines = new TStringList;
     try {
@@ -449,6 +453,7 @@ void __fastcall TTotalForm::ReadResultFile(int traypos)
         int startLine = 6;
         int idx = 0;
         int channel;
+        AnsiString ir, ocv;
         for (int i = startLine; i < lines->Count; i++) {
             AnsiString line = lines->Strings[i];
             if (line.Trim().IsEmpty()) continue;
@@ -459,13 +464,26 @@ void __fastcall TTotalForm::ReadResultFile(int traypos)
             cols->StrictDelimiter = true;
             cols->DelimitedText = line;
 
-            channel = GetChMap(this->Tag, traypos, idx) - 1;
             if (cols->Count >= 6) {
                 // IR, OCV는 3, 4번째 열
-                if(MeasureInfoForm->pocv[channel]->Caption.Pos("-") > 1){
-                	MeasureInfoForm->pir[channel]->Caption = cols->Strings[3].Trim();
-                	MeasureInfoForm->pocv[channel]->Caption = cols->Strings[4].Trim();
-                }
+                //if(MeasureInfoForm->pocv[channel]->Caption.Pos("-") > 1){
+                    channel = StringToInt(cols->Strings[0].Trim(), 1) - 1;
+                    ir = cols->Strings[3].Trim();
+                    ocv = cols->Strings[4].Trim();
+                	MeasureInfoForm->pir[channel]->Caption = ir;
+                	MeasureInfoForm->pocv[channel]->Caption = ocv;
+
+                    tray.after_value[channel] = StringToDouble(ir, 0);
+					tray.ocv_value[channel] = StringToDouble(ocv, 0);
+
+                    if(tray.after_value[channel] < config.ir_min && tray.after_value[channel] > config.ir_max)
+                        retest.cell[channel] = 2;
+                    if(tray.ocv_value[channel] < config.ocv_min && tray.ocv_value[channel] > config.ocv_max)
+                        if(retest.cell[channel] != 2) retest.cell[channel] == 3;
+                    else
+                        retest.cell[channel] = 0;
+
+                //}
                 idx++;
             }
             delete cols;
@@ -474,6 +492,7 @@ void __fastcall TTotalForm::ReadResultFile(int traypos)
     __finally {
         delete lines;
     }
+    return true;
 }
 //---------------------------------------------------------------------------
 void __fastcall TTotalForm::ErrorLog()

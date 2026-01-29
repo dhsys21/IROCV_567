@@ -182,6 +182,7 @@ object CaliForm: TCaliForm
       Color = clWhite
       ParentFont = False
       TabOrder = 0
+      Visible = False
       Version = '2.1.1.5'
       OnClick = AdvSmoothButton1Click
       TMSStyle = 8
@@ -469,7 +470,7 @@ object CaliForm: TCaliForm
       end
       object btnStop: TAdvSmoothButton
         Left = 157
-        Top = 48
+        Top = 45
         Width = 68
         Height = 25
         Appearance.GlowPercentage = 50
@@ -1033,5 +1034,11 @@ object CaliForm: TCaliForm
   object OpenDialog1: TOpenDialog
     Left = 1573
     Top = 90
+  end
+  object probetimer: TTimer
+    Interval = 2000
+    OnTimer = probetimerTimer
+    Left = 1566
+    Top = 682
   end
 end

@@ -63,6 +63,7 @@ __published:	// IDE-managed Components
 	TEdit *LowOffsetEdit;
 	TAdvSmoothButton *ConfigBtn1;
 	TPanel *pnormal3;
+	TTimer *probetimer;
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall btnStopClick(TObject *Sender);
@@ -82,6 +83,7 @@ __published:	// IDE-managed Components
 	void __fastcall StringGrid1SelectCell(TObject *Sender, int ACol, int ARow, bool &CanSelect);
 	void __fastcall AdvSmoothButton1Click(TObject *Sender);
     void __fastcall PanelDblClick(TObject *Sender);
+	void __fastcall probetimerTimer(TObject *Sender);
 
 private:	// User declarations
 	void __fastcall MakePanel(AnsiString type);
@@ -113,7 +115,7 @@ public:		// User declarations
     void __fastcall WriteCalibOffset2();
 	void __fastcall ReadCaliboffset();
     void __fastcall ReadCaliboffset2();
-    void __fastcall InsertValue(int pos1, int pos2, double value, TColor clr);
+    void __fastcall InsertValueToGrid(int pos1, int pos2, double value, TColor clr);
     void __fastcall InsertValueToPanel(int pos1, int pos2, double value, TColor clr);
 
     int stage;

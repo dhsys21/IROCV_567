@@ -19,6 +19,7 @@ void __fastcall TTotalForm::CmdBattHeight(int height)
 //---------------------------------------------------------------------------
 void __fastcall TTotalForm::CmdAutoTest()
 {
+    tray.rem_mode == 0;
     for(int i = 0; i < MAXCHANNEL; i++)
 	{
 		tray.ir_flag[i] = false;
@@ -311,7 +312,7 @@ void __fastcall TTotalForm::ProcessIr(AnsiString param)
         channel1 = chMap[boardchannel];
         channel2 = chMap[boardchannel + 288];
 
-        CaliForm->InsertValue(channel1, channel2, value, clr);  // 보정
+        CaliForm->InsertValueToPanel(channel1, channel2, value, clr);  // 보정
 	}
 
     //* RemeasureExecute는 Tray position 고려해서 맵핑값 적용필요

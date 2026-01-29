@@ -60,7 +60,7 @@ const int PLC_D_IROCV_TRAY_IN   	  		        =   3;
 const int PLC_D_IROCV_PROB_OPEN 	  		        =   4;
 const int PLC_D_IROCV_PROB_CLOSE    	  	        =   5;
 const int PLC_D_IROCV_TRAY_POS                      =   6;
-
+const int PLC_D_IROCV_PLC_AUTOMODE                  =   7; //* PLC 자동모드에서 PC 자동측정 시작 추가 20260128
 const int PLC_D_IROCV_TRAY_ID   	  		        =   10;
 
 // TRAY INFO - 576
