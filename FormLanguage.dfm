@@ -68,12 +68,18 @@ object Form_Language: TForm_Language
       'msgPREConnFail=IR/OCV '#50672#44208' '#49892#54056'.'
       'msgDelEachChRecord='#54644#45817' '#52292#45328' '#44592#47197#51012' '#49325#51228' '#54624#44620#50836'?'
       'msgDelAllChRecord='#47784#46304' '#52292#45328' '#44592#47197#51012' '#52488#44592#54868' '#54624#44620#50836'?'
-      'msgSave='#51200#51109' '#54616#49884#44192#49845#45768#44620'?')
+      'msgSave='#51200#51109' '#54616#49884#44192#49845#45768#44620'?'
+      'msgInit=IR/OCV'#47484' '#52488#44592#54868' '#54616#49884#44192#49845#45768#44620'?'
+      'msgInvalidPwd='#51096#47803#46108' '#50516#54840' '#51077#45768#45796'.'
+      'msgReset='#52968#53944#47204#47084#47484' '#47532#49483#54633#45768#45796'.')
     TabOrder = 0
     ColWidths = (
       150
       148)
     RowHeights = (
+      18
+      18
+      18
       18
       18
       18
@@ -175,12 +181,18 @@ object Form_Language: TForm_Language
       'msgPREConnFail=IR/OCV Connection Fail.'
       'msgDelEachChRecord=Do you want to initialize the channel record?'
       'msgDelAllChRecord=Do you want to initialize all channels?'
-      'msgSave=Are you sure want to save?')
+      'msgSave=Are you sure want to save?'
+      'msgInit=Do you want to initialize the IR/OCV?'
+      'msgInvalidPwd=Invalid password'
+      'msgReset=The controller will be reset.')
     TabOrder = 1
     ColWidths = (
       150
       148)
     RowHeights = (
+      18
+      18
+      18
       18
       18
       18
@@ -326,12 +338,18 @@ object Form_Language: TForm_Language
       'msgPREConnFail=IR/OCV '#36830#25509#22833#36133#12290
       'msgDelEachChRecord='#26159#21542#35201#21021#22987#21270#35813#36890#36947#30340#35760#24405#65311
       'msgDelAllChRecord='#26159#21542#35201#21021#22987#21270#25152#26377#36890#36947#65311
-      'msgSave='#30830#23450#35201#20445#23384#21527#65311)
+      'msgSave='#30830#23450#35201#20445#23384#21527#65311
+      'msgInit='#26159#21542#35201#21021#22987#21270' IR/OCV'#65311
+      'msgInvalidPwd='#23494#30721#26080#25928
+      'msgReset='#25511#21046#22120#23558#34987#37325#32622#12290)
     TabOrder = 3
     ColWidths = (
       150
       148)
     RowHeights = (
+      18
+      18
+      18
       18
       18
       18

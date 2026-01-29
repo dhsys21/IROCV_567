@@ -853,25 +853,25 @@ void __fastcall TTotalForm::StatusTimerTimer(TObject *Sender)
 			stage.alarm_cnt = 0;
 			break;
 		case nIN:
-			if(stage.alarm_cnt > 100){
+			if(stage.alarm_cnt > 300){
 				ErrorMsg(nRedEnd);
 				stage.alarm_cnt = 0;
 			}
 			break;
 		case nREADY:
-			if(stage.alarm_cnt > 100){
+			if(stage.alarm_cnt > 300){
 				ErrorMsg(nReadyError);
 				stage.alarm_cnt = 0;
 			}
 			break;
 		case nRUN:
-			if(stage.alarm_cnt > 120){
+			if(stage.alarm_cnt > 300){
 				ErrorMsg(nRunningError);
 				stage.alarm_cnt = 0;
 			}
 			break;
 		case nEND:
-			if(stage.alarm_cnt > 100){
+			if(stage.alarm_cnt > 300){
 				ErrorMsg(nBlueEnd);
 				stage.alarm_cnt = 0;
 			}
@@ -882,7 +882,7 @@ void __fastcall TTotalForm::StatusTimerTimer(TObject *Sender)
 			}
 			break;
 		case nFinish:
-            if(stage.alarm_cnt > 100){
+            if(stage.alarm_cnt > 300){
 				ErrorMsg(nFinishError);
 				stage.alarm_cnt = 0;
 			}
@@ -1315,7 +1315,11 @@ void __fastcall TTotalForm::InitEquipStatus(int cmd)
 //---------------------------------------------------------------------------
 void __fastcall TTotalForm::btnResetClick(TObject *Sender)
 {
-	if(MessageBox(Handle, L"Are you sure you want to reset?", L"RESET", MB_YESNO|MB_ICONQUESTION) == ID_YES){
+    WideString message = Form_Language->msgReset;
+    UnicodeString str;
+	str = "Are you sure you want to reset?";
+    if(MessageBox(Handle, message.c_bstr(), L"", MB_YESNO|MB_ICONQUESTION) == ID_YES){
+    //    if(MessageBox(Handle, str.c_str(), L"", MB_YESNO|MB_ICONQUESTION) == ID_YES){
 		this->CmdReset();
 		send.time_out = 0;
 		OldSenCmd = "NONE";
@@ -1807,7 +1811,9 @@ void __fastcall TTotalForm::AutoInspection_Wait()
 				}
 			}
 			else {
-				DisplayStatus(nVacancy);
+                if(stage.alarm_status != nVacancy){
+                    DisplayStatus(nVacancy);
+                }
 				DisplayProcess(sReady, "AutoInspection_Wait", "[STEP 0] IR/OCV is ready... ");
 			}
 			break;
@@ -2094,7 +2100,10 @@ void __fastcall TTotalForm::AutoInspection_Finish()
 	Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURING, 0);
 
 	double plc_tray_in;
-	DisplayStatus(nFinish);
+    if(stage.alarm_status != nFinish){
+        DisplayStatus(nFinish);
+    }
+
 	switch(nStep)
 	{
 		case 0:

@@ -15,6 +15,7 @@ void __fastcall TTotalForm::WriteSystemInfo()
 	ini->WriteInteger("MAIN", "REMEASURE", RemeasureEdit->Text.ToIntDef(0));
 	ini->WriteBool("MAIN", "REM_BYPASS", chkRemBypass->Checked);
     ini->WriteInteger("MAIN", "REMEASURE_ALARM_COUNT", editRemeasureAlarmCount->Text.ToIntDef(3));
+    ini->WriteString("NG_ALARM_COUNT", "COUNT", editNgAlarmCount->Text);
 
 	ini->WriteString("IROCV_PLC", "IP", editPLCIPAddress->Text);
 	ini->WriteString("IROCV_PLC", "PORT1", editPLCPortPC->Text);
@@ -112,6 +113,7 @@ bool __fastcall TTotalForm::ReadSystemInfo()
 	editCellModel->Text = ini->ReadString("CELL_INFO", "CELL_MODEL", "-");
 	editLotNumber->Text = ini->ReadString("CELL_INFO", "LOT_NUMBER", "-");
 
+    editNgAlarmCount->Text = ini->ReadString("NG_ALARM_COUNT", "COUNT", "20");
 	RemeasureChk->Checked = config.remeasure_use;
 	RemeasureEdit->Text = config.remeasure_cnt;
 	editRemeasureAlarmCount->Text = config.remeasure_alarm_cnt;

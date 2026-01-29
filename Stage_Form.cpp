@@ -322,8 +322,6 @@ void __fastcall TTotalForm::ErrorMsg(int err)
 		ErrorLog();
 		//* 2023 06 14 ¼³ºñ°¡ ¸ØÃèÀ» °æ¿ì ¿¡·¯
         DisplayProcess(nstatus, err1, err3, true);
-		//Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_ERROR, 1);
-		//VisibleBox(GrpError);
 	}
 }
 

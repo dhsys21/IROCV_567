@@ -34,6 +34,9 @@ public:		// User declarations
 	UnicodeString msgDelEachChRecord;
 	UnicodeString msgDelAllChRecord;
 	UnicodeString msgSave;
+    UnicodeString msgInvalidPwd;
+    UnicodeString msgInit;
+    UnicodeString msgReset;
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TForm_Language *Form_Language;
