@@ -70,7 +70,7 @@ bool __fastcall TTotalForm::ReadSystemInfo()
 	config.remeasure_bypass = 	ini->ReadBool("MAIN", "REM_BYPASS", false);
 
 	//* IR SPEC (min/max 로 한번검사 + average +/-로 한번 더 검사)
-	config.average_use = ini->ReadBool("MAIN", "USE_AVERAGE", true);
+	config.average_use = ini->ReadBool("MAIN", "USE_AVERAGE", false);
 	config.ir_min = ini->ReadFloat("MAIN", "IR1", 10);
 	config.ir_max = ini->ReadFloat("MAIN", "IR2", 40);
 	config.ir_range = ini->ReadFloat("MAIN", "IR_RANGE", 5);

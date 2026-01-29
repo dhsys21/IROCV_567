@@ -16,6 +16,7 @@ object RemeasureForm: TRemeasureForm
   OldCreateOrder = False
   Position = poDesigned
   Scaled = False
+  OnClose = FormClose
   OnCreate = FormCreate
   OnHide = FormHide
   OnShow = FormShow
@@ -238,8 +239,8 @@ object RemeasureForm: TRemeasureForm
       Visible = False
     end
     object AccInitBtn: TAdvSmoothButton
-      Left = 72
-      Top = 26
+      Left = 76
+      Top = 25
       Width = 100
       Height = 25
       Appearance.Font.Charset = DEFAULT_CHARSET

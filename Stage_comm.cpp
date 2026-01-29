@@ -79,6 +79,8 @@ void __fastcall TTotalForm::CmdTrayOut()
 		WriteResultFile();
 	}
 
+    Mod_PLC->SetPcValue(PC_D_IROCV_DATA_WRITE, 1);
+
 	Sleep(100);
     if(/*(tray.cell_count1 + tray.cell_count2) == NgCount || */
     	NgCount > editNgAlarmCount->Text.ToIntDef(20)){
@@ -89,7 +91,7 @@ void __fastcall TTotalForm::CmdTrayOut()
 	}
 	else{
         if(BaseForm->chkTest->Checked == false) {
-			Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data,  PC_D_IROCV_TRAY_OUT, 1);
+            Mod_PLC->SetPcValue(PC_D_IROCV_TRAY_OUT, 1);
             WritePLCLog("CmdTrayOut", "IROCV TRAY OUT = 1");
         }
         DisplayStatus(nFinish);
@@ -103,6 +105,8 @@ void __fastcall TTotalForm::CmdTrayOut_Original()
     ReadCellSerial();
 	WriteIROCVValue();
 	WriteResultFile();
+
+    Mod_PLC->SetPcValue(PC_D_IROCV_DATA_WRITE, 1);
 
 	// 자동검사 9(끝). 트레이 방출
 	MakeData(1,"FIN");

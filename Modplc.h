@@ -84,11 +84,12 @@ const int PC_D_IROCV_COMPLETE2		                =   8;
 const int PC_D_IROCV_TRAY_POS_MOVE	                =   9;
 
 const int PC_D_IROCV_NG_COUNT						=   10;
-const int PC_D_IROCV_IR_MIN							=   11;
-const int PC_D_IROCV_IR_MAX							=   13;
-const int PC_D_IROCV_OCV_MIN						=   15;
-const int PC_D_IROCV_OCV_MAX						=   17;
+const int PC_D_IROCV_IR_MIN							=   11; // 2word
+const int PC_D_IROCV_IR_MAX							=   13; // 2word
+const int PC_D_IROCV_OCV_MIN						=   15; // 2word
+const int PC_D_IROCV_OCV_MAX						=   17; // 2word
 const int PC_D_IROCV_NG_ALARM                       =   19;
+const int PC_D_IROCV_DATA_WRITE                     =   20;
 
 // OK/NG - D38030
 const int PC_D_IROCV_MEASURE_OK_NG			   		=	30;

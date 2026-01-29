@@ -377,9 +377,11 @@ void __fastcall TRemeasureForm::chInitdblClick(TObject *Sender)
 	pnl = (TPanel*)Sender;
 	int ch = pnl->Tag;
 	int nRemeasureAlarmCount = 0;
-	UnicodeString str;
-	str = "Do you want to initialize the channel " + IntToStr(ch+1) +" record??";
-   if(MessageBox(Handle, str.c_str(), L"", MB_YESNO|MB_ICONQUESTION) == ID_YES){
+	WideString message = Form_Language->msgDelEachChRecord + " ch: " + IntToStr(ch + 1);
+    UnicodeString str;
+	str = "Do you want to initialize the channel record? ch: " + IntToStr(ch+1);
+    if(MessageBox(Handle, message.c_bstr(), L"", MB_YESNO|MB_ICONQUESTION) == ID_YES){
+//    if(MessageBox(Handle, str.c_str(), L"", MB_YESNO|MB_ICONQUESTION) == ID_YES){
 		acc_remeasure[ch] = 0;
         acc_totaluse[ch] = 0;
         acc_consng[ch] = 0;
@@ -396,7 +398,11 @@ void __fastcall TRemeasureForm::chInitdblClick(TObject *Sender)
 
 void __fastcall TRemeasureForm::AccInitBtnClick(TObject *Sender)
 {
-	if(MessageBox(Handle, L"Do you want to initialize all channel record?", L"", MB_YESNO|MB_ICONQUESTION) == ID_YES){
+    WideString message = Form_Language->msgDelAllChRecord;
+    UnicodeString str;
+	str = "Do you want to initialize all channel record?";
+    if(MessageBox(Handle, message.c_bstr(), L"", MB_YESNO|MB_ICONQUESTION) == ID_YES){
+    //    if(MessageBox(Handle, str.c_str(), L"", MB_YESNO|MB_ICONQUESTION) == ID_YES){
 		for(int i = 0; i < MAXCHANNEL; ++i) {
         	acc_remeasure[i] = 0;
             acc_totaluse[i] = 0;
@@ -434,3 +440,9 @@ void __fastcall TRemeasureForm::ChInfoMouseLeave(TObject *Sender)
 	pnlPos->Caption = "";
 }
 //---------------------------------------------------------------------------
+void __fastcall TRemeasureForm::FormClose(TObject *Sender, TCloseAction &Action)
+{
+    BaseForm->nForm[stage]->WriteRemeasureInfo();
+}
+//---------------------------------------------------------------------------
+

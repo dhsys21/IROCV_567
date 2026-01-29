@@ -6056,7 +6056,7 @@ object TotalForm: TTotalForm
     end
     object btnSaveConnConfig: TAdvSmoothButton
       Left = 470
-      Top = 78
+      Top = 79
       Width = 120
       Height = 60
       Appearance.Font.Charset = DEFAULT_CHARSET

@@ -213,6 +213,8 @@ void __fastcall TTotalForm::PLCInitialization(int traypos)
 
 	Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURING, 0);
     Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_NG_COUNT, 0);
+    Mod_PLC->SetPcValue(PC_D_IROCV_DATA_WRITE, 0);
+
     if(traypos == 1){
         Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_COMPLETE1, 0);
         Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_COMPLETE2, 0);
@@ -253,7 +255,11 @@ void __fastcall TTotalForm::FormClose(TObject *Sender, TCloseAction &Action)
 //---------------------------------------------------------------------------
 void __fastcall TTotalForm::btnSaveConfigClick(TObject *Sender)
 {
-	if(MessageBox(Handle, L"Are you sure you want to save?", L"SAVE", MB_YESNO|MB_ICONQUESTION) == ID_YES){
+    WideString message = Form_Language->msgSave;
+    UnicodeString str;
+	str = "Are you sure you want to save?";
+    if(MessageBox(Handle, message.c_bstr(), L"", MB_YESNO|MB_ICONQUESTION) == ID_YES){
+    //    if(MessageBox(Handle, str.c_str(), L"", MB_YESNO|MB_ICONQUESTION) == ID_YES){
 		WriteSystemInfo();
 		WriteRemeasureInfo();
         ReadSystemInfo();
@@ -1787,7 +1793,7 @@ void __fastcall TTotalForm::AutoInspection_Wait()
 				if(chkBypass->Checked == true)
 				{
 					DisplayProcess(sTrayIn, "AutoInspection_Wait", "[STEP 0] Bypass ...");
-					CmdTrayOut();                                  // badinformation, writeresultfile, trayout
+					CmdTrayOut();            // badinformation, writeresultfile, trayout
 					nStep = 0;
 					nSection = STEP_FINISH;
 				}
@@ -2099,6 +2105,7 @@ void __fastcall TTotalForm::AutoInspection_Finish()
 				Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_TRAY_OUT, 0);
 				Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_PROB_OPEN, 0);
 				Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_PROB_CLOSE, 0);
+                Mod_PLC->SetPcValue(PC_D_IROCV_DATA_WRITE, 0);
 
 				DisplayProcess(sTrayOut, "AutoInspection_Finish", "[STEP 0] IR/OCV Tray Out ... ");
 

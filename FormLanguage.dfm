@@ -37,6 +37,8 @@ object Form_Language: TForm_Language
       'CHANNEL='#52292#45328
       'IR=IR'
       'OCV=OCV'
+      'CONNECT='#50672#44208
+      'DISCONNECT='#50672#44208#54644#51228
       'REMEAINFO='#51116#52769#51221#51221#48372
       'REMEASUREALARM='#51116#52769#51221#50508#46988
       'INIT='#52488#44592#54868
@@ -117,6 +119,8 @@ object Form_Language: TForm_Language
       18
       18
       18
+      18
+      18
       18)
   end
   object VLE_ENGLISH: TValueListEditor
@@ -140,6 +144,8 @@ object Form_Language: TForm_Language
       'CHANNEL=CHANNEL'
       'IR=IR'
       'OCV=OCV'
+      'CONNECT=Connect'
+      'DISCONNECT=Disconnect'
       'REMEAINFO=NG INFO'
       'REMEASUREALARM=REMEASURE ALARM'
       'INIT=INIT.'
@@ -175,6 +181,8 @@ object Form_Language: TForm_Language
       150
       148)
     RowHeights = (
+      18
+      18
       18
       18
       18
