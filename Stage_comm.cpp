@@ -63,7 +63,7 @@ void __fastcall TTotalForm::CmdForceStop_Original()
 //---------------------------------------------------------------------------
 // For PLC
 //---------------------------------------------------------------------------
-void __fastcall TTotalForm::CmdTrayOut()
+void __fastcall TTotalForm::CmdTrayOut2()
 {
 	AnsiString cell_serial_filename;
     int nCellSerial = 0;
@@ -77,21 +77,44 @@ void __fastcall TTotalForm::CmdTrayOut()
                 + ", CellCount : " + IntToStr(tray.cell_count1 + tray.cell_count2));
 		WriteIROCVValue();
 		WriteResultFile();
+        WritePLCLog("WriteValue", "BadInfomation(), WriteVoltCurrValue(), WriteResultFile()");
+        Panel_State->Caption = " Write result values to PLC ";
 	}
-
-    WaitForMilliSeconds(1500);
-    Mod_PLC->SetPcValue(PC_D_IROCV_DATA_WRITE, 1);
-
-	Sleep(100);
+}
+//---------------------------------------------------------------------------
+void __fastcall TTotalForm::WriteValue()
+{
+    AnsiString cell_serial_filename;
+    int nCellSerial = 0;
+	if(chkBypass->Checked == false)
+	{
+		BadInfomation();
+        nCellSerial = ReadCellSerial();
+        if(nCellSerial != (tray.cell_count1 + tray.cell_count2))
+            WritePLCLog("CmdTrayOut",
+            	"Cell Serial Count Error. CellSerial : " + IntToStr(nCellSerial)
+                + ", CellCount : " + IntToStr(tray.cell_count1 + tray.cell_count2));
+		WriteIROCVValue();
+		WriteResultFile();
+        WritePLCLog("WriteValue", "BadInfomation(), WriteVoltCurrValue(), WriteResultFile()");
+        Panel_State->Caption = " Write result values to PLC ";
+	}
+}
+//---------------------------------------------------------------------------
+void __fastcall TTotalForm::CmdTrayOut()
+{
     if(/*(tray.cell_count1 + tray.cell_count2) == NgCount || */
     	NgCount > editNgAlarmCount->Text.ToIntDef(20)){
         Form_Error->Tag = this->Tag;
         Form_Error->DisplayErrorMessage("IR/OCV NG ERROR",
-										"There is too many ng cells. Please check it.",
-										"Select [Tray Out] or [Restart]");
+            "There is too many ng cells. Please check it.",
+            "Select [Tray Out] or [Restart]");
 	}
 	else{
         if(BaseForm->chkTest->Checked == false) {
+            Mod_PLC->SetPcValue(PC_D_IROCV_DATA_WRITE, 1);
+    		WritePLCLog("CmdTrayOut", "DATA WRITE COMPLETE = 1");
+
             Mod_PLC->SetPcValue(PC_D_IROCV_TRAY_OUT, 1);
             WritePLCLog("CmdTrayOut", "IROCV TRAY OUT = 1");
         }

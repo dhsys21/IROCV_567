@@ -504,6 +504,8 @@ public:		// User declarations
 	void __fastcall CmdAutoTest();
 	void __fastcall CmdBattHeight(int height = 1);
 	void __fastcall CmdGetSensorInfo();
+    void __fastcall CmdTrayOut2();
+    void __fastcall WriteValue();
 	void __fastcall CmdTrayOut();
 	void __fastcall CmdTrayOut_Original();
 	void __fastcall CmdForceStop();
@@ -544,7 +546,7 @@ public:		// User declarations
 	AnsiString acc_init;
     TDateTime m_dateTime;
 
-    int start_delay_time;
+    int start_delay_time, write_delay_time;
 
 	int nSection, nStep, nStepCount;
 	bool m_bAuto;
