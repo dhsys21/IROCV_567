@@ -11,6 +11,7 @@
 #include <ExtCtrls.hpp>
 #include <ComCtrls.hpp>
 #include "AdvSmoothButton.hpp"
+#include "AdvSmoothPanel.hpp"
 //---------------------------------------------------------------------------
 class TForm_PLCInterface : public TForm
 {
@@ -20,24 +21,28 @@ __published:	// IDE-managed Components
 	TListView *ListView_PC;
 	TTimer *Timer_Update;
 	TAdvSmoothButton *AdvSmoothButton_Close;
-	TPanel *Panel1;
-	TLabel *Label1;
-	TGroupBox *GroupBox1;
-	TLabel *Label5;
-	TEdit *editIR;
-	TLabel *Label6;
-	TEdit *editOCV;
-	TButton *btnWriteIrOcvValue;
+	TLabel *Label4;
+	TAdvSmoothPanel *Panel1;
+	TLabel *lblConfiguration;
+	TAdvSmoothButton *btnSaveConfig;
+	TPanel *pnlCurrMin;
+	TEdit *editCurrMin;
+	TGroupBox *GroupBox3;
+	TLabel *Label2;
+	TLabel *Label3;
+	TComboBox *cbAddress;
+	TEdit *editValue;
+	TButton *btnWriteValue;
 	TGroupBox *GroupBox2;
 	TEdit *editIrOcvNg;
 	TButton *btnWriteNgValue;
-	TGroupBox *GroupBox3;
-	TLabel *Label2;
-	TComboBox *cbAddress;
-	TLabel *Label3;
-	TEdit *editValue;
-	TButton *btnWriteValue;
-	TLabel *Label4;
+	TGroupBox *GroupBox1;
+	TLabel *Label5;
+	TLabel *Label6;
+	TEdit *editIR;
+	TEdit *editOCV;
+	TButton *btnWriteIrOcvValue;
+	TCheckBox *chkAllData;
 	void __fastcall Timer_UpdateTimer(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
@@ -46,9 +51,12 @@ __published:	// IDE-managed Components
 	void __fastcall btnWriteValueClick(TObject *Sender);
 	void __fastcall btnWriteNgValueClick(TObject *Sender);
 	void __fastcall btnWriteIrOcvValueClick(TObject *Sender);
+	void __fastcall chkAllDataClick(TObject *Sender);
 private:	// User declarations
     void __fastcall SetListViewPLC();
 	void __fastcall SetListViewPC();
+    void __fastcall SetListViewPLC2();
+	void __fastcall SetListViewPC2();
 
 	void __fastcall AddListView(TListView *list, AnsiString address, AnsiString name);
 

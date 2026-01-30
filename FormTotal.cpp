@@ -909,6 +909,13 @@ void __fastcall TTotalForm::StatusTimerTimer(TObject *Sender)
 
     nTrayPos = Mod_PLC->GetTrayPos();
     pnlTrayPos->Caption->Text = IntToStr(nTrayPos);
+    if(nTrayPos == 1) {
+    	ShowPLCSignal(pnlTrayPos1, true);
+        ShowPLCSignal(pnlTrayPos2, false);
+    } else if(nTrayPos == 2){
+        ShowPLCSignal(pnlTrayPos1, false);
+        ShowPLCSignal(pnlTrayPos2, true);
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -2282,4 +2289,5 @@ void __fastcall TTotalForm::btnDisConnectIROCVClick(TObject *Sender)
     this->ReContactTimerTimer(ReContactTimer);
 }
 //---------------------------------------------------------------------------
+
 

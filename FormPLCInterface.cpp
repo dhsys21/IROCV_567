@@ -1,4 +1,5 @@
-﻿#pragma link "AdvSmoothButton"
+﻿#pragma link "AdvSmoothPanel"
+#pragma link "AdvSmoothButton"
 //---------------------------------------------------------------------------
 
 #include <vcl.h>
@@ -33,6 +34,110 @@ __fastcall TForm_PLCInterface::TForm_PLCInterface(TComponent* Owner)
 //---------------------------------------------------------------------------
 void __fastcall TForm_PLCInterface::SetListViewPLC()
 {
+    const int count = chkAllData->Checked ? MAXCHANNEL : LINECOUNT;
+
+    ListView_PLC->Items->BeginUpdate();
+    try
+    {
+        ListView_PLC->Items->Clear();
+
+        // PLC - IR/OCV
+        AddListView(ListView_PLC, "D" + IntToStr(PLC_D_INTERFACE_START_DEV_NUM + PLC_D_HEART_BEAT), "PLC HEART BEAT");
+        AddListView(ListView_PLC, "D" + IntToStr(PLC_D_INTERFACE_START_DEV_NUM + PLC_D_IROCV_AUTO_MANUAL), "PLC AUTO MANUAL");
+        AddListView(ListView_PLC, "D" + IntToStr(PLC_D_INTERFACE_START_DEV_NUM + PLC_D_IROCV_ERROR), "PLC ERROR");
+
+        AddListView(ListView_PLC, "D" + IntToStr(PLC_D_INTERFACE_START_DEV_NUM + PLC_D_IROCV_TRAY_IN), "TRAY IN");
+        AddListView(ListView_PLC, "D" + IntToStr(PLC_D_INTERFACE_START_DEV_NUM + PLC_D_IROCV_PROB_OPEN), "PROB OPEN");
+        AddListView(ListView_PLC, "D" + IntToStr(PLC_D_INTERFACE_START_DEV_NUM + PLC_D_IROCV_PROB_CLOSE), "PROB CLOSE");
+        AddListView(ListView_PLC, "D" + IntToStr(PLC_D_INTERFACE_START_DEV_NUM + PLC_D_IROCV_TRAY_POS), "TRAY POS");
+        AddListView(ListView_PLC, "D" + IntToStr(PLC_D_INTERFACE_START_DEV_NUM + PLC_D_IROCV_PLC_AUTOMODE), "PLC AUTO MODE");
+        AddListView(ListView_PLC, "D" + IntToStr(PLC_D_INTERFACE_START_DEV_NUM + PLC_D_IROCV_TRAY_ID), "IN TRAY BCR DATA");
+
+        // CELL INFO => 1 : YES, 0 : NO
+        //* 16 bit * 36
+        for(int i = 0; i < 36; i++)
+        {
+            AddListView(ListView_PLC, "D" + IntToStr(PLC_D_INTERFACE_START_DEV_NUM + PLC_D_IROCV_TRAY_CELL_DATA + i), "TRAY CELL DATA #" + IntToStr(i + 1));
+        }
+
+        if(chkAllData->Checked == false){
+            for(int i = 0; i < LINECOUNT; i++)
+                AddListView(ListView_PLC, "D" + IntToStr(PLC_D_CELL_SERIAL_NUM + PLC_D_IROCV_CELL_SERIAL + (i * 10 * LINECOUNT)), "CELL SERIAL #" + IntToStr(i * LINECOUNT + 1));
+        }else{
+            for(int i = 0; i < MAXCHANNEL; i++)
+                AddListView(ListView_PLC, "D" + IntToStr(PLC_D_CELL_SERIAL_NUM + PLC_D_IROCV_CELL_SERIAL + (i * 10)), "CELL SERIAL #" + IntToStr(i + 1));
+        }
+    }
+    __finally
+    {
+        ListView_PLC->Items->EndUpdate();
+    }
+
+    // 보통 EndUpdate로 충분하지만, 즉시 화면 반영이 필요하면:
+    ListView_PLC->Invalidate();
+    ListView_PLC->Update();
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm_PLCInterface::SetListViewPC()
+{
+    const int count = chkAllData->Checked ? MAXCHANNEL : LINECOUNT;
+
+    ListView_PC->Items->BeginUpdate();
+    try
+    {
+        ListView_PC->Items->Clear();
+
+        // PC - IR/OCV
+        AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_HEART_BEAT), "PC HEART BEAT");
+        AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_ERROR), "PC ERROR");
+        AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_STAGE_AUTO_READY), "STAGE AUTO READY");
+
+        AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_TRAY_OUT), "TRAY OUT");
+        AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_PROB_OPEN), "PROB OPEN");
+        AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_PROB_CLOSE), "PROB CLOSE");
+        AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_MEASURING), "MEASURING");
+        AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_COMPLETE1), "COMPLETE1");
+        AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_COMPLETE2), "COMPLETE2");
+        AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_TRAY_POS_MOVE), "TRAY POS MOVE");
+
+        AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_NG_COUNT), "IROCV NG COUNT");
+        AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_IR_MIN), "IROCV IR MIN.");
+        AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_IR_MAX), "IROCV IR MAX.");
+        AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_OCV_MIN), "IROCV OCV MIN.");
+        AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_OCV_MAX), "IROCV OCV MAX.");
+        AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_NG_ALARM), "NG ALARM");
+        AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_DATA_WRITE), "DATA WRITE COMPLETE");
+
+        //* 16 bit * 36
+        for(int i = 0; i < 36; i++)
+            AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_MEASURE_OK_NG + i), "IR/OCV OK/NG DATA #" + IntToStr(i + 1));
+
+        if(chkAllData->Checked == false){
+            for(int i = 0; i < LINECOUNT; i++)
+                AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_IR + PC_D_IROCV_IR_VALUE + i * LINECOUNT), "IR VALUE #" + IntToStr(i * LINECOUNT + 1));
+
+            for(int i = 0; i < LINECOUNT; i++)
+                AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_OCV + PC_D_IROCV_OCV_VALUE + i  * LINECOUNT), "OCV VALUE #" + IntToStr(i * LINECOUNT + 1));
+        } else{
+            for(int i = 0; i < MAXCHANNEL; i++)
+                AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_IR + PC_D_IROCV_IR_VALUE + i), "IR VALUE #" + IntToStr(i + 1));
+
+            for(int i = 0; i < MAXCHANNEL; i++)
+                AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_OCV + PC_D_IROCV_OCV_VALUE + i), "OCV VALUE #" + IntToStr(i + 1));
+        }
+    }
+    __finally
+    {
+        ListView_PC->Items->EndUpdate();
+    }
+
+    // 보통 EndUpdate로 충분하지만, 즉시 화면 반영이 필요하면:
+    ListView_PC->Invalidate();
+    ListView_PC->Update();
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm_PLCInterface::SetListViewPLC2()
+{
 	// PLC - IR/OCV
 	AddListView(ListView_PLC, "D" + IntToStr(PLC_D_INTERFACE_START_DEV_NUM + PLC_D_HEART_BEAT), "PLC HEART BEAT");
 	AddListView(ListView_PLC, "D" + IntToStr(PLC_D_INTERFACE_START_DEV_NUM + PLC_D_IROCV_AUTO_MANUAL), "PLC AUTO MANUAL");
@@ -52,11 +157,16 @@ void __fastcall TForm_PLCInterface::SetListViewPLC()
 		AddListView(ListView_PLC, "D" + IntToStr(PLC_D_INTERFACE_START_DEV_NUM + PLC_D_IROCV_TRAY_CELL_DATA + i), "TRAY CELL DATA #" + IntToStr(i + 1));
 	}
 
-    for(int i = 0; i < LINECOUNT; i++)
-       AddListView(ListView_PLC, "D" + IntToStr(PLC_D_CELL_SERIAL_NUM + PLC_D_IROCV_CELL_SERIAL + (i * 10 * LINECOUNT)), "CELL SERIAL #" + IntToStr(i * LINECOUNT + 1));
+    if(chkAllData->Checked == false){
+        for(int i = 0; i < LINECOUNT; i++)
+        	AddListView(ListView_PLC, "D" + IntToStr(PLC_D_CELL_SERIAL_NUM + PLC_D_IROCV_CELL_SERIAL + (i * 10 * LINECOUNT)), "CELL SERIAL #" + IntToStr(i * LINECOUNT + 1));
+    }else{
+        for(int i = 0; i < MAXCHANNEL; i++)
+        	AddListView(ListView_PLC, "D" + IntToStr(PLC_D_CELL_SERIAL_NUM + PLC_D_IROCV_CELL_SERIAL + (i * 10)), "CELL SERIAL #" + IntToStr(i + 1));
+    }
 }
 //---------------------------------------------------------------------------
-void __fastcall TForm_PLCInterface::SetListViewPC()
+void __fastcall TForm_PLCInterface::SetListViewPC2()
 {
 	// PC - IR/OCV
 	AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_HEART_BEAT), "PC HEART BEAT");
@@ -83,16 +193,19 @@ void __fastcall TForm_PLCInterface::SetListViewPC()
 	for(int i = 0; i < 36; i++)
 		AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_MEASURE_OK_NG + i), "IR/OCV OK/NG DATA #" + IntToStr(i + 1));
 
-//	for(int i = 0; i < MAXCHANNEL; i++)
-//		AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM1 + PC_D_IROCV_IR_VALUE + i), "IR VALUE #" + IntToStr(i + 1));
-//
-//	for(int i = 0; i < MAXCHANNEL; i++)
-//		AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_START_DEV_NUM2 + PC_D_IROCV_OCV_VALUE + i), "OCV VALUE #" + IntToStr(i + 1));
-    for(int i = 0; i < LINECOUNT; i++)
-		AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_IR + PC_D_IROCV_IR_VALUE + i * LINECOUNT), "IR VALUE #" + IntToStr(i * LINECOUNT + 1));
+    if(chkAllData->Checked == false){
+        for(int i = 0; i < LINECOUNT; i++)
+            AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_IR + PC_D_IROCV_IR_VALUE + i * LINECOUNT), "IR VALUE #" + IntToStr(i * LINECOUNT + 1));
 
-	for(int i = 0; i < LINECOUNT; i++)
-		AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_OCV + PC_D_IROCV_OCV_VALUE + i  * LINECOUNT), "OCV VALUE #" + IntToStr(i * LINECOUNT + 1));
+        for(int i = 0; i < LINECOUNT; i++)
+            AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_OCV + PC_D_IROCV_OCV_VALUE + i  * LINECOUNT), "OCV VALUE #" + IntToStr(i * LINECOUNT + 1));
+    } else{
+        for(int i = 0; i < MAXCHANNEL; i++)
+            AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_IR + PC_D_IROCV_IR_VALUE + i), "IR VALUE #" + IntToStr(i + 1));
+
+        for(int i = 0; i < MAXCHANNEL; i++)
+            AddListView(ListView_PC, "D" + IntToStr(PC_D_INTERFACE_OCV + PC_D_IROCV_OCV_VALUE + i), "OCV VALUE #" + IntToStr(i + 1));
+    }
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm_PLCInterface::AddListView(TListView *list, AnsiString address, AnsiString name)
@@ -146,8 +259,13 @@ void __fastcall TForm_PLCInterface::Timer_UpdateTimer(TObject *Sender)
 			Label4->Caption += Mod_PLC->GetDouble(Mod_PLC->plc_Interface_Data, PLC_D_IROCV_TRAY_CELL_DATA + i);
 		}
 
-        for(int i = 0; i < LINECOUNT; i++)
-            ListView_PLC->Items->Item[index++]->SubItems->Strings[1] = Mod_PLC->GetCellSrial(PLC_D_IROCV_CELL_SERIAL, i * LINECOUNT, 10);
+        if(chkAllData->Checked == false){
+            for(int i = 0; i < LINECOUNT; i++)
+                ListView_PLC->Items->Item[index++]->SubItems->Strings[1] = Mod_PLC->GetCellSrial(PLC_D_IROCV_CELL_SERIAL, i * LINECOUNT, 10);
+        } else{
+            for(int i = 0; i < MAXCHANNEL; i++)
+                ListView_PLC->Items->Item[index++]->SubItems->Strings[1] = Mod_PLC->GetCellSrial(PLC_D_IROCV_CELL_SERIAL, i, 10);
+        }
 	}
 
 	if(Mod_PLC->ClientSocket_PC->Active)	//	PC 상태
@@ -184,17 +302,26 @@ void __fastcall TForm_PLCInterface::Timer_UpdateTimer(TObject *Sender)
 			ListView_PC->Items->Item[index++]->SubItems->Strings[1] = okng_bin;
 		}
 
-		// IROCV RESULT IR VALUE
-        for(int i = 0; i < LINECOUNT; i++)
-        	ListView_PC->Items->Item[index++]->SubItems->Strings[1] = Mod_PLC->GetIrValue(PC_D_IROCV_IR_VALUE, i * LINECOUNT);
+        if(chkAllData->Checked == false){
+            // IROCV RESULT IR VALUE
+            for(int i = 0; i < LINECOUNT; i++)
+                ListView_PC->Items->Item[index++]->SubItems->Strings[1] = Mod_PLC->GetIrValue(PC_D_IROCV_IR_VALUE, i * LINECOUNT);
 
-		// IROCV RESULT OCV VALUE
-        for(int i = 0; i < LINECOUNT; i++)
-        	ListView_PC->Items->Item[index++]->SubItems->Strings[1] = Mod_PLC->GetOcvValue(PC_D_IROCV_OCV_VALUE, i * LINECOUNT);
+            // IROCV RESULT OCV VALUE
+            for(int i = 0; i < LINECOUNT; i++)
+                ListView_PC->Items->Item[index++]->SubItems->Strings[1] = Mod_PLC->GetOcvValue(PC_D_IROCV_OCV_VALUE, i * LINECOUNT);
+        } else{
+            // IROCV RESULT IR VALUE
+            for(int i = 0; i < MAXCHANNEL; i++)
+                ListView_PC->Items->Item[index++]->SubItems->Strings[1] = Mod_PLC->GetIrValue(PC_D_IROCV_IR_VALUE, i);
+
+            // IROCV RESULT OCV VALUE
+            for(int i = 0; i < MAXCHANNEL; i++)
+                ListView_PC->Items->Item[index++]->SubItems->Strings[1] = Mod_PLC->GetOcvValue(PC_D_IROCV_OCV_VALUE, i);
+        }
 	}
 }
 //---------------------------------------------------------------------------
-
 void __fastcall TForm_PLCInterface::AdvSmoothButton_CloseClick(TObject *Sender)
 {
     Timer_Update->Enabled = false;
@@ -261,6 +388,13 @@ void __fastcall TForm_PLCInterface::btnWriteIrOcvValueClick(TObject *Sender)
 		int32_t ocv_int = static_cast<int32_t>(ocv_base * 10.0) + i;  // signed 32-bit int
         Mod_PLC->SetOcvValue(PC_D_IROCV_OCV_VALUE, i, ocv_int);
 	}
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm_PLCInterface::chkAllDataClick(TObject *Sender)
+{
+    SetListViewPLC();
+	SetListViewPC();
 }
 //---------------------------------------------------------------------------
 

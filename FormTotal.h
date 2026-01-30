@@ -242,11 +242,9 @@ __published:	// IDE-managed Components
 	TPanel *pProbeOpen;
 	TPanel *pTrayOut;
 	TPanel *pProbeDown;
-	TAdvSmoothButton *btnReset;
 	TAdvSmoothButton *btnAuto;
 	TAdvSmoothButton *btnManual;
 	TLabel *lblRemeasureAlarmCheck;
-	TAdvSmoothButton *btnTrayOut;
 	TPanel *Panel16;
 	TLabel *lblTrayInfo;
 	TCheckBox *chkCycle;
@@ -256,7 +254,6 @@ __published:	// IDE-managed Components
 	TPanel *Panel_State;
 	TPanel *pTrayid;
 	TEdit *editTrayId;
-	TAdvSmoothButton *btnRemeasureInfo;
 	TGroupBox *GroupBox2;
 	TPanel *pnormal2;
 	TPanel *pnormal1;
@@ -329,6 +326,13 @@ __published:	// IDE-managed Components
 	TGroupBox *GroupBox6;
 	TEdit *editModelName;
 	TAdvSmoothButton *btnDisConnectIROCV;
+	TPanel *pnlButton;
+	TAdvSmoothButton *btnReset;
+	TAdvSmoothButton *btnTrayOut;
+	TAdvSmoothButton *btnRemeasureInfo;
+	TAdvSmoothPanel *pnlTrayPos1;
+	TAdvSmoothPanel *pnlTrayPos2;
+	TAdvSmoothPanel *AdvSmoothPanel4;
 	void __fastcall ClientConnect(TObject *Sender,
 		  TCustomWinSocket *Socket);
 	void __fastcall ClientDisconnect(TObject *Sender,
