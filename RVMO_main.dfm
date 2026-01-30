@@ -8,7 +8,7 @@ object BaseForm: TBaseForm
   VertScrollBar.Range = 300
   VertScrollBar.Visible = False
   BorderIcons = [biSystemMenu, biMinimize]
-  Caption = 'IR/OCV (Ver.260130 001)'
+  Caption = 'IR/OCV (Ver.260130 003)'
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -2022,7 +2022,7 @@ object BaseForm: TBaseForm
     end
     object Image4: TImage
       Left = 22
-      Top = 101
+      Top = 147
       Width = 467
       Height = 197
       AutoSize = True
@@ -2564,7 +2564,7 @@ object BaseForm: TBaseForm
     end
     object Image5: TImage
       Left = 384
-      Top = 101
+      Top = 147
       Width = 467
       Height = 197
       AutoSize = True
@@ -3077,7 +3077,7 @@ object BaseForm: TBaseForm
     end
     object Image6: TImage
       Left = 749
-      Top = 101
+      Top = 147
       Width = 467
       Height = 197
       AutoSize = True
@@ -3528,7 +3528,7 @@ object BaseForm: TBaseForm
     end
     object Image7: TImage
       Left = 22
-      Top = 318
+      Top = 364
       Width = 467
       Height = 197
       AutoSize = True
@@ -3971,7 +3971,7 @@ object BaseForm: TBaseForm
     end
     object Image8: TImage
       Left = 384
-      Top = 318
+      Top = 364
       Width = 467
       Height = 196
       AutoSize = True
@@ -4260,7 +4260,7 @@ object BaseForm: TBaseForm
     end
     object Image9: TImage
       Left = 749
-      Top = 318
+      Top = 364
       Width = 467
       Height = 196
       AutoSize = True
@@ -4782,7 +4782,7 @@ object BaseForm: TBaseForm
     end
     object Image10: TImage
       Left = 23
-      Top = 468
+      Top = 514
       Width = 467
       Height = 196
       AutoSize = True
@@ -5331,7 +5331,7 @@ object BaseForm: TBaseForm
     end
     object Image11: TImage
       Left = 384
-      Top = 468
+      Top = 514
       Width = 467
       Height = 196
       AutoSize = True

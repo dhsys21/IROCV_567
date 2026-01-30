@@ -402,8 +402,12 @@ void __fastcall TBaseForm::Button5Click(TObject *Sender)
 
 void __fastcall TBaseForm::Button1Click(TObject *Sender)
 {
-    nForm[0]->tray.trayid = "12345678";
-    nForm[0]->ReadResultFile(1);
+//    nForm[0]->tray.trayid = "12345678";
+//    nForm[0]->ReadResultFile(1);
+
+    Button1->Caption = "0";
+    WaitForMilliSeconds(3000);
+    Button1->Caption = "3000";
 }
 //---------------------------------------------------------------------------
 

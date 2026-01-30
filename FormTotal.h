@@ -333,6 +333,13 @@ __published:	// IDE-managed Components
 	TAdvSmoothPanel *pnlTrayPos1;
 	TAdvSmoothPanel *pnlTrayPos2;
 	TAdvSmoothPanel *AdvSmoothPanel4;
+	TPanel *pPassword;
+	TPanel *Panel61;
+	TEdit *PassEdit;
+	TAdvSmoothButton *cancelBtn2;
+	TAdvSmoothButton *PasswordBtn;
+	TGroupBox *GroupBox8;
+	TEdit *editPwd;
 	void __fastcall ClientConnect(TObject *Sender,
 		  TCustomWinSocket *Socket);
 	void __fastcall ClientDisconnect(TObject *Sender,
@@ -381,6 +388,8 @@ __published:	// IDE-managed Components
 	void __fastcall Button1Click(TObject *Sender);
 	void __fastcall pReadyClick(TObject *Sender);
 	void __fastcall btnDisConnectIROCVClick(TObject *Sender);
+	void __fastcall PasswordBtnClick(TObject *Sender);
+	void __fastcall cancelBtn2Click(TObject *Sender);
 
 private:	// User declarations
 //------------ 폼 관련 -------------------//
@@ -466,6 +475,7 @@ private:	// User declarations
     int NgCount; //* 셀이 있는데 fail 이면
     int ngCount; //* 셀이 있는데 fail 이거나 셀이 없는 경우
     int nTrayPos;
+    int nPwdIndex;
 public:		// User declarations
 	void __fastcall InitMeasureForm();
 	void __fastcall InitMeasureFormRemeasure();
@@ -579,6 +589,8 @@ public:		// User declarations
 
 	void __fastcall DisplayTrayInfo(int traypos);
     void __fastcall ShowPLCSignal(TAdvSmoothPanel *advPanel, bool bOn);
+    void __fastcall ShowConfigPanel();
+    void __fastcall ShowRemeasurePanel();
 
 	__fastcall TTotalForm(TComponent* Owner);
 	bool bLocal, n_bMeasureStart;

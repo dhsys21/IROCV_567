@@ -491,19 +491,10 @@ void __fastcall TTotalForm::InitMeasureFormRemeasure()
 // 재측정 정보 보기
 void __fastcall TTotalForm::btnRemeasureInfoClick(TObject *Sender)
 {
-	RemeasureForm->stage            = this->Tag;
-	RemeasureForm->acc_remeasure 	= acc_remeasure;
-    RemeasureForm->acc_totaluse     = acc_totaluse;
-    RemeasureForm->acc_consng       = acc_consng;
-	RemeasureForm->acc_init 		= &acc_init;
-	RemeasureForm->acc_cnt			= &acc_cnt;
-
-	RemeasureForm->pstage->Caption	= lblTitle->Caption;
-	RemeasureForm->Visible = true;
-    RemeasureForm->Left = 200;
-    RemeasureForm->Top = 50;
-    RemeasureForm->WindowState = wsNormal;
-    RemeasureForm->BringToFront();
+    pPassword->Visible = !pPassword->Visible;
+    pPassword->Left = 397;
+    pPassword->Top = 191;
+    nPwdIndex = 2;
 }
 //---------------------------------------------------------------------------
 // 센서 정보 보기
@@ -2175,9 +2166,10 @@ void __fastcall TTotalForm::ReadchannelMapping()
 // ---------------------------------------------------------------------------
 void __fastcall TTotalForm::btnConfigClick(TObject *Sender)
 {
-	pnlConfig->Visible = !pnlConfig->Visible;
-	pnlConfig->Left = 10;
-	pnlConfig->Top = 50;
+    pPassword->Visible = !pPassword->Visible;
+    pPassword->Left = 309;
+    pPassword->Top = 48;
+    nPwdIndex = 1;
 }
 //---------------------------------------------------------------------------
 
@@ -2264,8 +2256,6 @@ void __fastcall TTotalForm::pReadyClick(TObject *Sender)
 		Form_Error->Tag = this->Tag;
 }
 //---------------------------------------------------------------------------
-
-
 void __fastcall TTotalForm::ShowPLCSignal(TAdvSmoothPanel *advPanel, bool bOn)
 {
     if(bOn)
@@ -2281,7 +2271,6 @@ void __fastcall TTotalForm::ShowPLCSignal(TAdvSmoothPanel *advPanel, bool bOn)
 		advPanel->Fill->ColorTo = BaseForm->poff->Color;
 	}
 }
-
 void __fastcall TTotalForm::btnDisConnectIROCVClick(TObject *Sender)
 {
     Client->Active = false;
@@ -2289,5 +2278,49 @@ void __fastcall TTotalForm::btnDisConnectIROCVClick(TObject *Sender)
     this->ReContactTimerTimer(ReContactTimer);
 }
 //---------------------------------------------------------------------------
+void __fastcall TTotalForm::PasswordBtnClick(TObject *Sender)
+{
+    WideString message = Form_Language->msgInvalidPwd;
+	if(PassEdit->Text == "0000"){
+		if(nPwdIndex == 1){
+            ShowConfigPanel();
+        } else if(nPwdIndex == 2){
+            ShowRemeasurePanel();
+        }
+        PassEdit->Text = "";
+        pPassword->Visible = false;
+	}
+	else{
+		MessageBox(Handle, message.c_bstr(), L"ERROR", MB_OK|MB_ICONERROR);
+	}
+}
+//---------------------------------------------------------------------------
+void __fastcall TTotalForm::ShowConfigPanel()
+{
+    pnlConfig->Visible = !pnlConfig->Visible;
+	pnlConfig->Left = 10;
+	pnlConfig->Top = 50;
+}
+void __fastcall TTotalForm::ShowRemeasurePanel()
+{
+    RemeasureForm->stage            = this->Tag;
+	RemeasureForm->acc_remeasure 	= acc_remeasure;
+    RemeasureForm->acc_totaluse     = acc_totaluse;
+    RemeasureForm->acc_consng       = acc_consng;
+	RemeasureForm->acc_init 		= &acc_init;
+	RemeasureForm->acc_cnt			= &acc_cnt;
 
+	RemeasureForm->pstage->Caption	= lblTitle->Caption;
+	RemeasureForm->Visible = true;
+    RemeasureForm->Left = 200;
+    RemeasureForm->Top = 50;
+    RemeasureForm->WindowState = wsNormal;
+    RemeasureForm->BringToFront();
+}
+//---------------------------------------------------------------------------
+void __fastcall TTotalForm::cancelBtn2Click(TObject *Sender)
+{
+    pPassword->Visible = false;
+}
+//---------------------------------------------------------------------------
 

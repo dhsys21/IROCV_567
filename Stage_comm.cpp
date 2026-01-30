@@ -79,6 +79,7 @@ void __fastcall TTotalForm::CmdTrayOut()
 		WriteResultFile();
 	}
 
+    WaitForMilliSeconds(1500);
     Mod_PLC->SetPcValue(PC_D_IROCV_DATA_WRITE, 1);
 
 	Sleep(100);
@@ -106,6 +107,7 @@ void __fastcall TTotalForm::CmdTrayOut_Original()
 	WriteIROCVValue();
 	WriteResultFile();
 
+    WaitForMilliSeconds(1500);
     Mod_PLC->SetPcValue(PC_D_IROCV_DATA_WRITE, 1);
 
 	// 자동검사 9(끝). 트레이 방출

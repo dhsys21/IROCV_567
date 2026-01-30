@@ -23,7 +23,7 @@ __fastcall TRemeasureForm::TRemeasureForm(TComponent* Owner)
 void __fastcall TRemeasureForm::RefreshForm()
 {
 	for(int i = 0; i < MAXCHANNEL; ++i){
-		pre[i]->Caption = acc_remeasure[i];
+		pre[i]->Caption = IntToStr(acc_consng[i]) + ", " + IntToStr(acc_remeasure[i]);
 		if(acc_remeasure[i] < pcolor2->Caption.ToIntDef(3)){
 			pre[i]->Color = pcolor1->Color;
 			pre[i]->ParentBackground = false;

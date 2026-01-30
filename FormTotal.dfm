@@ -20,8 +20,8 @@ object TotalForm: TTotalForm
   PixelsPerInch = 96
   TextHeight = 13
   object AdvSmoothPanel1: TAdvSmoothPanel
-    Left = 643
-    Top = 479
+    Left = 729
+    Top = 489
     Width = 652
     Height = 252
     Cursor = crDefault
@@ -919,7 +919,6 @@ object TotalForm: TTotalForm
           TabOrder = 0
           Text = 'EDIT1'
           Visible = False
-          ExplicitWidth = 268
           ExplicitHeight = 29
         end
       end
@@ -2903,8 +2902,8 @@ object TotalForm: TTotalForm
     end
   end
   object GroupBox3: TGroupBox
-    Left = 723
-    Top = 737
+    Left = 729
+    Top = 747
     Width = 474
     Height = 185
     Caption = 'GroupBox3'
@@ -6666,7 +6665,7 @@ object TotalForm: TTotalForm
     object GroupBox6: TGroupBox
       Left = 10
       Top = 274
-      Width = 440
+      Width = 297
       Height = 58
       Caption = 'MODEL NAME'
       Font.Charset = DEFAULT_CHARSET
@@ -6679,7 +6678,7 @@ object TotalForm: TTotalForm
       object editModelName: TEdit
         Left = 63
         Top = 25
-        Width = 362
+        Width = 218
         Height = 24
         Alignment = taCenter
         Font.Charset = DEFAULT_CHARSET
@@ -6692,6 +6691,169 @@ object TotalForm: TTotalForm
         TabOrder = 0
         Text = '20PQ'
       end
+    end
+    object GroupBox8: TGroupBox
+      Left = 313
+      Top = 274
+      Width = 272
+      Height = 58
+      Caption = 'Password'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 7
+      object editPwd: TEdit
+        Left = 63
+        Top = 25
+        Width = 194
+        Height = 24
+        Alignment = taCenter
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ImeName = 'Microsoft Office IME 2007'
+        ParentFont = False
+        TabOrder = 0
+        Text = '0000'
+      end
+    end
+  end
+  object pPassword: TPanel
+    Left = 397
+    Top = 191
+    Width = 206
+    Height = 70
+    BevelInner = bvLowered
+    BevelKind = bkFlat
+    BevelWidth = 3
+    Color = clWhite
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -15
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 10
+    Visible = False
+    object Panel61: TPanel
+      Left = 7
+      Top = 7
+      Width = 80
+      Height = 25
+      BevelKind = bkFlat
+      BevelOuter = bvNone
+      BevelWidth = 2
+      Caption = 'PassWord'
+      Color = 14670047
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 0
+    end
+    object PassEdit: TEdit
+      Left = 89
+      Top = 7
+      Width = 105
+      Height = 25
+      BevelInner = bvLowered
+      BevelKind = bkFlat
+      BorderStyle = bsNone
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBackground
+      Font.Height = -15
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ImeMode = imDisable
+      ImeName = 'Microsoft Office IME 2007'
+      ParentFont = False
+      PasswordChar = '*'
+      TabOrder = 1
+    end
+    object cancelBtn2: TAdvSmoothButton
+      Left = 116
+      Top = 32
+      Width = 78
+      Height = 29
+      Appearance.PictureAlignment = taCenter
+      Appearance.Font.Charset = DEFAULT_CHARSET
+      Appearance.Font.Color = clWindowText
+      Appearance.Font.Height = -13
+      Appearance.Font.Name = 'Tahoma'
+      Appearance.Font.Style = [fsBold]
+      Appearance.Spacing = 0
+      Appearance.Rounding = 3
+      Appearance.WordWrapping = False
+      Status.Caption = '0'
+      Status.Appearance.Fill.Color = clRed
+      Status.Appearance.Fill.ColorMirror = clNone
+      Status.Appearance.Fill.ColorMirrorTo = clNone
+      Status.Appearance.Fill.GradientType = gtSolid
+      Status.Appearance.Fill.GradientMirrorType = gtSolid
+      Status.Appearance.Fill.BorderColor = clGray
+      Status.Appearance.Fill.Rounding = 0
+      Status.Appearance.Fill.ShadowOffset = 0
+      Status.Appearance.Fill.Glow = gmNone
+      Status.Appearance.Font.Charset = DEFAULT_CHARSET
+      Status.Appearance.Font.Color = clWhite
+      Status.Appearance.Font.Height = -11
+      Status.Appearance.Font.Name = 'Tahoma'
+      Status.Appearance.Font.Style = []
+      BevelColor = clMedGray
+      Caption = 'Cancel'
+      Color = clWhite
+      ParentFont = False
+      TabOrder = 2
+      Version = '2.1.1.5'
+      OnClick = cancelBtn2Click
+      TMSStyle = 8
+    end
+    object PasswordBtn: TAdvSmoothButton
+      Left = 37
+      Top = 32
+      Width = 78
+      Height = 29
+      Appearance.PictureAlignment = taCenter
+      Appearance.Font.Charset = DEFAULT_CHARSET
+      Appearance.Font.Color = clWindowText
+      Appearance.Font.Height = -13
+      Appearance.Font.Name = 'Tahoma'
+      Appearance.Font.Style = [fsBold]
+      Appearance.Spacing = 0
+      Appearance.Rounding = 3
+      Appearance.WordWrapping = False
+      Status.Caption = '0'
+      Status.Appearance.Fill.Color = clRed
+      Status.Appearance.Fill.ColorMirror = clNone
+      Status.Appearance.Fill.ColorMirrorTo = clNone
+      Status.Appearance.Fill.GradientType = gtSolid
+      Status.Appearance.Fill.GradientMirrorType = gtSolid
+      Status.Appearance.Fill.BorderColor = clGray
+      Status.Appearance.Fill.Rounding = 0
+      Status.Appearance.Fill.ShadowOffset = 0
+      Status.Appearance.Fill.Glow = gmNone
+      Status.Appearance.Font.Charset = DEFAULT_CHARSET
+      Status.Appearance.Font.Color = clWhite
+      Status.Appearance.Font.Height = -11
+      Status.Appearance.Font.Name = 'Tahoma'
+      Status.Appearance.Font.Style = []
+      BevelColor = clMedGray
+      Caption = 'OK'
+      Color = clWhite
+      ParentFont = False
+      TabOrder = 3
+      Version = '2.1.1.5'
+      OnClick = PasswordBtnClick
+      TMSStyle = 8
     end
   end
   object Client: TClientSocket

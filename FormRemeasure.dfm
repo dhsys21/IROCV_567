@@ -87,261 +87,6 @@ object RemeasureForm: TRemeasureForm
     Font.Style = [fsBold]
     ParentFont = False
   end
-  object GroupBox2: TGroupBox
-    Left = 1440
-    Top = 23
-    Width = 180
-    Height = 220
-    Caption = 'ACOUNT'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -15
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-    TabOrder = 0
-    object Panel39: TPanel
-      Left = 6
-      Top = 119
-      Width = 64
-      Height = 30
-      BevelOuter = bvNone
-      Caption = 'COUNT'
-      Color = 12353126
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -13
-      Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
-      ParentBackground = False
-      ParentFont = False
-      ParentShowHint = False
-      ShowHint = False
-      TabOrder = 0
-    end
-    object Panel40: TPanel
-      Left = 6
-      Top = 151
-      Width = 64
-      Height = 30
-      BevelOuter = bvNone
-      Caption = 'DATE'
-      Color = 12353126
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -13
-      Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
-      ParentBackground = False
-      ParentFont = False
-      ParentShowHint = False
-      ShowHint = False
-      TabOrder = 1
-      Visible = False
-    end
-    object pAccCnt: TPanel
-      Left = 72
-      Top = 119
-      Width = 100
-      Height = 30
-      BevelOuter = bvNone
-      Color = 8552834
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -13
-      Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
-      ParentBackground = False
-      ParentFont = False
-      ParentShowHint = False
-      ShowHint = False
-      TabOrder = 2
-    end
-    object pAccDate: TPanel
-      Left = 72
-      Top = 151
-      Width = 100
-      Height = 30
-      BevelOuter = bvNone
-      Color = 8552834
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -13
-      Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
-      ParentBackground = False
-      ParentFont = False
-      ParentShowHint = False
-      ShowHint = False
-      TabOrder = 3
-      Visible = False
-    end
-    object pcolor1: TPanel
-      Left = 3
-      Top = 184
-      Width = 56
-      Height = 30
-      BevelKind = bkFlat
-      BevelOuter = bvNone
-      Caption = '0~4'
-      Color = clWhite
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
-      ParentBackground = False
-      ParentFont = False
-      ParentShowHint = False
-      ShowHint = False
-      TabOrder = 4
-      Visible = False
-    end
-    object pcolor2: TPanel
-      Left = 62
-      Top = 184
-      Width = 56
-      Height = 30
-      BevelKind = bkFlat
-      BevelOuter = bvNone
-      Caption = '5'
-      Color = 61680
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clDefault
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
-      ParentBackground = False
-      ParentFont = False
-      ParentShowHint = False
-      ShowHint = False
-      TabOrder = 5
-    end
-    object pcolor4: TPanel
-      Left = 120
-      Top = 184
-      Width = 56
-      Height = 30
-      BevelKind = bkFlat
-      BevelOuter = bvNone
-      Caption = 'A COUNT'
-      Color = 8826367
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
-      ParentBackground = False
-      ParentFont = False
-      ParentShowHint = False
-      ShowHint = False
-      TabOrder = 6
-      Visible = False
-    end
-    object AccInitBtn: TAdvSmoothButton
-      Left = 76
-      Top = 25
-      Width = 100
-      Height = 25
-      Appearance.Font.Charset = DEFAULT_CHARSET
-      Appearance.Font.Color = clWindowText
-      Appearance.Font.Height = -11
-      Appearance.Font.Name = 'Tahoma'
-      Appearance.Font.Style = [fsBold]
-      Appearance.Spacing = 0
-      Appearance.Rounding = 3
-      Appearance.WordWrapping = False
-      Status.Caption = '0'
-      Status.Appearance.Fill.Color = clRed
-      Status.Appearance.Fill.ColorMirror = clNone
-      Status.Appearance.Fill.ColorMirrorTo = clNone
-      Status.Appearance.Fill.GradientType = gtSolid
-      Status.Appearance.Fill.GradientMirrorType = gtSolid
-      Status.Appearance.Fill.BorderColor = clGray
-      Status.Appearance.Fill.Rounding = 0
-      Status.Appearance.Fill.ShadowOffset = 0
-      Status.Appearance.Fill.Glow = gmNone
-      Status.Appearance.Font.Charset = DEFAULT_CHARSET
-      Status.Appearance.Font.Color = clWhite
-      Status.Appearance.Font.Height = -11
-      Status.Appearance.Font.Name = 'Tahoma'
-      Status.Appearance.Font.Style = []
-      BevelColor = clMedGray
-      Caption = 'Initialize'
-      Color = clWhite
-      ParentFont = False
-      TabOrder = 7
-      Version = '2.1.1.5'
-      OnClick = AccInitBtnClick
-      TMSStyle = 8
-    end
-    object Panel20: TPanel
-      Left = 6
-      Top = 56
-      Width = 64
-      Height = 30
-      BevelOuter = bvNone
-      Caption = 'CHANNEL'
-      Color = 12353126
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -13
-      Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
-      ParentBackground = False
-      ParentFont = False
-      TabOrder = 8
-    end
-    object pnlCh: TPanel
-      Left = 72
-      Top = 56
-      Width = 100
-      Height = 30
-      BevelOuter = bvNone
-      Color = 8552834
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -17
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentBackground = False
-      ParentFont = False
-      TabOrder = 9
-    end
-    object Panel36: TPanel
-      Left = 6
-      Top = 87
-      Width = 64
-      Height = 30
-      BevelOuter = bvNone
-      Caption = 'POS'
-      Color = 12353126
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -13
-      Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
-      ParentBackground = False
-      ParentFont = False
-      TabOrder = 10
-    end
-    object pnlPos: TPanel
-      Left = 72
-      Top = 87
-      Width = 100
-      Height = 30
-      BevelOuter = bvNone
-      Color = 8552834
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -17
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentBackground = False
-      ParentFont = False
-      TabOrder = 11
-    end
-  end
   object pstage: TPanel
     Left = 8
     Top = 2
@@ -357,7 +102,7 @@ object RemeasureForm: TRemeasureForm
     Font.Style = [fsBold]
     ParentBackground = False
     ParentFont = False
-    TabOrder = 1
+    TabOrder = 0
   end
   object Panel2: TPanel
     Left = 8
@@ -366,7 +111,7 @@ object RemeasureForm: TRemeasureForm
     Height = 912
     Color = clGray
     ParentBackground = False
-    TabOrder = 2
+    TabOrder = 1
     object cl_line: TPanel
       Left = 319
       Top = 296
@@ -1008,6 +753,360 @@ object RemeasureForm: TRemeasureForm
       ParentBackground = False
       ParentFont = False
       TabOrder = 35
+    end
+  end
+  object GroupBox2: TGroupBox
+    Left = 1420
+    Top = 21
+    Width = 210
+    Height = 256
+    Caption = 'ACOUNT'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -15
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 2
+    object pcolor1: TPanel
+      Left = 23
+      Top = 216
+      Width = 56
+      Height = 30
+      BevelKind = bkFlat
+      BevelOuter = bvNone
+      Caption = '0~4'
+      Color = clWhite
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentBackground = False
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = False
+      TabOrder = 0
+      Visible = False
+    end
+    object pcolor2: TPanel
+      Left = 81
+      Top = 216
+      Width = 56
+      Height = 30
+      BevelKind = bkFlat
+      BevelOuter = bvNone
+      Caption = '5'
+      Color = 61680
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clDefault
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentBackground = False
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = False
+      TabOrder = 1
+    end
+    object pcolor4: TPanel
+      Left = 139
+      Top = 216
+      Width = 56
+      Height = 30
+      BevelKind = bkFlat
+      BevelOuter = bvNone
+      Caption = 'A COUNT'
+      Color = 8826367
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentBackground = False
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = False
+      TabOrder = 2
+      Visible = False
+    end
+    object AccInitBtn: TAdvSmoothButton
+      Left = 100
+      Top = 25
+      Width = 100
+      Height = 25
+      Appearance.Font.Charset = DEFAULT_CHARSET
+      Appearance.Font.Color = clWindowText
+      Appearance.Font.Height = -11
+      Appearance.Font.Name = 'Tahoma'
+      Appearance.Font.Style = [fsBold]
+      Appearance.Spacing = 0
+      Appearance.Rounding = 3
+      Appearance.WordWrapping = False
+      Status.Caption = '0'
+      Status.Appearance.Fill.Color = clRed
+      Status.Appearance.Fill.ColorMirror = clNone
+      Status.Appearance.Fill.ColorMirrorTo = clNone
+      Status.Appearance.Fill.GradientType = gtSolid
+      Status.Appearance.Fill.GradientMirrorType = gtSolid
+      Status.Appearance.Fill.BorderColor = clGray
+      Status.Appearance.Fill.Rounding = 0
+      Status.Appearance.Fill.ShadowOffset = 0
+      Status.Appearance.Fill.Glow = gmNone
+      Status.Appearance.Font.Charset = DEFAULT_CHARSET
+      Status.Appearance.Font.Color = clWhite
+      Status.Appearance.Font.Height = -11
+      Status.Appearance.Font.Name = 'Tahoma'
+      Status.Appearance.Font.Style = []
+      BevelColor = clMedGray
+      Caption = 'Initialize'
+      Color = clWhite
+      ParentFont = False
+      TabOrder = 3
+      Version = '2.1.1.5'
+      OnClick = AccInitBtnClick
+      TMSStyle = 8
+    end
+    object pnlTitleCh: TPanel
+      Left = 6
+      Top = 56
+      Width = 92
+      Height = 30
+      BevelOuter = bvNone
+      Caption = 'CHANNEL'
+      Color = 12353126
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 4
+    end
+    object pnlCh: TPanel
+      Left = 100
+      Top = 56
+      Width = 100
+      Height = 30
+      BevelOuter = bvNone
+      Color = 8552834
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 5
+    end
+    object pnlTitlePos: TPanel
+      Left = 6
+      Top = 87
+      Width = 92
+      Height = 30
+      BevelOuter = bvNone
+      Caption = 'POS'
+      Color = 12353126
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 6
+    end
+    object pnlPos: TPanel
+      Left = 100
+      Top = 87
+      Width = 100
+      Height = 30
+      BevelOuter = bvNone
+      Color = 8552834
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 7
+    end
+    object Panel39: TPanel
+      Left = 5
+      Top = 318
+      Width = 92
+      Height = 30
+      BevelOuter = bvNone
+      Caption = 'COUNT'
+      Color = 12353126
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentBackground = False
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = False
+      TabOrder = 8
+    end
+    object pAccCnt: TPanel
+      Left = 100
+      Top = 318
+      Width = 100
+      Height = 30
+      BevelOuter = bvNone
+      Color = 8552834
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentBackground = False
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = False
+      TabOrder = 9
+    end
+    object Panel40: TPanel
+      Left = 6
+      Top = 349
+      Width = 92
+      Height = 30
+      BevelOuter = bvNone
+      Caption = 'DATE'
+      Color = 12353126
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentBackground = False
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = False
+      TabOrder = 10
+      Visible = False
+    end
+    object pAccDate: TPanel
+      Left = 100
+      Top = 349
+      Width = 100
+      Height = 30
+      BevelOuter = bvNone
+      Color = 8552834
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentBackground = False
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = False
+      TabOrder = 11
+      Visible = False
+    end
+    object pnlTitleTotalUse: TPanel
+      Left = 6
+      Top = 118
+      Width = 92
+      Height = 30
+      BevelOuter = bvNone
+      Caption = 'Total Use'
+      Color = 12353126
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 12
+    end
+    object pnlTotalUse: TPanel
+      Left = 100
+      Top = 118
+      Width = 100
+      Height = 30
+      BevelOuter = bvNone
+      Color = 8552834
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 13
+    end
+    object pnlTitleConsNg: TPanel
+      Left = 6
+      Top = 149
+      Width = 92
+      Height = 30
+      BevelOuter = bvNone
+      Caption = 'Cons. NG'
+      Color = 12353126
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 14
+    end
+    object pnlConsNg: TPanel
+      Left = 100
+      Top = 149
+      Width = 100
+      Height = 30
+      BevelOuter = bvNone
+      Color = 8552834
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 15
+    end
+    object pnlTitleTotalNg: TPanel
+      Left = 6
+      Top = 180
+      Width = 92
+      Height = 30
+      BevelOuter = bvNone
+      Caption = 'Total NG'
+      Color = 12353126
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 16
+    end
+    object pnlTotalNg: TPanel
+      Left = 100
+      Top = 180
+      Width = 100
+      Height = 30
+      BevelOuter = bvNone
+      Color = 8552834
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 17
     end
   end
   object SaveDialog: TSaveDialog

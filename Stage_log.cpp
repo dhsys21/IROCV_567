@@ -34,6 +34,7 @@ void __fastcall TTotalForm::WriteSystemInfo()
 	config.remeasure_bypass = chkRemBypass->Checked;
 
     ini->WriteString("CELLINFO", "MODELNAME", editModelName->Text);
+    ini->WriteString("PASSWORD", "PWD", editPwd->Text);
 
 	//* 최대/최소 대신에 평균값 +/- 범위로 변경
 	//* 2022 11 07
@@ -94,7 +95,7 @@ bool __fastcall TTotalForm::ReadSystemInfo()
     pnlOCVSpec->Caption = "OCV : " + FormatFloat("0.0", config.ocv_min) + " ~ " + FormatFloat("0.0", config.ocv_max);
 
     editModelName->Text = ini->ReadString("CELLINFO", "MODELNAME", "20PQ");
-	//VisibleSpec(config.ir_average_use);
+    editPwd->Text = ini->ReadString("PASSWORD", "PWD", "0000");
 
 	editPLCIPAddress->Text = ini->ReadString("IROCV_PLC", "IP", "17.91.80.220");
 	editPLCPortPC->Text = ini->ReadString("IROCV_PLC", "PORT1", "5007");
@@ -243,12 +244,12 @@ void __fastcall TTotalForm::WriteRemeasureInfo()	// Tray가 Vacancy 상태일때 기록
 	RemeasureAlarm(nRemeasureAlarmCount);
 
     ini->WriteInteger(title, "REMEASURE_ALARM_COUNT", editRemeasureAlarmCount->Text.ToIntDef(3));
-    ini->WriteString(title, "TOTAL_USE", strNg);
-	ini->WriteString(title, "NG", strTotalUse);
+    ini->WriteString(title, "TOTAL_USE", strTotalUse);
+	ini->WriteString(title, "NG", strNg);
     ini->WriteString(title, "CONSECUTIVE_NG", strConsNg);
     ini->WriteString(title, "PREV_NG", strPrevNg);
 	ini->WriteString(title, "ACCMULATE_DAY", acc_init);
-	ini->WriteInteger(title, "ACC_CNT", acc_cnt);
+	ini->WriteInteger(title, "ACC_CNT", acc_cnt); //* 이 버전에서는 안쓰는 변수
 
 	delete ini;
 }
