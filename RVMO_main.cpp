@@ -357,10 +357,10 @@ void __fastcall TBaseForm::pstepInfo1Click(TObject *Sender)
 void __fastcall TBaseForm::btnNgCountErrClick(TObject *Sender)
 {
     AnsiString stagename = "STAGE " + IntToStr(this->Tag + 1);
-		WideString message = Form_Language->msgTooManyNG;
-		Form_NgCountError->DisplayErrorMessage(stagename + " NG ERROR",
-											message.c_bstr(),
-											"Click [OK] button.", this->Tag);
+    WideString message = Form_Language->msgTooManyNG;
+    Form_NgCountError->DisplayErrorMessage(stagename + " NG ERROR",
+                                        message.c_bstr(),
+                                        "Click [OK] button.", this->Tag);
 }
 //---------------------------------------------------------------------------
 

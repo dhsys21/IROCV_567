@@ -76,6 +76,7 @@ void __fastcall TTotalForm::FormShow(TObject *Sender)
 
     btnMeasureInfoClick(this);
 	Initialization();
+    WritePLCLog("FormShow", "Initialization()");
 
 	Timer_PLCConnect->Enabled = true;
 	btnConnectIROCVClick(this);
@@ -320,9 +321,9 @@ void __fastcall TTotalForm::ClientDisconnect(TObject *Sender,
 // 재접속 타이머
 void __fastcall TTotalForm::ReContactTimerTimer(TObject *Sender)
 {
-		ReContactTimer->Enabled = false;
-		if(config.recontact == true)
-			Client->Active = true;
+    ReContactTimer->Enabled = false;
+    if(config.recontact == true)
+        Client->Active = true;
 }
 //---------------------------------------------------------------------------
 
@@ -1055,6 +1056,7 @@ void __fastcall TTotalForm::OnReceiveStage(TMessage& Msg)
 				send.tx_mode = 0;
 				ErrorMsg(RESET);
                 Initialization(nTrayPos);
+                WritePLCLog("Cont Reset", "Initialization : " + IntToStr(nTrayPos));
 				//SendData("STA");
 				break;        // 모든 에러 해제
 			case SIZ:
@@ -1818,6 +1820,7 @@ void __fastcall TTotalForm::AutoInspection_Wait()
 					DisplayProcess(sTrayIn, "AutoInspection_Wait", "[STEP 0] IR/OCV Tray In ...");
 
 					Initialization();
+                    DisplayProcess(sTrayIn, "AutoInspection_Wait", "[STEP 0] Initialization ...");
 					nStep = 1;
 				}
 			}

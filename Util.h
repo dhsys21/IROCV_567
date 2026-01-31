@@ -23,3 +23,5 @@ void __fastcall OpenFolder(UnicodeString path);
 AnsiString SetChannelHint2(int channel);
 AnsiString SetChannelHint(int reversechannel);
 int GetChannel(int trayPos, int index);
+int __fastcall GetPaired(int stage, int nIndex);
+int __fastcall GetBoardNo(int stage, int nIndex);
