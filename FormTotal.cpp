@@ -901,6 +901,9 @@ void __fastcall TTotalForm::StatusTimerTimer(TObject *Sender)
     if(Mod_PLC->GetPlcValue(PLC_D_IROCV_PROB_CLOSE) == 1) ShowSignal(pnlProbeClose, true);
     else ShowSignal(pnlProbeClose, false);
 
+    if(Mod_PLC->GetPlcValue(PLC_D_IROCV_AUTO_MANUAL) == 1) ShowSignal(pnlPlcAuto, true);
+    else ShowSignal(pnlPlcAuto, false);
+
     //* PC 신호 표시
     if(Mod_PLC->GetPcValue(PC_D_IROCV_TRAY_OUT) == 1) ShowSignal(pnlTrayOut, true);
     else ShowSignal(pnlTrayOut, false);
@@ -1665,6 +1668,7 @@ void __fastcall TTotalForm::btnMeasureInfoClick(TObject *Sender)
 void __fastcall TTotalForm::Timer_AutoInspectionTimer(TObject *Sender)
 {
     if(ErrorCheck()) return;
+
 	if(stage.arl == nAuto && Mod_PLC->GetPcValue(PC_D_IROCV_STAGE_AUTO_READY) == 0){
         Mod_PLC->SetPcValue(PC_D_IROCV_STAGE_AUTO_READY, 1);
 		IROCVStage = "IROCV STAGE AUTO READY = 1";
@@ -1675,19 +1679,6 @@ void __fastcall TTotalForm::Timer_AutoInspectionTimer(TObject *Sender)
 		IROCVStage = "IROCV STAGE AUTO READY = 0";
 		WritePLCLog("IROCV STAGE AUTO/MANUAL", IROCVStage);
 	}
-
-	/* 2021-08-23 comment for test
-	{
-		Panel_State->Color = clRed;
-		Panel_State->Font->Color = clWhite;
-		return;
-	}
-	else
-	{
-		Panel_State->Color = clWhite;
-		Panel_State->Font->Color = clBlack;
-	}
-	*/
 
     nTrayPos = Mod_PLC->GetTrayPos();
 	switch(nSection)
@@ -1740,7 +1731,17 @@ bool __fastcall TTotalForm::ErrorCheck()
 		return true;
 	}
 
-	if(Mod_PLC->GetDouble(Mod_PLC->plc_Interface_Data, PLC_D_IROCV_ERROR))
+    if(bLocal == true && Mod_PLC->GetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_STAGE_AUTO_READY) == 0)
+	{
+        DisplayError("IR/OCV is not in AutoMode", true);
+		return true;
+	}
+
+    //* PC Error 처리 후 PLC 에러 확인
+    if(Mod_PLC->GetPcValue(PC_D_IROCV_ERROR) == 1)
+    	Mod_PLC->SetPcValue(PC_D_IROCV_ERROR, 0);
+
+    if(Mod_PLC->GetDouble(Mod_PLC->plc_Interface_Data, PLC_D_IROCV_ERROR))
 	{
 		ErrorCheckStatus = "PLC - Error!!";
 		DisplayError(ErrorCheckStatus, true);
@@ -1750,21 +1751,12 @@ bool __fastcall TTotalForm::ErrorCheck()
 		}
         ErrorLog(ErrorCheckStatus);
 
-        //* 2025 04 08 plc 연결이 안되면 아래 코드 때문에 수동측정도 못함.
-//		CmdForceStop_Original();
-//		Initialization();
+        BaseForm->advPLCInterfaceShow->Color = clRed;
 		return true;
 	}
+    else
+        BaseForm->advPLCInterfaceShow->Color = clWhite;
 
-	if(bLocal == true && Mod_PLC->GetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_STAGE_AUTO_READY) == 0)
-	{
-		//Panel_State->Caption = "IR/OCV is not in AutoMode";
-        DisplayError("IR/OCV is not in AutoMode", true);
-		return true;
-	}
-
-    if(Mod_PLC->GetPcValue(PC_D_IROCV_ERROR) == 1)
-    	Mod_PLC->SetPcValue(PC_D_IROCV_ERROR, 0);
 	return false;
 }
 //---------------------------------------------------------------------------

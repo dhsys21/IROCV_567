@@ -872,7 +872,7 @@ object TotalForm: TTotalForm
         Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
-        Font.Height = -16
+        Font.Height = -15
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         ParentBackground = False
@@ -1731,6 +1731,47 @@ object TotalForm: TTotalForm
         TabOrder = 5
         TMSStyle = 0
       end
+    end
+    object pnlPlcAuto: TAdvSmoothPanel
+      Left = 102
+      Top = 25
+      Width = 48
+      Height = 14
+      Cursor = crDefault
+      Margins.Top = 1
+      Margins.Bottom = 1
+      Caption.Text = 'Auto'
+      Caption.Location = plCenterCenter
+      Caption.HTMLFont.Charset = DEFAULT_CHARSET
+      Caption.HTMLFont.Color = clWindowText
+      Caption.HTMLFont.Height = -11
+      Caption.HTMLFont.Name = 'Tahoma'
+      Caption.HTMLFont.Style = []
+      Caption.HTMLLocation = plBottomCenter
+      Caption.HTMLURLColor = clBlack
+      Caption.Font.Charset = DEFAULT_CHARSET
+      Caption.Font.Color = clWindowText
+      Caption.Font.Height = -11
+      Caption.Font.Name = 'Tahoma'
+      Caption.Font.Style = []
+      Caption.ColorStart = clWhite
+      Caption.ColorEnd = clWhite
+      Caption.LineColor = clBlack
+      Caption.Line = False
+      Caption.TextAlignment = taCenter
+      Fill.Color = clRed
+      Fill.ColorTo = clRed
+      Fill.ColorMirror = clRed
+      Fill.ColorMirrorTo = clRed
+      Fill.GradientType = gtVertical
+      Fill.GradientMirrorType = gtVertical
+      Fill.BorderColor = 14922381
+      Fill.Rounding = 1
+      Fill.ShadowOffset = 0
+      Fill.Glow = gmNone
+      Version = '1.5.2.1'
+      TabOrder = 15
+      TMSStyle = 0
     end
   end
   object GrpMain: TGroupBox
