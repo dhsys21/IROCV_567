@@ -34,12 +34,12 @@ void __fastcall TMeasureInfoForm::FormShow(TObject *Sender)
 
     IrChart->Width = 998;
     IrChart->Height = 433;
-    IrChart->Left = pnl_nw + 4;
+    IrChart->Left = 4;
     IrChart->Top = pnl_nh + 6;
 
     OcvChart->Width = 998;
     OcvChart->Height = 433;
-    OcvChart->Left = pnl_nw + 4;
+    OcvChart->Left = 4;
     OcvChart->Top = IrChart->Height + pnl_nh + 8;
 
     //* 기본 색상
@@ -237,6 +237,8 @@ void __fastcall TMeasureInfoForm::SetChannelInfo(int traypos)
 void __fastcall TMeasureInfoForm::MakeUIPanel(AnsiString type)
 {
 	int nx, ny, nw, nh;
+    int pUIy_nx;
+    int pUIx_ny;
 
     nw = pnl_nw;
 	nh = pnl_nh + 1;
@@ -247,7 +249,7 @@ void __fastcall TMeasureInfoForm::MakeUIPanel(AnsiString type)
 	clocv->Height = nh/2;
 
 	clir->Top = 2;
-	clocv->Top = clir->Height +4;
+	clocv->Top = clir->Height + 4;
 
     //* 왼쪽 하단 1번
     if(type == "1"){
@@ -316,14 +318,22 @@ void __fastcall TMeasureInfoForm::MakeUIPanel(AnsiString type)
     }
     //* 오른쪽 상단 1번 -> 왼쪽으로 24번
     else if(type == "4"){
-        ny = nh + 4;
-        nx = Panel2->Width - (nw + 2);;
+        clir->Left = Panel2->Width - (clir->Width + 4);
+        clocv->Left = Panel2->Width - (clocv->Width + 4);
+
+        //* 가로열의 y값 - 가로는 nx가 바뀜
+        pUIx_ny = Panel35->Top;
+        //* 세로열의 x값 - 세로는 ny가 바뀜
+        pUIy_nx = clir->Left;
+
+        ny = nh + 5;
+        nx = clir->Left - (clir->Width + 4);
         for(int index = 0; index < LINECOUNT;){
             pUIx[index] = new TPanel(this);
             pUIy[index] = new TPanel(this);
 
-            SetUIOption(pUIx[index], nx, Panel35->Top, nw, nh, index);
-            SetUIOption(pUIy[index], 2, ny, nw, nh, index);
+            SetUIOption(pUIx[index], nx, pUIx_ny, nw, nh, index);
+            SetUIOption(pUIy[index], pUIy_nx, ny, nw, nh, index);
             pUIx[index]->ParentBackground = false;
             pUIy[index]->ParentBackground = false;
 

@@ -22,7 +22,7 @@ object MeasureInfoForm: TMeasureInfoForm
   object Panel2: TPanel
     Left = 1
     Top = 0
-    Width = 1044
+    Width = 1048
     Height = 912
     Color = clBlack
     ParentBackground = False
@@ -841,7 +841,7 @@ object MeasureInfoForm: TMeasureInfoForm
     end
   end
   object grbChannelInfo: TGroupBox
-    Left = 1048
+    Left = 1052
     Top = 0
     Width = 197
     Height = 192
@@ -1079,7 +1079,7 @@ object MeasureInfoForm: TMeasureInfoForm
     end
   end
   object pLocal: TPanel
-    Left = 1048
+    Left = 1052
     Top = 203
     Width = 197
     Height = 494
