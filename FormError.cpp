@@ -102,6 +102,7 @@ void __fastcall TForm_Error::Timer_BringToFrontTimer(TObject *Sender)
 void __fastcall TForm_Error::btnTrayOutClick(TObject *Sender)
 {
 	Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_ERROR, 0);
+    Mod_PLC->SetPcValue(PC_D_IROCV_DATA_WRITE, 1);
 	Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data,  PC_D_IROCV_TRAY_OUT, 1);
 	BaseForm->nForm[this->Tag]->WritePLCLog("TRAY OUT", "NG TRAY OUT");
 	timerErrorOff->Enabled = true;
