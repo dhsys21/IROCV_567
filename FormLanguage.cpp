@@ -76,6 +76,12 @@ void __fastcall TForm_Language::LanguageChange(int LangIndex)
     MeasureInfoForm->btnProbeOpen->Caption = vle->Values["OPEN"];
     MeasureInfoForm->btnProbeClose->Caption = vle->Values["CLOSE"];
 
+    RemeasureForm->pnlTitleCh->Caption = vle->Values["CHANNEL"];
+    RemeasureForm->pnlTitlePos->Caption = vle->Values["POS"];
+    RemeasureForm->pnlTitleTotalUse->Caption = vle->Values["TOTALUSE"];
+    RemeasureForm->pnlTitleConsNg->Caption = vle->Values["CONSNG"];
+    RemeasureForm->pnlTitleTotalNg->Caption = vle->Values["TOTALNG"];
+
     //-------------------------------------------------------------------------
 	// 				MESSAGE
 	//-------------------------------------------------------------------------

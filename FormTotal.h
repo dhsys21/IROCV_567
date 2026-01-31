@@ -287,7 +287,6 @@ __published:	// IDE-managed Components
 	TPanel *pnlIRSpec;
 	TPanel *pnlOCVSpec;
 	TAdvSmoothPanel *pnlTrayIn;
-	TAdvSmoothPanel *pnlTrayOut;
 	TAdvSmoothPanel *pnlProbeOpen;
 	TAdvSmoothPanel *pnlProbeClose;
 	TAdvSmoothPanel *pnlTrayPosTitle;
@@ -340,6 +339,9 @@ __published:	// IDE-managed Components
 	TAdvSmoothButton *PasswordBtn;
 	TGroupBox *GroupBox8;
 	TEdit *editPwd;
+	TAdvSmoothPanel *pnlTrayOut;
+	TAdvSmoothPanel *pnlPcError;
+	TAdvSmoothPanel *pnlDataWrite;
 	void __fastcall ClientConnect(TObject *Sender,
 		  TCustomWinSocket *Socket);
 	void __fastcall ClientDisconnect(TObject *Sender,
@@ -386,7 +388,6 @@ __published:	// IDE-managed Components
 	void __fastcall Timer_PLCConnectTimer(TObject *Sender);
 	void __fastcall btnConnectIROCVClick(TObject *Sender);
 	void __fastcall Button1Click(TObject *Sender);
-	void __fastcall pReadyClick(TObject *Sender);
 	void __fastcall btnDisConnectIROCVClick(TObject *Sender);
 	void __fastcall PasswordBtnClick(TObject *Sender);
 	void __fastcall cancelBtn2Click(TObject *Sender);
@@ -590,7 +591,7 @@ public:		// User declarations
 	void __fastcall WriteIRMINMAX();
 
 	void __fastcall DisplayTrayInfo(int traypos);
-    void __fastcall ShowPLCSignal(TAdvSmoothPanel *advPanel, bool bOn);
+    void __fastcall ShowSignal(TAdvSmoothPanel *advPanel, bool bOn);
     void __fastcall ShowConfigPanel();
     void __fastcall ShowRemeasurePanel();
 

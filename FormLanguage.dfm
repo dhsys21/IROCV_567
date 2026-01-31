@@ -63,6 +63,11 @@ object Form_Language: TForm_Language
       'PROBESETTING='#54532#47196#48652#49444#51221
       'OPEN='#50676#44592
       'CLOSE='#45803#44592
+      'CHANNEL='#52292#45328
+      'POS='#50948#52824
+      'TOTALUSE='#51204#52404#54943#49688
+      'CONSNG='#50672#49549' NG'
+      'TOTALNG='#51204#52404' NG'
       'msgTooManyNG=NG '#49472#51060' '#45320#47924' '#47566#49845#45768#45796'. '#54869#51064#54644#51452#49464#50836
       'msgPLCConnFail=PLC - PC '#50672#44208' '#49892#54056'.'
       'msgPREConnFail=IR/OCV '#50672#44208' '#49892#54056'.'
@@ -77,6 +82,11 @@ object Form_Language: TForm_Language
       150
       148)
     RowHeights = (
+      18
+      18
+      18
+      18
+      18
       18
       18
       18
@@ -176,6 +186,11 @@ object Form_Language: TForm_Language
       'PROBESETTING=PROBE SETTING'
       'OPEN=OPEN'
       'CLOSE=CLOSE'
+      'CHANNEL=CHANNEL'
+      'POS=POS'
+      'TOTALUSE=Total Use'
+      'CONSNG=Cons. NG'
+      'TOTALNG=Total NG'
       'msgTooManyNG=Too many NG cells. Please check it.'
       'msgPLCConnFail=PLC - PC Connection Fail.'
       'msgPREConnFail=IR/OCV Connection Fail.'
@@ -190,6 +205,11 @@ object Form_Language: TForm_Language
       150
       148)
     RowHeights = (
+      18
+      18
+      18
+      18
+      18
       18
       18
       18
@@ -333,6 +353,11 @@ object Form_Language: TForm_Language
       'PROBESETTING='#25506#22836#35774#32622
       'OPEN='#25171#24320
       'CLOSE='#20851#38381
+      'CHANNEL='#36890#36947
+      'POS='#20301#32622
+      'TOTALUSE='#24635#20351#29992#37327
+      'CONSNG='#36830#32493'NG'
+      'TOTALNG='#24635'NG'
       'msgTooManyNG= '#19981#33391#21697#36807#22810#65292#35831#26816#26597#12290
       'msgPLCConnFail=PLC '#19982' PC '#36830#25509#22833#36133#12290
       'msgPREConnFail=IR/OCV '#36830#25509#22833#36133#12290
@@ -347,6 +372,11 @@ object Form_Language: TForm_Language
       150
       148)
     RowHeights = (
+      18
+      18
+      18
+      18
+      18
       18
       18
       18

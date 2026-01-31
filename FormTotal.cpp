@@ -890,23 +890,35 @@ void __fastcall TTotalForm::StatusTimerTimer(TObject *Sender)
 			break;
 	}
 
-    if(Mod_PLC->GetPlcValue(PLC_D_IROCV_TRAY_IN) == 1) ShowPLCSignal(pnlTrayIn, true);
-    else ShowPLCSignal(pnlTrayIn, false);
+    //* PLC 신호 표시
+    if(Mod_PLC->GetPlcValue(PLC_D_IROCV_TRAY_IN) == 1) ShowSignal(pnlTrayIn, true);
+    else ShowSignal(pnlTrayIn, false);
 
-    if(Mod_PLC->GetPlcValue(PLC_D_IROCV_PROB_OPEN) == 1) ShowPLCSignal(pnlProbeOpen, true);
-    else ShowPLCSignal(pnlProbeOpen, false);
+    if(Mod_PLC->GetPlcValue(PLC_D_IROCV_PROB_OPEN) == 1) ShowSignal(pnlProbeOpen, true);
+    else ShowSignal(pnlProbeOpen, false);
 
-    if(Mod_PLC->GetPlcValue(PLC_D_IROCV_PROB_CLOSE) == 1) ShowPLCSignal(pnlProbeClose, true);
-    else ShowPLCSignal(pnlProbeClose, false);
+    if(Mod_PLC->GetPlcValue(PLC_D_IROCV_PROB_CLOSE) == 1) ShowSignal(pnlProbeClose, true);
+    else ShowSignal(pnlProbeClose, false);
 
+    //* PC 신호 표시
+    if(Mod_PLC->GetPcValue(PC_D_IROCV_TRAY_OUT) == 1) ShowSignal(pnlTrayOut, true);
+    else ShowSignal(pnlTrayOut, false);
+
+    if(Mod_PLC->GetPcValue(PC_D_IROCV_DATA_WRITE) == 1) ShowSignal(pnlDataWrite, true);
+    else ShowSignal(pnlDataWrite, false);
+
+    if(Mod_PLC->GetPcValue(PC_D_IROCV_ERROR) == 1) ShowSignal(pnlPcError, true);
+    else ShowSignal(pnlPcError, false);
+
+    //* Tray Position
     nTrayPos = Mod_PLC->GetTrayPos();
     pnlTrayPos->Caption->Text = IntToStr(nTrayPos);
     if(nTrayPos == 1) {
-    	ShowPLCSignal(pnlTrayPos1, true);
-        ShowPLCSignal(pnlTrayPos2, false);
+    	ShowSignal(pnlTrayPos1, true);
+        ShowSignal(pnlTrayPos2, false);
     } else if(nTrayPos == 2){
-        ShowPLCSignal(pnlTrayPos1, false);
-        ShowPLCSignal(pnlTrayPos2, true);
+        ShowSignal(pnlTrayPos1, false);
+        ShowSignal(pnlTrayPos2, true);
     }
 }
 //---------------------------------------------------------------------------
@@ -2275,15 +2287,7 @@ void __fastcall TTotalForm::Button1Click(TObject *Sender)
     CmdTrayOut();
 }
 //---------------------------------------------------------------------------
-void __fastcall TTotalForm::pReadyClick(TObject *Sender)
-{
-    Form_Error->DisplayErrorMessage("IR/OCV NG ERROR",
-										"There is too many ng cells. Please check it.",
-										"Select [Tray Out] or [Restart]");
-		Form_Error->Tag = this->Tag;
-}
-//---------------------------------------------------------------------------
-void __fastcall TTotalForm::ShowPLCSignal(TAdvSmoothPanel *advPanel, bool bOn)
+void __fastcall TTotalForm::ShowSignal(TAdvSmoothPanel *advPanel, bool bOn)
 {
     if(bOn)
 	{
