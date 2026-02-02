@@ -907,7 +907,7 @@ object TotalForm: TTotalForm
         Left = 422
         Top = 5
         Width = 50
-        Height = 24
+        Height = 22
         Cursor = crDefault
         Caption.Text = 'T. Out'
         Caption.Location = plCenterCenter
@@ -942,10 +942,10 @@ object TotalForm: TTotalForm
         TMSStyle = 0
       end
       object pnlPcError: TAdvSmoothPanel
-        Left = 273
+        Left = 222
         Top = 5
         Width = 50
-        Height = 24
+        Height = 22
         Cursor = crDefault
         Caption.Text = 'Pc Error'
         Caption.Location = plCenterCenter
@@ -965,10 +965,9 @@ object TotalForm: TTotalForm
         Caption.LineColor = clBlack
         Caption.Line = False
         Caption.TextAlignment = taCenter
-        Fill.Color = clRed
-        Fill.ColorTo = clRed
-        Fill.ColorMirror = clRed
-        Fill.ColorMirrorTo = clRed
+        Fill.ColorTo = clSilver
+        Fill.ColorMirror = clSilver
+        Fill.ColorMirrorTo = clSilver
         Fill.GradientType = gtVertical
         Fill.GradientMirrorType = gtVertical
         Fill.BorderColor = 14922381
@@ -983,7 +982,7 @@ object TotalForm: TTotalForm
         Left = 372
         Top = 5
         Width = 50
-        Height = 24
+        Height = 22
         Cursor = crDefault
         Caption.Text = 'D. Write'
         Caption.Location = plCenterCenter
@@ -1036,10 +1035,10 @@ object TotalForm: TTotalForm
         OnMouseUp = chkBypassMouseUp
       end
       object pnlProbeClose_PC: TAdvSmoothPanel
-        Left = 322
+        Left = 272
         Top = 5
         Width = 50
-        Height = 24
+        Height = 22
         Cursor = crDefault
         Caption.Text = 'P. Close'
         Caption.Location = plCenterCenter
@@ -1071,6 +1070,44 @@ object TotalForm: TTotalForm
         Fill.Glow = gmNone
         Version = '1.5.2.1'
         TabOrder = 9
+        TMSStyle = 0
+      end
+      object pnlRestart: TAdvSmoothPanel
+        Left = 322
+        Top = 5
+        Width = 50
+        Height = 22
+        Cursor = crDefault
+        Caption.Text = 'Restart'
+        Caption.Location = plCenterCenter
+        Caption.HTMLFont.Charset = DEFAULT_CHARSET
+        Caption.HTMLFont.Color = clWindowText
+        Caption.HTMLFont.Height = -11
+        Caption.HTMLFont.Name = 'Tahoma'
+        Caption.HTMLFont.Style = []
+        Caption.HTMLURLColor = clBlack
+        Caption.Font.Charset = DEFAULT_CHARSET
+        Caption.Font.Color = clWindowText
+        Caption.Font.Height = -11
+        Caption.Font.Name = 'Tahoma'
+        Caption.Font.Style = []
+        Caption.ColorStart = clWhite
+        Caption.ColorEnd = clWhite
+        Caption.LineColor = clBlack
+        Caption.Line = False
+        Caption.TextAlignment = taCenter
+        Fill.Color = clRed
+        Fill.ColorTo = clRed
+        Fill.ColorMirror = clRed
+        Fill.ColorMirrorTo = clRed
+        Fill.GradientType = gtVertical
+        Fill.GradientMirrorType = gtVertical
+        Fill.BorderColor = 14922381
+        Fill.Rounding = 1
+        Fill.ShadowOffset = 0
+        Fill.Glow = gmNone
+        Version = '1.5.2.1'
+        TabOrder = 10
         TMSStyle = 0
       end
     end
@@ -1506,19 +1543,19 @@ object TotalForm: TTotalForm
       Caption.HTMLFont.Style = []
       Caption.HTMLURLColor = clBlack
       Caption.Font.Charset = DEFAULT_CHARSET
-      Caption.Font.Color = clWindowText
+      Caption.Font.Color = clBlack
       Caption.Font.Height = -11
       Caption.Font.Name = 'Tahoma'
       Caption.Font.Style = []
-      Caption.ColorStart = clWhite
-      Caption.ColorEnd = clWhite
+      Caption.ColorStart = clBlack
+      Caption.ColorEnd = clBlack
       Caption.LineColor = clBlack
       Caption.Line = False
       Caption.TextAlignment = taCenter
-      Fill.Color = clRed
-      Fill.ColorTo = clRed
-      Fill.ColorMirror = clRed
-      Fill.ColorMirrorTo = clRed
+      Fill.Color = clWhite
+      Fill.ColorTo = clWhite
+      Fill.ColorMirror = clWhite
+      Fill.ColorMirrorTo = clWhite
       Fill.GradientType = gtVertical
       Fill.GradientMirrorType = gtVertical
       Fill.BorderColor = 14922381

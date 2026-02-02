@@ -8,7 +8,7 @@ object BaseForm: TBaseForm
   VertScrollBar.Range = 300
   VertScrollBar.Visible = False
   BorderIcons = [biSystemMenu, biMinimize]
-  Caption = 'IR/OCV (Ver.260202 003)'
+  Caption = 'IR/OCV (Ver.260202 005)'
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -6137,6 +6137,7 @@ object BaseForm: TBaseForm
     Font.Style = []
     ParentFont = False
     TabOrder = 12
+    Visible = False
   end
   object btnViewLog: TAdvSmoothButton
     Left = 1471
@@ -6207,6 +6208,17 @@ object BaseForm: TBaseForm
     Version = '2.1.1.5'
     OnClick = btnViewDataClick
     TMSStyle = 8
+  end
+  object poff2: TPanel
+    Left = 748
+    Top = 85
+    Width = 185
+    Height = 41
+    Caption = 'poff2'
+    Color = clSilver
+    ParentBackground = False
+    TabOrder = 15
+    Visible = False
   end
   object ClockTimer: TTimer
     Interval = 300

@@ -55,8 +55,6 @@ __published:	// IDE-managed Components
 private:	// User declarations
     void __fastcall SetListViewPLC();
 	void __fastcall SetListViewPC();
-    void __fastcall SetListViewPLC2();
-	void __fastcall SetListViewPC2();
 
 	void __fastcall AddListView(TListView *list, AnsiString address, AnsiString name);
 

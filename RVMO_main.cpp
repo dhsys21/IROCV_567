@@ -359,15 +359,15 @@ void __fastcall TBaseForm::btnNgCountErrClick(TObject *Sender)
     AnsiString stagename = "STAGE " + IntToStr(this->Tag + 1);
     WideString message = Form_Language->msgTooManyNG; //message.c_bstr()
     WideString message2 = Form_Language->msgSelectTrayOut;
-    Form_NgCountError->DisplayErrorMessage(stagename + " NG ERROR",
-                                        message.c_bstr(),
-                                        message2, this->Tag);
+    Form_Error->DisplayErrorMessage("IR/OCV NG ERROR",
+            message.c_bstr(), message2.c_bstr());
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TBaseForm::Label1Click(TObject *Sender)
 {
     GroupBox2->Visible = !GroupBox2->Visible;
+    chkTest->Visible = !chkTest->Visible;
 }
 //---------------------------------------------------------------------------
 

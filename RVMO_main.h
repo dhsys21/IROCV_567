@@ -69,6 +69,7 @@ __published:	// IDE-managed Components
 	TRadioButton *rbChinese;
 	TAdvSmoothButton *btnViewLog;
 	TAdvSmoothButton *btnViewData;
+	TPanel *poff2;
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall ClockTimerTimer(TObject *Sender);

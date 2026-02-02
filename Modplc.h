@@ -90,6 +90,7 @@ const int PC_D_IROCV_OCV_MIN						=   15; // 2word
 const int PC_D_IROCV_OCV_MAX						=   17; // 2word
 const int PC_D_IROCV_NG_ALARM                       =   19;
 const int PC_D_IROCV_DATA_WRITE                     =   20;
+const int PC_D_IROCV_RESTART						=   21;
 
 // OK/NG - D38030
 const int PC_D_IROCV_MEASURE_OK_NG			   		=	30;

@@ -344,6 +344,7 @@ __published:	// IDE-managed Components
 	TAdvSmoothPanel *pnlDataWrite;
 	TAdvSmoothPanel *pnlPlcAuto;
 	TAdvSmoothPanel *pnlProbeClose_PC;
+	TAdvSmoothPanel *pnlRestart;
 	void __fastcall ClientConnect(TObject *Sender,
 		  TCustomWinSocket *Socket);
 	void __fastcall ClientDisconnect(TObject *Sender,
