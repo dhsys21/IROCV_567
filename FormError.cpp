@@ -34,9 +34,10 @@ void __fastcall TForm_Error::DisplayErrorMessage(AnsiString title, AnsiString ms
 		this->Width = width + 60;
 
 		Label_Title->Left = (this->Width / 2) - (Label_Title->Width / 2);
-		//Button_OK->Left = (this->Width / 2) - (Button_OK->Width / 2);
+
         btnTrayOut->Left = (this->Width / 2) - 150;
 		btnRestart->Left = (this->Width / 2) + 50;
+        btnOK->Left = (this->Width / 2) - 75;
 
 		SaveErrorLog(title, msg1, msg2);
 
@@ -115,7 +116,6 @@ void __fastcall TForm_Error::btnRestartClick(TObject *Sender)
 	BaseForm->nForm[this->Tag]->Initialization();
 	BaseForm->nForm[this->Tag]->WritePLCLog("RESTART", "NG TRAY RESTART");
 	timerErrorOff->Enabled = true;
-	//this->Close();
 }
 //---------------------------------------------------------------------------
 

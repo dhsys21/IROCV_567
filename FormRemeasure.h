@@ -87,6 +87,8 @@ __published:	// IDE-managed Components
 	TPanel *pnlConsNg;
 	TPanel *pnlTitleTotalNg;
 	TPanel *pnlTotalNg;
+	TPanel *pnlTitlePrevNg;
+	TPanel *pnlPrevNg;
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall FormHide(TObject *Sender);
@@ -110,6 +112,7 @@ public:		// User declarations
 	int *acc_remeasure;
     int *acc_totaluse;
     int *acc_consng;
+    int *acc_prevng;
 	AnsiString *acc_init;
 	int *acc_cnt;
 

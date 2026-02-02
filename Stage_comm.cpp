@@ -103,12 +103,16 @@ void __fastcall TTotalForm::WriteValue()
 //---------------------------------------------------------------------------
 void __fastcall TTotalForm::CmdTrayOut()
 {
+    WideString message = Form_Language->msgTooManyNG; //message.c_bstr()
+    WideString message2 = Form_Language->msgSelectTrayOut;
+    UnicodeString str, str2;  //str.c_str()
+	str = "There is too many ng cells. Please check it.";
+    str2 = "Select [Tray Out] or [Restart]";
     if(/*(tray.cell_count1 + tray.cell_count2) == NgCount || */
     	NgCount > editNgAlarmCount->Text.ToIntDef(20)){
         Form_Error->Tag = this->Tag;
         Form_Error->DisplayErrorMessage("IR/OCV NG ERROR",
-            "There is too many ng cells. Please check it.",
-            "Select [Tray Out] or [Restart]");
+            message.c_bstr(), message2.c_bstr());
 	}
 	else{
         if(BaseForm->chkTest->Checked == false) {

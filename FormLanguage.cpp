@@ -80,6 +80,7 @@ void __fastcall TForm_Language::LanguageChange(int LangIndex)
     RemeasureForm->pnlTitlePos->Caption = vle->Values["POS"];
     RemeasureForm->pnlTitleTotalUse->Caption = vle->Values["TOTALUSE"];
     RemeasureForm->pnlTitleConsNg->Caption = vle->Values["CONSNG"];
+    RemeasureForm->pnlTitlePrevNg->Caption = vle->Values["PREVNG"];
     RemeasureForm->pnlTitleTotalNg->Caption = vle->Values["TOTALNG"];
 
     //-------------------------------------------------------------------------
@@ -88,6 +89,7 @@ void __fastcall TForm_Language::LanguageChange(int LangIndex)
 	msgRbt = vle->Values["msgRBT"];
     msgRst = vle->Values["msgRST"];
     msgTooManyNG = vle->Values["msgTooManyNG"];
+    msgSelectTrayOut = vle->Values["msgSelectTrayOut"];
 
     msgPLCConnFail = vle->Values["msgPLCConnFail"];
     msgIROCVConnFail = vle->Values["msgPREConnFail"];

@@ -31,6 +31,12 @@ void __fastcall TCaliForm::FormCreate(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TCaliForm::FormShow(TObject *Sender)
 {
+    //* 2025 09 16 - 검수 요청 색상
+    pnormal3->Color = clWhite;
+    pnormal31->Color = clWhite;
+    pnormal4->Color = (TColor)0x00D7D7D7;
+    pnormal41->Color = (TColor)0x00E3E3E3;
+
 	this->BringToFront();
 
 	OffsetEdit->Text = BaseForm->DefaultOffset[stage];
@@ -107,6 +113,19 @@ void __fastcall TCaliForm::MakePanel(AnsiString type)
 				nx = 1462;
 				if( (index / 24) % 12 == 0) ny += 3;
 			}
+
+            if((index - 1) % 4 == 0 || (index - 1) % 4 == 1) {
+                //pch[index-1]->Color = pnormal31->Color;
+                pstandard[index-1]->Color = pnormal31->Color;
+                poffset[index-1]->Color = pnormal31->Color;
+                pmeasure[index-1]->Color = pnormal31->Color;
+            }
+            else {
+                //pch[index-1]->Color = pnormal41->Color;
+                pstandard[index-1]->Color = pnormal41->Color;
+                poffset[index-1]->Color = pnormal41->Color;
+                pmeasure[index-1]->Color = pnormal41->Color;
+            }
 
 		}
 	}

@@ -1025,6 +1025,74 @@ object CaliForm: TCaliForm
       end
     end
   end
+  object pnormal41: TPanel
+    Left = 265
+    Top = 33
+    Width = 41
+    Height = 19
+    Caption = '??'
+    Color = 14935011
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentBackground = False
+    ParentFont = False
+    TabOrder = 4
+    Visible = False
+  end
+  object pnormal4: TPanel
+    Left = 264
+    Top = 8
+    Width = 41
+    Height = 19
+    Caption = '??'
+    Color = 12369084
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentBackground = False
+    ParentFont = False
+    TabOrder = 5
+    Visible = False
+  end
+  object pnormal31: TPanel
+    Left = 192
+    Top = 31
+    Width = 54
+    Height = 15
+    Caption = '??1'
+    Color = 15461355
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentBackground = False
+    ParentFont = False
+    TabOrder = 6
+    Visible = False
+  end
+  object Panel3: TPanel
+    Left = 192
+    Top = 10
+    Width = 54
+    Height = 15
+    Caption = '??1'
+    Color = clWhite
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentBackground = False
+    ParentFont = False
+    TabOrder = 7
+    Visible = False
+  end
   object SaveDialog: TSaveDialog
     DefaultExt = '*.csv'
     Filter = 'Save(*.csv)|*.csv'

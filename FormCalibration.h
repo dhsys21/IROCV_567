@@ -64,6 +64,10 @@ __published:	// IDE-managed Components
 	TAdvSmoothButton *ConfigBtn1;
 	TPanel *pnormal3;
 	TTimer *probetimer;
+	TPanel *pnormal41;
+	TPanel *pnormal4;
+	TPanel *pnormal31;
+	TPanel *Panel3;
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall btnStopClick(TObject *Sender);

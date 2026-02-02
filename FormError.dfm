@@ -100,6 +100,21 @@ object Form_Error: TForm_Error
     TabOrder = 2
     OnClick = btnRestartClick
   end
+  object btnOK: TButton
+    Left = 295
+    Top = 273
+    Width = 150
+    Height = 50
+    Caption = 'OK'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -20
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 3
+    Visible = False
+  end
   object Timer_BringToFront: TTimer
     Enabled = False
     OnTimer = Timer_BringToFrontTimer

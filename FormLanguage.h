@@ -37,6 +37,7 @@ public:		// User declarations
     UnicodeString msgInvalidPwd;
     UnicodeString msgInit;
     UnicodeString msgReset;
+    UnicodeString msgSelectTrayOut;
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TForm_Language *Form_Language;

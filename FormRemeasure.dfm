@@ -756,10 +756,10 @@ object RemeasureForm: TRemeasureForm
     end
   end
   object GroupBox2: TGroupBox
-    Left = 1420
-    Top = 21
+    Left = 1416
+    Top = 24
     Width = 210
-    Height = 256
+    Height = 292
     Caption = 'ACOUNT'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -770,7 +770,7 @@ object RemeasureForm: TRemeasureForm
     TabOrder = 2
     object pcolor1: TPanel
       Left = 23
-      Top = 216
+      Top = 249
       Width = 56
       Height = 30
       BevelKind = bkFlat
@@ -791,7 +791,7 @@ object RemeasureForm: TRemeasureForm
     end
     object pcolor2: TPanel
       Left = 81
-      Top = 216
+      Top = 249
       Width = 56
       Height = 30
       BevelKind = bkFlat
@@ -811,7 +811,7 @@ object RemeasureForm: TRemeasureForm
     end
     object pcolor4: TPanel
       Left = 139
-      Top = 216
+      Top = 249
       Width = 56
       Height = 30
       BevelKind = bkFlat
@@ -1077,7 +1077,7 @@ object RemeasureForm: TRemeasureForm
     end
     object pnlTitleTotalNg: TPanel
       Left = 6
-      Top = 180
+      Top = 211
       Width = 92
       Height = 30
       BevelOuter = bvNone
@@ -1094,7 +1094,7 @@ object RemeasureForm: TRemeasureForm
     end
     object pnlTotalNg: TPanel
       Left = 100
-      Top = 180
+      Top = 211
       Width = 100
       Height = 30
       BevelOuter = bvNone
@@ -1107,6 +1107,39 @@ object RemeasureForm: TRemeasureForm
       ParentBackground = False
       ParentFont = False
       TabOrder = 17
+    end
+    object pnlTitlePrevNg: TPanel
+      Left = 6
+      Top = 180
+      Width = 92
+      Height = 30
+      BevelOuter = bvNone
+      Caption = 'Prev. NG'
+      Color = 12353126
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 18
+    end
+    object pnlPrevNg: TPanel
+      Left = 100
+      Top = 180
+      Width = 100
+      Height = 30
+      BevelOuter = bvNone
+      Color = 8552834
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWhite
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 19
     end
   end
   object SaveDialog: TSaveDialog

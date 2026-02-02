@@ -20,6 +20,7 @@ __published:	// IDE-managed Components
 	TTimer *timerErrorOff;
 	TButton *btnTrayOut;
 	TButton *btnRestart;
+	TButton *btnOK;
 	void __fastcall Button_OKClick(TObject *Sender);
 	void __fastcall Timer_BringToFrontTimer(TObject *Sender);
 	void __fastcall btnTrayOutClick(TObject *Sender);
