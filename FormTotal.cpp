@@ -1599,6 +1599,11 @@ void __fastcall TTotalForm::BadInfomation()
             clr = panel[i * 16 + j]->Color;
 			if((tray.cell[(i * 16) + j] == 1) && retest.cell[(i * 16) + j] != 0)
 			{
+                acc_remeasure[index] += 1;
+                //* 연속 불량 확인 2025 10 13
+                if(acc_prevng[index] == 1) acc_consng[index] += 1;
+                acc_prevng[index] = 1;
+
                 //* ng -> true
                 irocvNg |= 1 << j;
 				ngCount++;
@@ -1607,6 +1612,7 @@ void __fastcall TTotalForm::BadInfomation()
 			else if((tray.cell[(i * 16) + j] == 1) && retest.cell[(i * 16) + j] == 0)
 			{
                 //* ok -> false
+                acc_prevng[channel] = 0;
 			}
 			else
 			{
