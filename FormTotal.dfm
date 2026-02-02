@@ -785,29 +785,11 @@ object TotalForm: TTotalForm
         Font.Style = [fsBold]
         ParentFont = False
       end
-      object chkCycle: TCheckBox
-        Left = 98
-        Top = 5
-        Width = 90
-        Height = 25
-        Caption = 'TEST MODE'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlue
-        Font.Height = -13
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-        ParentShowHint = False
-        ShowHint = False
-        TabOrder = 0
-        Visible = False
-        OnMouseUp = chkBypassMouseUp
-      end
       object chkBypass: TCheckBox
-        Left = 194
-        Top = 5
+        Left = 126
+        Top = 19
         Width = 63
-        Height = 25
+        Height = 16
         Caption = 'BYPASS'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlue
@@ -922,12 +904,12 @@ object TotalForm: TTotalForm
         end
       end
       object pnlTrayOut: TAdvSmoothPanel
-        Left = 411
+        Left = 422
         Top = 5
-        Width = 60
+        Width = 50
         Height = 24
         Cursor = crDefault
-        Caption.Text = 'Tray Out'
+        Caption.Text = 'T. Out'
         Caption.Location = plCenterCenter
         Caption.HTMLFont.Charset = DEFAULT_CHARSET
         Caption.HTMLFont.Color = clWindowText
@@ -960,9 +942,9 @@ object TotalForm: TTotalForm
         TMSStyle = 0
       end
       object pnlPcError: TAdvSmoothPanel
-        Left = 289
+        Left = 273
         Top = 5
-        Width = 60
+        Width = 50
         Height = 24
         Cursor = crDefault
         Caption.Text = 'Pc Error'
@@ -998,12 +980,12 @@ object TotalForm: TTotalForm
         TMSStyle = 0
       end
       object pnlDataWrite: TAdvSmoothPanel
-        Left = 350
+        Left = 372
         Top = 5
-        Width = 60
+        Width = 50
         Height = 24
         Cursor = crDefault
-        Caption.Text = 'Data Write'
+        Caption.Text = 'D. Write'
         Caption.Location = plCenterCenter
         Caption.HTMLFont.Charset = DEFAULT_CHARSET
         Caption.HTMLFont.Color = clWindowText
@@ -1033,6 +1015,62 @@ object TotalForm: TTotalForm
         Fill.Glow = gmNone
         Version = '1.5.2.1'
         TabOrder = 8
+        TMSStyle = 0
+      end
+      object chkCycle: TCheckBox
+        Left = 126
+        Top = 2
+        Width = 90
+        Height = 16
+        Caption = 'TEST MODE'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlue
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = False
+        TabOrder = 0
+        Visible = False
+        OnMouseUp = chkBypassMouseUp
+      end
+      object pnlProbeClose_PC: TAdvSmoothPanel
+        Left = 322
+        Top = 5
+        Width = 50
+        Height = 24
+        Cursor = crDefault
+        Caption.Text = 'P. Close'
+        Caption.Location = plCenterCenter
+        Caption.HTMLFont.Charset = DEFAULT_CHARSET
+        Caption.HTMLFont.Color = clWindowText
+        Caption.HTMLFont.Height = -11
+        Caption.HTMLFont.Name = 'Tahoma'
+        Caption.HTMLFont.Style = []
+        Caption.HTMLURLColor = clBlack
+        Caption.Font.Charset = DEFAULT_CHARSET
+        Caption.Font.Color = clWindowText
+        Caption.Font.Height = -11
+        Caption.Font.Name = 'Tahoma'
+        Caption.Font.Style = []
+        Caption.ColorStart = clWhite
+        Caption.ColorEnd = clWhite
+        Caption.LineColor = clBlack
+        Caption.Line = False
+        Caption.TextAlignment = taCenter
+        Fill.Color = clRed
+        Fill.ColorTo = clRed
+        Fill.ColorMirror = clRed
+        Fill.ColorMirrorTo = clRed
+        Fill.GradientType = gtVertical
+        Fill.GradientMirrorType = gtVertical
+        Fill.BorderColor = 14922381
+        Fill.Rounding = 1
+        Fill.ShadowOffset = 0
+        Fill.Glow = gmNone
+        Version = '1.5.2.1'
+        TabOrder = 9
         TMSStyle = 0
       end
     end

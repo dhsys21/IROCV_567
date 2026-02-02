@@ -908,6 +908,9 @@ void __fastcall TTotalForm::StatusTimerTimer(TObject *Sender)
     if(Mod_PLC->GetPcValue(PC_D_IROCV_TRAY_OUT) == 1) ShowSignal(pnlTrayOut, true);
     else ShowSignal(pnlTrayOut, false);
 
+    if(Mod_PLC->GetPcValue(PC_D_IROCV_PROB_CLOSE) == 1) ShowSignal(pnlProbeClose_PC, true);
+    else ShowSignal(pnlProbeClose_PC, false);
+
     if(Mod_PLC->GetPcValue(PC_D_IROCV_DATA_WRITE) == 1) ShowSignal(pnlDataWrite, true);
     else ShowSignal(pnlDataWrite, false);
 
@@ -1599,11 +1602,6 @@ void __fastcall TTotalForm::BadInfomation()
             clr = panel[i * 16 + j]->Color;
 			if((tray.cell[(i * 16) + j] == 1) && retest.cell[(i * 16) + j] != 0)
 			{
-                acc_remeasure[index] += 1;
-                //* 연속 불량 확인 2025 10 13
-                if(acc_prevng[index] == 1) acc_consng[index] += 1;
-                acc_prevng[index] = 1;
-
                 //* ng -> true
                 irocvNg |= 1 << j;
 				ngCount++;
@@ -1612,7 +1610,6 @@ void __fastcall TTotalForm::BadInfomation()
 			else if((tray.cell[(i * 16) + j] == 1) && retest.cell[(i * 16) + j] == 0)
 			{
                 //* ok -> false
-                acc_prevng[channel] = 0;
 			}
 			else
 			{
@@ -2119,7 +2116,7 @@ void __fastcall TTotalForm::AutoInspection_Measure()
         case 8:
             write_delay_time++;
             //* NG 갯수 확인 및 Tray Out
-            if(write_delay_time > 5){
+            if(write_delay_time > 3){
                 write_delay_time = 0;
                 //* NG count 후 셋팅값(20개) 이상이면 에러창
                 DisplayProcess(sFinish, "AutoInspection_Measure", "[STEP 8] PreCharger Finish. Tray Out ... ");
