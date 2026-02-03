@@ -361,6 +361,7 @@ void __fastcall TBaseForm::btnNgCountErrClick(TObject *Sender)
     WideString message2 = Form_Language->msgSelectTrayOut;
     Form_Error->DisplayErrorMessage("IR/OCV NG ERROR",
             message.c_bstr(), message2.c_bstr());
+    //* probe open/close ½ÅÈ£ Á×ÀÌ±â
 }
 //---------------------------------------------------------------------------
 
@@ -406,9 +407,11 @@ void __fastcall TBaseForm::Button1Click(TObject *Sender)
 //    nForm[0]->tray.trayid = "12345678";
 //    nForm[0]->ReadResultFile(1);
 
-    Button1->Caption = "0";
-    WaitForMilliSeconds(3000);
-    Button1->Caption = "3000";
+//    Button1->Caption = "0";
+//    WaitForMilliSeconds(3000);
+//    Button1->Caption = "3000";
+
+
 }
 //---------------------------------------------------------------------------
 

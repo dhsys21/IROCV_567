@@ -397,9 +397,9 @@ void __fastcall TRemeasureForm::chInitdblClick(TObject *Sender)
         acc_totaluse[ch] = 0;
         acc_consng[ch] = 0;
 
-        acc_remeasure[pairedch] = 0;
-        acc_totaluse[pairedch] = 0;
-        acc_consng[pairedch] = 0;
+        acc_remeasure[pairedch - 1] = 0;
+        acc_totaluse[pairedch - 1] = 0;
+        acc_consng[pairedch - 1] = 0;
 
 		for(int index = 0; index < MAXCHANNEL; ++index){
 			if(acc_consng[index] >= pcolor2->Caption.ToIntDef(3))
@@ -414,10 +414,7 @@ void __fastcall TRemeasureForm::chInitdblClick(TObject *Sender)
 void __fastcall TRemeasureForm::AccInitBtnClick(TObject *Sender)
 {
     WideString message = Form_Language->msgDelAllChRecord;
-    UnicodeString str;
-	str = "Do you want to initialize all channel record?";
     if(MessageBox(Handle, message.c_bstr(), L"", MB_YESNO|MB_ICONQUESTION) == ID_YES){
-    //    if(MessageBox(Handle, str.c_str(), L"", MB_YESNO|MB_ICONQUESTION) == ID_YES){
 		for(int i = 0; i < MAXCHANNEL; ++i) {
         	acc_remeasure[i] = 0;
             acc_totaluse[i] = 0;

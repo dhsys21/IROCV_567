@@ -1402,6 +1402,8 @@ void __fastcall TTotalForm::btnManualClick(TObject *Sender)
 	this->CmdManualMod(true);
 	VisibleBox(GrpLocal);
 
+    //* 20260203 수동일 때 plc 도 수동으로 바꿔야 하기 때문에 error 신호 on 요청함
+    Mod_PLC->SetPcValue(PC_D_IROCV_ERROR, 1);
     ErrorCheck_Manual();
 }
 //---------------------------------------------------------------------------
@@ -1415,6 +1417,9 @@ void __fastcall TTotalForm::btnAutoClick(TObject *Sender)
     MeasureInfoForm->pLocal->Visible = false;
 	this->CmdManualMod(false);
 	VisibleBox(GrpMain);
+
+    //* 20260203 수동일 때 error 신호를 주기 때문에 자동에서는 off
+    Mod_PLC->SetPcValue(PC_D_IROCV_ERROR, 0);
 }
 //---------------------------------------------------------------------------
 double __fastcall TTotalForm::GetSigma(float values[], bool flags[], double avg, int ncount)
@@ -1443,6 +1448,7 @@ void __fastcall TTotalForm::SetRemeasureList(int traypos)
 		for(int i = 0; i < CHANNELCOUNT; ++i){
             index = GetChMap(this->Tag, traypos, i) - 1;
 			if(tray.cell[index] == 1){
+                acc_totaluse[index] += 1;
 				if(tray.after_value[index] < config.ir_min || tray.after_value[index] > config.ir_max){
 					retest.cell[index] = 2;
 					retest.cnt_error += 1;
@@ -1459,10 +1465,12 @@ void __fastcall TTotalForm::SetRemeasureList(int traypos)
 						retest.cell[index] = 3;
 						retest.cnt_error += 1;
 						remeasure_cnt += 1;
-						if(tray.first)acc_remeasure[index] += 1;
-                        //* 연속 불량 확인 2025 10 13
-                        if(acc_prevng[index] == 1) acc_consng[index] += 1;
-                        acc_prevng[index] = 1;
+						if(tray.first){
+                            acc_remeasure[index] += 1;
+                            //* 연속 불량 확인 2025 10 13
+                            if(acc_prevng[index] == 1) acc_consng[index] += 1;
+                            acc_prevng[index] = 1;
+                        }
 					}
 				}else{
 					retest.cell[index] = 0;
@@ -1925,6 +1933,9 @@ void __fastcall TTotalForm::AutoInspection_Wait()
                 Mod_PLC->SetPcValue(PC_D_IROCV_PROB_CLOSE, 1);
 				WritePLCLog("AutoInspection_Wait", "[STEP 3] Tray Position : " + IntToStr(nTrayPos) + " -> PC_D_PRE_PROB_CLOSE = 1");
 
+                //* 트레이 2번위치는 여기서 부터 시작하기 때문에 tray.first = true를 여기서 해준다.
+                //* 트레이 위치 이동이 없는 경우는 init structure에서
+                tray.first = true;
 				nSection = STEP_MEASURE;
 				nStep = 0;
                 nStepCount = 0;

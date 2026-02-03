@@ -275,7 +275,8 @@ void __fastcall TForm_PLCInterface::btnWriteNgValueClick(TObject *Sender)
 {
 	AnsiString strIrocvNg = editIrOcvNg->Text;
 	vector<int> ngchannels = BaseForm->StringToVector(strIrocvNg);
-
+    int stageno = 0;
+    //* 해당 채널 IR/OCV 값을 spec보다 크거나 작게
     int ngCount = 0;
     //* 16 bit * 36
 	for(int i = 0; i < 36; ++i){
@@ -288,12 +289,26 @@ void __fastcall TForm_PLCInterface::btnWriteNgValueClick(TObject *Sender)
                 //* ng -> true
                 irocvNg |= 1 << j;
 				ngCount++;
+                BaseForm->nForm[stageno]->tray.after_value[nChannel - 1] = 999;
+                BaseForm->nForm[stageno]->tray.ocv_value[nChannel - 1] = 0;
 			}
+            else
+            {
+                BaseForm->nForm[stageno]->tray.after_value[nChannel - 1] = 45.0;
+                BaseForm->nForm[stageno]->tray.ocv_value[nChannel - 1] = 2200;
+            }
 		}
         Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_MEASURE_OK_NG + i, irocvNg);
 	}
 
 	Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_NG_COUNT, ngCount);
+
+    //*
+    BaseForm->nForm[stageno]->tray.first = true;
+    BaseForm->nForm[stageno]->SetRemeasureList(1);
+    BaseForm->nForm[stageno]->tray.first = true;
+    BaseForm->nForm[stageno]->SetRemeasureList(2);
+    BaseForm->nForm[stageno]->WriteRemeasureInfo();
 }
 //---------------------------------------------------------------------------
 
