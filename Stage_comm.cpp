@@ -50,11 +50,11 @@ void __fastcall TTotalForm::CmdForceStop()
     if(nTrayPos == 1){
         Mod_PLC->SetPcValue(PC_D_IROCV_COMPLETE1, 1);
 		DisplayProcess(sFinish, "AutoInspection_Measure", "[STEP 0] Tray Position : " + IntToStr(nTrayPos)
-            	+ " PRECHARGER Charging is complete. Write COMPLETE1 = 1.");
+            	+ " IR/OCV Measuring is complete. Write COMPLETE1 = 1.");
     }else if(nTrayPos == 2){
         Mod_PLC->SetPcValue(PC_D_IROCV_COMPLETE2, 1);
         DisplayProcess(sFinish, "AutoInspection_Measure", "[STEP 0] Tray Position : " + IntToStr(nTrayPos)
-            	+ " PRECHARGER Charging is complete. Write COMPLETE2 = 1.");
+            	+ " IR/OCV Measuring is complete. Write COMPLETE2 = 1.");
     }
 }
 //---------------------------------------------------------------------------
