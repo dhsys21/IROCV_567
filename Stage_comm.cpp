@@ -43,14 +43,18 @@ void __fastcall TTotalForm::CmdForceStop()
     //* 각 포지션별 결과 저장
     WriteResultFile(nTrayPos);
 	Mod_PLC->SetDouble(Mod_PLC->pc_Interface_Data, PC_D_IROCV_PROB_OPEN, 1);
+    DisplayProcess(sFinish, "AutoInspection_Measure", "[STEP 0] Tray Position : " + IntToStr(nTrayPos)
+            	+ " IR/OCV Measuring is complete. Write PROB_OPEN = 1.");
     //* 20250909 추가
     MeasureInfoForm->probetimer->Enabled = true;
     if(nTrayPos == 1){
         Mod_PLC->SetPcValue(PC_D_IROCV_COMPLETE1, 1);
-		WritePLCLog("CmdForceStop", "COMPLETE1 on, IROCV PROBE OPEN = 1");
+		DisplayProcess(sFinish, "AutoInspection_Measure", "[STEP 0] Tray Position : " + IntToStr(nTrayPos)
+            	+ " PRECHARGER Charging is complete. Write COMPLETE1 = 1.");
     }else if(nTrayPos == 2){
         Mod_PLC->SetPcValue(PC_D_IROCV_COMPLETE2, 1);
-        WritePLCLog("CmdForceStop", "COMPLETE2 on, IROCV PROBE OPEN = 1");
+        DisplayProcess(sFinish, "AutoInspection_Measure", "[STEP 0] Tray Position : " + IntToStr(nTrayPos)
+            	+ " PRECHARGER Charging is complete. Write COMPLETE2 = 1.");
     }
 }
 //---------------------------------------------------------------------------
@@ -96,8 +100,8 @@ void __fastcall TTotalForm::WriteValue()
                 + ", CellCount : " + IntToStr(tray.cell_count1 + tray.cell_count2));
 		WriteIROCVValue();
 		WriteResultFile();
-        WritePLCLog("WriteValue", "BadInfomation(), WriteVoltCurrValue(), WriteResultFile()");
-        Panel_State->Caption = " Write result values to PLC ";
+        DisplayProcess(sTrayOut, "AutoInspection_Measure",
+        	"[STEP 7] Write result info : BadInfomation, WriteVoltCurrValue, WriteResultFile");
 	}
 }
 //---------------------------------------------------------------------------
@@ -117,13 +121,12 @@ void __fastcall TTotalForm::CmdTrayOut()
 	else{
         if(BaseForm->chkTest->Checked == false) {
             Mod_PLC->SetPcValue(PC_D_IROCV_DATA_WRITE, 1);
-    		WritePLCLog("CmdTrayOut", "DATA WRITE COMPLETE = 1");
-
             Mod_PLC->SetPcValue(PC_D_IROCV_TRAY_OUT, 1);
-            WritePLCLog("CmdTrayOut", "IROCV TRAY OUT = 1");
+
+            DisplayProcess(sTrayOut, "AutoInspection_Measure", "[STEP 8] Write DATA_WRITE = 1, TRAY_OUT = 1.");
         }
+
         DisplayStatus(nFinish);
-		Panel_State->Caption = " IROCV Tray Out ... ";
 	}
 }
 //---------------------------------------------------------------------------
@@ -271,13 +274,14 @@ void __fastcall TTotalForm::ResponseAutoTestFinish(int traypos)
 {
 	if(bLocal == true){
 		CmdForceStop();
-        DisplayProcess(sFinish, "AutoInspection_Measure", " AMF - Measure finished ... ");
+        DisplayProcess(sFinish, "AutoInspection_Measure", "[STEP 0] Tray Position : " + IntToStr(traypos) + " AMF - Measure finished ... ");
 		WriteCommLog("IR/OCV STOP", "AMF - ResponseautoTestfinish()");
 	}
 	else
 	{
 //		SendData("AMF");    //kedison
 		SendData("SEN");
+        DisplayProcess(sFinish, "AutoInspection_Measure", "[STEP 0] Tray Position : " + IntToStr(traypos) + " AMF - Measure finished ... ");
         SetRemeasureList(traypos);
     }
 }

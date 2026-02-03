@@ -6019,7 +6019,7 @@ object TotalForm: TTotalForm
         ImeName = 'Microsoft Office IME 2007'
         ParentFont = False
         TabOrder = 0
-        Text = '192.168.100.101'
+        Text = '192.168.100.202'
       end
       object Panel23: TPanel
         Left = 15
@@ -6175,7 +6175,7 @@ object TotalForm: TTotalForm
         ImeName = 'Microsoft Office IME 2007'
         ParentFont = False
         TabOrder = 0
-        Text = '192.168.100.102'
+        Text = '17.91.71.221'
       end
       object Panel25: TPanel
         Left = 15
@@ -6227,7 +6227,7 @@ object TotalForm: TTotalForm
         ImeName = 'Microsoft Office IME 2007'
         ParentFont = False
         TabOrder = 3
-        Text = '8901'
+        Text = '6005'
       end
       object btnConnectPLC: TAdvSmoothButton
         Left = 323
@@ -6335,7 +6335,7 @@ object TotalForm: TTotalForm
         ImeName = 'Microsoft Office IME 2007'
         ParentFont = False
         TabOrder = 7
-        Text = '8902'
+        Text = '6006'
       end
     end
     object btnCloseConnConfig: TAdvSmoothButton
@@ -7071,7 +7071,7 @@ object TotalForm: TTotalForm
     Enabled = False
     Interval = 100
     OnTimer = SendTimerTimer
-    Left = 742
+    Left = 758
     Top = 8
   end
   object StatusTimer: TTimer
@@ -7082,7 +7082,7 @@ object TotalForm: TTotalForm
   object rxTimer: TTimer
     Interval = 10
     OnTimer = rxTimerTimer
-    Left = 694
+    Left = 710
     Top = 120
   end
   object Timer_AutoInspection: TTimer
@@ -7097,11 +7097,11 @@ object TotalForm: TTotalForm
     Top = 8
   end
   object TrayDownTimer: TTimer
-    Left = 656
-    Top = 240
+    Left = 664
+    Top = 256
   end
   object TrayUpTimer: TTimer
-    Left = 648
-    Top = 304
+    Left = 656
+    Top = 328
   end
 end

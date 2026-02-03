@@ -552,7 +552,7 @@ public:		// User declarations
 
     int start_delay_time, write_delay_time;
 
-	int nSection, nStep, nStepCount;
+	int nSection, nStep;
 	bool m_bAuto;
     bool mAuto;
 

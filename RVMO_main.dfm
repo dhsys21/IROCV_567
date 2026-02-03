@@ -8,7 +8,7 @@ object BaseForm: TBaseForm
   VertScrollBar.Range = 300
   VertScrollBar.Visible = False
   BorderIcons = [biSystemMenu, biMinimize]
-  Caption = 'IR/OCV (Ver.260203 001)'
+  Caption = 'IR/OCV (Ver.260203 003)'
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -479,6 +479,7 @@ object BaseForm: TBaseForm
     Font.Name = 'Tahoma'
     Font.Style = [fsBold]
     ParentFont = False
+    Visible = False
   end
   object AdvSmoothButton1: TAdvSmoothButton
     Left = 352
