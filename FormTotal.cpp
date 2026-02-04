@@ -2019,11 +2019,9 @@ void __fastcall TTotalForm::AutoInspection_Measure()
     //* Measuring
 	if(tray.ams == true && tray.amf == false){
         Mod_PLC->SetPcValue(PC_D_IROCV_MEASURING, 1);
-        //DisplayProcess(sMeasure, "AutoInspection_Measure", "[STEP -1] Tray Position : " + IntToStr(nTrayPos) + " -> Start measuring. Start AMS.");
 	}
 	else{
         Mod_PLC->SetPcValue(PC_D_IROCV_MEASURING, 0);
-        //DisplayProcess(sMeasure, "AutoInspection_Measure", "[STEP -1] Tray Position : " + IntToStr(nTrayPos) + " -> Ready to measuring. Waiting AMS.");
 	}
 
 	double plc_probe_close, plc_tray_in, plc_probe_open;
@@ -2323,10 +2321,10 @@ void __fastcall TTotalForm::ShowSignal(TAdvSmoothPanel *advPanel, bool bOn)
 		advPanel->Fill->ColorMirrorTo = BaseForm->pon->Color;
 		advPanel->Fill->ColorTo = BaseForm->pon->Color;
 	}else{
-		advPanel->Fill->Color = BaseForm->poff2->Color;
-		advPanel->Fill->ColorMirror = BaseForm->poff2->Color;
-		advPanel->Fill->ColorMirrorTo = BaseForm->poff2->Color;
-		advPanel->Fill->ColorTo = BaseForm->poff2->Color;
+		advPanel->Fill->Color = BaseForm->poff->Color;
+		advPanel->Fill->ColorMirror = BaseForm->poff->Color;
+		advPanel->Fill->ColorMirrorTo = BaseForm->poff->Color;
+		advPanel->Fill->ColorTo = BaseForm->poff->Color;
 	}
 }
 void __fastcall TTotalForm::btnDisConnectIROCVClick(TObject *Sender)
