@@ -1217,6 +1217,7 @@ void __fastcall TTotalForm::SetRemeasureListAfter(int traypos)
         else retest.cell[index] = 0;
     }
 
+    tray.rem_mode == 0;
 	WriteCommLog("IR/OCV STOP", "SetRemeasureListAfter()");
 }
 //---------------------------------------------------------------------------
@@ -1292,7 +1293,8 @@ void __fastcall TTotalForm::RemeasureExcute(int traypos)
 	int boardch;    //* board channel
 	for(int i = retest.re_index; i < CHANNELCOUNT; ++i){
         tray_index = GetChMap(this->Tag, traypos, i) - 1;
-		boardch = GetChRMap(this->Tag, traypos, i);
+		boardch = chReverseMap[tray_index + 1];
+        if(boardch > 288) boardch = boardch - 288;
 		switch(retest.cell[tray_index]){
 			case 2:	// IR 불량
 				this->MakeData(3, "IR*", FormatFloat("000", boardch));
@@ -1301,14 +1303,14 @@ void __fastcall TTotalForm::RemeasureExcute(int traypos)
 				}else{
 					retest.re_index = ++i;
 				}
-				return;
+				return; //* for 문 빠져나감
 			case 3:	// OCV 불량
 				this->MakeData(3, "OCV", FormatFloat("000", boardch));
 				if(tray.after_value[tray_index] < config.ir_min || tray.after_value[tray_index] > config.ir_max){
 					retest.cell[tray_index] = 2;
 				}
 				retest.re_index = ++i;
-				return;
+				return; //* for 문 빠져나감
 			default:
 				break;
 		}
@@ -2085,6 +2087,7 @@ void __fastcall TTotalForm::AutoInspection_Measure()
 				if(n_bMeasureStart == false)
 				{
 					DisplayProcess(sMeasure, "AutoInspection_Measure", "[STEP 0] Tray Position : " + IntToStr(nTrayPos) + " IR/OCV Measure Start");
+                    tray.rem_mode == 0;
 					CmdAutoTest();     // ams -> amf -> if cell-error (< 10) then auto-remeasure
 					n_bMeasureStart = true;
 				}
