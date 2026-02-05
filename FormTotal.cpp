@@ -1175,27 +1175,137 @@ void __fastcall TTotalForm::CmdTestMode()
 	}
 }
 //---------------------------------------------------------------------------
-// 개별 재측정
-void __fastcall TTotalForm::RemeasureExcute()
+void __fastcall TTotalForm::SetRemeasureListAfter(int traypos)
 {
-	int i = retest.re_index;
-	int ch = 0, boardch = 0;
-	for(;i < MAXCHANNEL;++i){
-		ch = i + 1;
-		boardch = chReverseMap[ch] - (nTrayPos - 1) * 288;
-		switch(retest.cell[i]){
+	bool brem = false;
+	int remeasure_cnt = 0;
+    retest.cnt_error = 0;
+
+	int index;
+    for(int i = 0; i < CHANNELCOUNT; ++i){
+        index = GetChMap(this->Tag, traypos, i) - 1;
+        if(tray.cell[index] == 1){
+            acc_totaluse[index] += 1;
+            if(tray.after_value[index] < config.ir_min || tray.after_value[index] > config.ir_max){
+                retest.cell[index] = 2;
+                retest.cnt_error += 1;
+                remeasure_cnt += 1;
+                if(tray.first){
+                    acc_remeasure[index] += 1;
+                    //* 연속 불량 확인 2025 10 13
+                    if(acc_prevng[index] == 1) acc_consng[index] += 1;
+                    acc_prevng[index] = 1;
+                }
+            }
+            else if(tray.ocv_value[index] < config.ocv_min || tray.ocv_value[index] > config.ocv_max){
+                if(retest.cell[index] != 2){
+                    retest.cell[index] = 3;
+                    retest.cnt_error += 1;
+                    remeasure_cnt += 1;
+                    if(tray.first){
+                        acc_remeasure[index] += 1;
+                        //* 연속 불량 확인 2025 10 13
+                        if(acc_prevng[index] == 1) acc_consng[index] += 1;
+                        acc_prevng[index] = 1;
+                    }
+                }
+            }else{
+                retest.cell[index] = 0;
+                acc_prevng[index] = 0;
+            }
+        }
+        else retest.cell[index] = 0;
+    }
+
+	WriteCommLog("IR/OCV STOP", "SetRemeasureListAfter()");
+}
+//---------------------------------------------------------------------------
+void __fastcall TTotalForm::SetRemeasureList(int traypos)
+{
+	bool brem = false;
+	int remeasure_cnt = 0;
+
+	if(stage.arl == nAuto){
+		retest.cnt_error = 0;
+
+        int index;
+		for(int i = 0; i < CHANNELCOUNT; ++i){
+            index = GetChMap(this->Tag, traypos, i) - 1;    //* 1 -> 553. 배열은 -1을 해야 하니까 552로 사용
+			if(tray.cell[index] == 1){
+                acc_totaluse[index] += 1;
+				if(tray.after_value[index] < config.ir_min || tray.after_value[index] > config.ir_max){
+					retest.cell[index] = 2;
+					retest.cnt_error += 1;
+					remeasure_cnt += 1;
+					if(tray.first){
+						acc_remeasure[index] += 1;
+                        //* 연속 불량 확인 2025 10 13
+                        if(acc_prevng[index] == 1) acc_consng[index] += 1;
+                        acc_prevng[index] = 1;
+					}
+				}
+				else if(tray.ocv_value[index] < config.ocv_min || tray.ocv_value[index] > config.ocv_max){
+					if(retest.cell[index] != 2){
+						retest.cell[index] = 3;
+						retest.cnt_error += 1;
+						remeasure_cnt += 1;
+						if(tray.first){
+                            acc_remeasure[index] += 1;
+                            //* 연속 불량 확인 2025 10 13
+                            if(acc_prevng[index] == 1) acc_consng[index] += 1;
+                            acc_prevng[index] = 1;
+                        }
+					}
+				}else{
+					retest.cell[index] = 0;
+                    acc_prevng[index] = 0;
+				}
+			}
+			else retest.cell[index] = 0;
+		}
+
+        tray.first = false;
+        //* 트레이 위치 이동후에 측정시 에러발생함. 일단 주석처리하고 모니터링 필요
+        //* 20260128
+		if((remeasure_cnt < remLimit) && (remeasure_cnt > 0)) brem = true;
+		else brem= false;
+
+		if(brem == false){
+			CmdForceStop(); // Probe Open
+		}
+		else{
+			tray.rem_mode = 1;
+			retest.re_index = 0;
+			RemeasureExcute(traypos);
+		}
+	} else {
+		CmdForceStop();
+	}
+
+	WriteCommLog("IR/OCV STOP", "SetRemeasureList()");
+}
+//---------------------------------------------------------------------------
+// 개별 재측정
+void __fastcall TTotalForm::RemeasureExcute(int traypos)
+{
+    int tray_index;          //* tray channel
+	int boardch;    //* board channel
+	for(int i = retest.re_index; i < CHANNELCOUNT; ++i){
+        tray_index = GetChMap(this->Tag, traypos, i) - 1;
+		boardch = GetChRMap(this->Tag, traypos, i);
+		switch(retest.cell[tray_index]){
 			case 2:	// IR 불량
 				this->MakeData(3, "IR*", FormatFloat("000", boardch));
-				if(tray.ocv_value[i] < config.ocv_min || tray.ocv_value[i] > config.ocv_max){
-					retest.cell[i] = 3;
+				if(tray.ocv_value[tray_index] < config.ocv_min || tray.ocv_value[tray_index] > config.ocv_max){
+					retest.cell[tray_index] = 3;
 				}else{
 					retest.re_index = ++i;
 				}
 				return;
 			case 3:	// OCV 불량
 				this->MakeData(3, "OCV", FormatFloat("000", boardch));
-				if(tray.after_value[i] < config.ir_min || tray.after_value[i] > config.ir_max){
-					retest.cell[i] = 2;
+				if(tray.after_value[tray_index] < config.ir_min || tray.after_value[tray_index] > config.ir_max){
+					retest.cell[tray_index] = 2;
 				}
 				retest.re_index = ++i;
 				return;
@@ -1204,7 +1314,7 @@ void __fastcall TTotalForm::RemeasureExcute()
 		}
 	}
 	retest.re_excute = false;
-	SetRemeasureList(nTrayPos);
+	SetRemeasureListAfter(nTrayPos);
 	CmdForceStop();
 	WriteCommLog("IR/OCV STOP", "RemeasureExcute()");
 }
@@ -1434,71 +1544,6 @@ double __fastcall TTotalForm::GetSigma(float values[], bool flags[], double avg,
 
 	sigma = sqrt(sum / ncount);
     return sigma;
-}
-//---------------------------------------------------------------------------
-void __fastcall TTotalForm::SetRemeasureList(int traypos)
-{
-	bool brem = false;
-	int remeasure_cnt = 0;
-
-	if(stage.arl == nAuto){
-		retest.cnt_error = 0;
-
-        int index;
-		for(int i = 0; i < CHANNELCOUNT; ++i){
-            index = GetChMap(this->Tag, traypos, i) - 1;
-			if(tray.cell[index] == 1){
-                acc_totaluse[index] += 1;
-				if(tray.after_value[index] < config.ir_min || tray.after_value[index] > config.ir_max){
-					retest.cell[index] = 2;
-					retest.cnt_error += 1;
-					remeasure_cnt += 1;
-					if(tray.first){
-						acc_remeasure[index] += 1;
-                        //* 연속 불량 확인 2025 10 13
-                        if(acc_prevng[index] == 1) acc_consng[index] += 1;
-                        acc_prevng[index] = 1;
-					}
-				}
-				else if(tray.ocv_value[index] < config.ocv_min || tray.ocv_value[index] > config.ocv_max){
-					if(retest.cell[index] != 2){
-						retest.cell[index] = 3;
-						retest.cnt_error += 1;
-						remeasure_cnt += 1;
-						if(tray.first){
-                            acc_remeasure[index] += 1;
-                            //* 연속 불량 확인 2025 10 13
-                            if(acc_prevng[index] == 1) acc_consng[index] += 1;
-                            acc_prevng[index] = 1;
-                        }
-					}
-				}else{
-					retest.cell[index] = 0;
-                    acc_prevng[index] = 0;
-				}
-			}
-			else retest.cell[index] = 0;
-		}
-
-        tray.first = false;
-        //* 트레이 위치 이동후에 측정시 에러발생함. 일단 주석처리하고 모니터링 필요
-        //* 20260128
-//		if((remeasure_cnt < remLimit) && (remeasure_cnt > 0)) brem = true;
-//		else brem= false;
-
-		if(brem == false){
-			CmdForceStop(); // Probe Open
-		}
-		else{
-			tray.rem_mode = 1;
-			retest.re_index = 0;
-			RemeasureExcute();
-		}
-	} else {
-		CmdForceStop();
-	}
-
-	WriteCommLog("IR/OCV STOP", "SetRemeasureList()");
 }
 //---------------------------------------------------------------------------
 void __fastcall TTotalForm::ViewRemeasureList()
@@ -2068,7 +2113,7 @@ void __fastcall TTotalForm::AutoInspection_Measure()
 
                 Mod_PLC->SetPcValue(PC_D_IROCV_PROB_CLOSE, 0);
 				DisplayProcess(sMeasure, "AutoInspection_Measure", "[STEP 2] Tray Position : " + IntToStr(nTrayPos) + " IR/OCV Re-Measure Start");
-				if(retest.re_excute) RemeasureExcute();  // partly remeasure
+				if(retest.re_excute) RemeasureExcute(nTrayPos);  // partly remeasure
 				else CmdAutoTest();       // all remeasure
 
 				nStep = 3;

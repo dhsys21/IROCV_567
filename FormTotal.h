@@ -565,7 +565,7 @@ public:		// User declarations
 	queue<string> q_param;
 	queue<int> q_txMode;
 
-	void __fastcall RemeasureExcute();
+	void __fastcall RemeasureExcute(int traypos);
 	void __fastcall ReadRemeasureInfo();
 	void __fastcall WriteRemeasureInfo();
 
@@ -583,6 +583,7 @@ public:		// User declarations
 
 	int remLimit;
     void __fastcall VisibleSpec(bool bUseAverage);
+    void __fastcall SetRemeasureListAfter(int traypos);
 	void __fastcall SetRemeasureList(int traypos);
 	void __fastcall AddRemeasureList();
 	void __fastcall ViewRemeasureList();

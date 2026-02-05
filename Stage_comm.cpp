@@ -355,7 +355,7 @@ void __fastcall TTotalForm::ProcessIr(AnsiString param)
     //* RemeasureExecute는 Tray position 고려해서 맵핑값 적용필요
 	if(tray.rem_mode == 1){
 		send.tx_mode = 200;
-		this->RemeasureExcute();
+		this->RemeasureExcute(nTrayPos);
 	}
 }
 //---------------------------------------------------------------------------void __fastcall TTotalForm::InsertIrValue(int pos, float value, AnsiString result)
@@ -462,7 +462,7 @@ void __fastcall TTotalForm::ProcessOcv(AnsiString param)
 
 	if(tray.rem_mode == 1){
 		send.tx_mode = 200;
-		this->RemeasureExcute();
+		this->RemeasureExcute(nTrayPos);
 	}
 }
 
